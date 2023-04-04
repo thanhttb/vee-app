@@ -26,6 +26,7 @@ import { SIZES, COLORS } from "../../utils/theme";
 const Logo_VEE = require("../../../assets/logo_vee.jpg");
 
 const PasswordForgot = () => {
+  const [otp, setOtp] = React.useState(false);
   return (
     <GestureHandlerRootView style={styles.safeview}>
       <StatusBar barStyle="dark-content" />
@@ -36,61 +37,71 @@ const PasswordForgot = () => {
           style={styles.container}
         >
           <Image source={Logo_VEE} style={styles.imageLogo} />
-          {/* <View style={styles.header}>
-            <Text style={styles.headerTitle}>
-             Nhập số điện thoại để nhận mã xác thực
-            </Text>
-          </View>
+          {/* forgot password  */}
 
-          <View style={styles.inputs}>
-            <View style={styles.input}>
-              <TextInput
-                placeholder={"Số điện thoại đã đăng ký"}
-                placeholderTextColor={COLORS.input}
-                keyboardType="number-pad"
-                autoCapitalize="none"
+          {otp == false && (
+            <>
+              <View style={styles.header}>
+                <Text style={styles.headerTitle}>
+                  Nhập số điện thoại để nhận mã xác thực
+                </Text>
+              </View>
+
+              <View style={styles.inputs}>
+                <View style={styles.input}>
+                  <TextInput
+                    placeholder={"Số điện thoại đã đăng ký"}
+                    placeholderTextColor={COLORS.input}
+                    keyboardType="number-pad"
+                    autoCapitalize="none"
+                    style={{
+                      width: "100%",
+                    }}
+                  />
+                </View>
+              </View>
+              <Spacer />
+              <View style={styles.inputs}>
+                <Button
+                  onPress={() =>setOtp(true)}
+                  label={"Tiếp tục"}
+                  color={COLORS.white}
+                  background={COLORS.green}
+                />
+              </View>
+            </>
+          )}
+
+          {otp == true && (
+            <>
+              <View
                 style={{
-                    width: '100%',
+                  marginLeft: 30,
                 }}
-              />
-            </View>
-           
-          </View>
-          <Spacer />
-          <View style={styles.inputs}>
-            <Button
-              label={"Tiếp tục"}
-              color={COLORS.white}
-              background={COLORS.green}
-            />
-            
-          </View> */}
-
-          <View
-            style={{
-              marginLeft: 30,
-            }}
-          >
-            <OTPInput />
-          </View>
-          <View style={styles.inputs}>
-            <Button
-              label={"Xác Minh"}
-              color={COLORS.white}
-              background={COLORS.green}
-            />
-          </View>
-          <Spacer height={30} />
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <Text style={styles.bottomTitle}>Không nhận được mã OTP ?</Text>
-            <TouchableOpacity>
-              <Text style={styles.returnOtp}>Gửi lại mã</Text>
-            </TouchableOpacity>
-          </View>
+              >
+                <OTPInput />
+              </View>
+              <View style={styles.inputs}>
+                <Button
+                  onPress={() =>setOtp(false)}
+                  label={"Xác Minh"}
+                  color={COLORS.white}
+                  background={COLORS.green}
+                />
+              </View>
+              <Spacer height={30} />
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <Text style={styles.bottomTitle}>Không nhận được mã OTP ?</Text>
+                <TouchableOpacity>
+                  <Text style={styles.returnOtp}>Gửi lại mã</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </GestureHandlerRootView>
@@ -139,7 +150,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.gray,
   },
   bottomTitle: {
-    color: 'black',
+    color: "black",
     textAlign: "center",
     fontSize: SIZES.h2,
   },
@@ -147,6 +158,6 @@ const styles = StyleSheet.create({
     color: COLORS.green,
     fontSize: SIZES.h2,
     fontWeight: 600,
-    paddingLeft: SIZES.base
-  }
+    paddingLeft: SIZES.base,
+  },
 });
