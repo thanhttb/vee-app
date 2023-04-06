@@ -9,7 +9,6 @@ const OTPInput = () => {
     <OTPInputView
       style={{ width: "80%", height: 200, alignItems: "center" }}
       pinCount={4}
-      // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
       onCodeChanged={(code) => setOtp(code)}
       autoFocusOnLoad={false}
       codeInputFieldStyle={styles.underlineStyleBase}

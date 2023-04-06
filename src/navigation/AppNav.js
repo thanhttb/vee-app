@@ -7,7 +7,7 @@ import TabNavigation from './TabNavigation';
 const AppNav = () => {
   return (
     <NavigationContainer>
-        <AppStack/>
+        <TabNavigation/>                                             
     </NavigationContainer>
   )
 }

@@ -16,6 +16,8 @@ export const SIZES = {
   spacing: 10,
   height,
   width,
+  header: 50,
+  headerIcon: 16,
 
   h1: 20,
   h2: 16,
