@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     marginHorizontal: SIZES.padding,
     marginTop: 18,
     backgroundColor: "white",
-    borderRadius: 16,
+    borderRadius: SIZES.radius,
     elevation: 1,
     shadowColor: "gray",
     shadowOffset: { width: 0, height: 1 },

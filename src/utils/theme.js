@@ -6,12 +6,13 @@ export const COLORS = {
   gray: "#637381",
   white: "#fff",
   input: "#919EAB",
+  lesson: "rgba(255, 171, 0, 0.1)"
 };
 
 export const SIZES = {
   base: 8,
   font: 14,
-  radius: 12,
+  radius: 16,
   padding: 20,
   spacing: 10,
   height,
@@ -21,5 +22,6 @@ export const SIZES = {
 
   h1: 20,
   h2: 16,
+  h14: 14,
   h3: 12,
 };
