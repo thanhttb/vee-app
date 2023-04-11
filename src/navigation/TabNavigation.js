@@ -99,13 +99,7 @@ const ProfileStack = () => {
           headerStyle: {
             backgroundColor: COLORS.green,
           },
-          headerRight: () => (
-            <Button
-              onPress={() => alert('This is a button!')}
-              title="Info"
-              color="#fff"
-            />
-          ),
+         
           headerTintColor: "#fff",
           headerTitleStyle: {
             fontWeight: "bold",
@@ -140,9 +134,9 @@ const TabNavigation = () => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "Trang chủ") {
-              iconName = focused
-                ? require("../../assets/icon/Home_Focus.png")
-                : require("../../assets/icon/Home_Outline.png");
+              iconName = !focused
+                ? require("../../assets/Icon-bottom/Trang_Chu.png")
+                : require("../../assets/Icon-bottom/Trang_Chu_Xanh.png");
             }
             return (
               <Image
@@ -164,9 +158,9 @@ const TabNavigation = () => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "Lịch học") {
-              iconName = focused
-                ? require("../../assets/icon/Schedule_Outline.png")
-                : require("../../assets/icon/Schedule_Outline.png");
+              iconName = !focused
+                ? require("../../assets/Icon-bottom/Lich_Hoc.png")
+                : require("../../assets/Icon-bottom/Lich_Hoc_Xanh.png");
             }
             return (
               <Image
@@ -188,9 +182,9 @@ const TabNavigation = () => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "Thông báo") {
-              iconName = focused
-                ? require("../../assets/icon/Noti_Outline.png")
-                : require("../../assets/icon/Noti_Outline.png");
+              iconName = !focused
+                ? require("../../assets/Icon-bottom/Thong_Bao.png")
+                : require("../../assets/Icon-bottom/Thong_Bao_Xanh.png");
             }
             return (
               <Image
@@ -212,9 +206,9 @@ const TabNavigation = () => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "Profile") {
-              iconName = focused
-                ? require("../../assets/icon/User_Outline.png")
-                : require("../../assets/icon/User_Outline.png");
+              iconName = !focused
+                ? require("../../assets/Icon-bottom/Tai_Khoan.png")
+                : require("../../assets/Icon-bottom/Tai_Khoan_Xanh.png");
             }
             return (
               <Image

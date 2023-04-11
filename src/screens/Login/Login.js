@@ -104,9 +104,9 @@ const Login = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Text style={styles.forget}>Quên mật khẩu ?</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <Spacer />
           <View style={styles.inputs}>
@@ -119,7 +119,7 @@ const Login = ({ navigation }) => {
               background={COLORS.green}
             />
             <Spacer />
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 justifyContent: "center",
@@ -157,7 +157,7 @@ const Login = ({ navigation }) => {
               label={"Đăng Nhập Bằng Zalo"}
               color={COLORS.green}
               background={COLORS.white}
-            />
+            /> */}
           </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>

@@ -51,7 +51,9 @@ const ProfileHome = () => {
               />
             </View>
           </TouchableOpacity>
-
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Thông tin học sinh")}
+          >
           <View style={styles.actionPush}>
             <Ionicons name="person" size={24} color="black" />
             <Text style={styles.textAction}>Thông tin học sinh</Text>
@@ -61,8 +63,11 @@ const ProfileHome = () => {
               size={24}
               color="black"
             />
-          </View>
-
+          </View> 
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Đổi mật khẩu")}
+          >
           <View style={styles.actionPush}>
             <Ionicons name="person" size={24} color="black" />
             <Text style={styles.textAction}>Đổi mật khẩu</Text>
@@ -73,6 +78,7 @@ const ProfileHome = () => {
               color="black"
             />
           </View>
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={logout}>
             <View style={styles.actionPush}>
