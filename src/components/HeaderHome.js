@@ -11,6 +11,7 @@ import {
 //npm
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 //utils
 import { COLORS, SIZES } from "../utils/theme";
 const UPPER_HEADER_HEIGHT = 32;
@@ -33,17 +34,20 @@ const HeaderHome = ({
       <View style={styles.upperHeader}></View>
       <View style={styles.lowerHeader}>
         <Animated.View style={[styles.feature, depositViewAnimation]}>
-          <AnimatedPressable onPress={() => navigation.navigate("Lịch học")}>
+          <TouchableOpacity
+            onPressIn={() => navigation.navigate("Lịch học")}
+            style={{ zIndex: 1000 }}
+          >
             <Animated.Image
               source={require("../../assets/icon/Home_Focus.png")}
               style={[styles.bellIco, featureIconCircleAnimation]}
             />
-             </AnimatedPressable>
+          </TouchableOpacity>
           <Animated.Image
             source={require("../../assets/icon/Noti_Outline.png")}
             style={[styles.bellIcon, featureIconAnimation]}
           />
-       
+
           <Animated.Text style={[styles.featureName, featureNameAnimation]}>
             Bảng tin
           </Animated.Text>
@@ -62,33 +66,40 @@ const HeaderHome = ({
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.feature, qrViewAnimation]}>
-        <AnimatedPressable onPress={() => navigation.navigate("Học phí")}>
+          <TouchableOpacity
+            onPressIn={() => navigation.navigate("Học phí")}
+            style={{
+              zIndex: 1000,
+            }}
+          >
             <Animated.Image
               source={require("../../assets/icon/Home_Focus.png")}
               style={[styles.bellIco, featureIconCircleAnimation]}
             />
-           </AnimatedPressable>
+          </TouchableOpacity>
           <Animated.Image
             source={require("../../assets/icon/Noti_Outline.png")}
             style={[styles.bellIcon, featureIconAnimation]}
           />
-         
+
           <Animated.Text style={[styles.featureName, featureNameAnimation]}>
             Học phí
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.feature, scanViewAnimation]}>
-        <AnimatedPressable onPress={() => navigation.navigate("Bài tập về nhà")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Bài tập về nhà")}
+          >
             <Animated.Image
               source={require("../../assets/icon/Home_Focus.png")}
               style={[styles.bellIco, featureIconCircleAnimation]}
             />
-          </AnimatedPressable>
+          </TouchableOpacity>
           <Animated.Image
             source={require("../../assets/icon/Noti_Outline.png")}
             style={[styles.bellIcon, featureIconAnimation]}
           />
-          
+
           <Animated.Text style={[styles.featureName, featureNameAnimation]}>
             Bài tập về nhà
           </Animated.Text>
@@ -105,18 +116,21 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     backgroundColor: COLORS.green,
+    zIndex: 1,
   },
   upperHeader: {
     height: UPPER_HEADER_HEIGHT + UPPER_HEADER_PADDING_TOP,
     paddingTop: UPPER_HEADER_PADDING_TOP,
+    zIndex: 1,
+    // zIndex: 1,
   },
   lowerHeader: {
     height: LOWER_HEADER_HEIGHT,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
     paddingHorizontal: 16,
+    // zIndex: 1,
   },
   feature: {
     alignItems: "center",
@@ -124,10 +138,12 @@ const styles = StyleSheet.create({
   bellIco: {
     width: 32,
     height: 32,
-    backgroundColor: "white",
+    backgroundColor: "yellow",
+    zIndex: 1,
   },
   bellIcon: {
     position: "absolute",
+    zIndex: 1,
     // marginTop: 8,
     backgroundColor: "white",
   },

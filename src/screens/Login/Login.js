@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
@@ -12,10 +11,16 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   StatusBar,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 //npm
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+//redux
+import { loginAction } from "../../redux/actions/authActions";
 //component
 import Spacer from "../../components/Spacer";
 import Button from "../../components/Button";
@@ -24,13 +29,33 @@ import { SIZES, COLORS } from "../../utils/theme";
 //iamges
 const Logo_VEE = require("../../../assets/logo_vee.jpg");
 
-const Login = ({navigation}) => {
-  const [text, onChangeText] = React.useState("Useless Text");
-  const [number, onChangeNumber] = React.useState("");
+const Login = ({ navigation }) => {
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
+  const [loading, setLoading] = useState(false)
+
+  const { error } = useSelector((state) => state.authReducer);
+
+  const dispatch = useDispatch();
+  const submit = async () => {
+    setLoading(true)
+    dispatch(loginAction(phone, password));
+    setLoading(false)
+  };
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
       <StatusBar barStyle="dark-content" />
+      {error == true &&
+        Alert.alert("VietElite", "Tài khoản mật khẩu không chính xác", [
+          {
+            text: "Đóng",
+            onPress: () => dispatch({type: "SET_LOGIN_CLEAR_STATE"}),
+            style: "cancel",
+          },
+          { text: "OK",  onPress: () => dispatch({type: "SET_LOGIN_CLEAR_STATE"}) },
+        ])}
       {/* <SafeAreaView > */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <KeyboardAvoidingView
@@ -49,22 +74,34 @@ const Login = ({navigation}) => {
           <View style={styles.inputs}>
             <View style={styles.input}>
               <TextInput
+                style={{ width: "100%" }}
                 placeholder={"Số điện thoại đã đăng ký"}
                 placeholderTextColor={COLORS.input}
                 keyboardType="number-pad"
                 autoCapitalize="none"
+                value={phone}
+                onChangeText={(text) => setPhone(text)}
               />
             </View>
             <Spacer />
             <View style={[styles.input, styles.inputPassword]}>
               <TextInput
+                style={{ width: "90%" }}
                 placeholder={"Mật khẩu"}
                 placeholderTextColor={COLORS.input}
-                autoCapitalize="none"
-                secureTextEntry={true}
+                secureTextEntry={showPassword}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
               />
-              <TouchableOpacity style={{ height: "100%", aspectRatio: 1 }}>
-                <Ionicons name="eye" size={24} color={COLORS.gray} />
+              <TouchableOpacity
+                style={{ height: "100%", aspectRatio: 1 }}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons
+                  name={showPassword == true ? "eye" : "eye-off"}
+                  size={24}
+                  color={COLORS.gray}
+                />
               </TouchableOpacity>
             </View>
             <TouchableOpacity>
@@ -73,22 +110,50 @@ const Login = ({navigation}) => {
           </View>
           <Spacer />
           <View style={styles.inputs}>
+           
             <Button
-            onPress={() => navigation.navigate('PasswordForgot')}
+            loading={loading}
+              onPress={submit}
               label={"Đăng Nhập"}
               color={COLORS.white}
               background={COLORS.green}
             />
             <Spacer />
-            <View style={{
-              flexDirection: 'row', justifyContent: 'center', alignItems: 'center'
-            }}>
-              <View style={{height:1, width: "45%", backgroundColor: COLORS.gray}}></View>
-              <Text style={{fontSize:SIZES.h3, fontWeight: 600, color:COLORS.gray}}> Hoặc </Text>
-              <View style={{height:1, width: "45%", backgroundColor: COLORS.gray}}></View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  height: 1,
+                  width: "45%",
+                  backgroundColor: COLORS.gray,
+                }}
+              ></View>
+              <Text
+                style={{
+                  fontSize: SIZES.h3,
+                  fontWeight: 600,
+                  color: COLORS.gray,
+                }}
+              >
+                {" "}
+                Hoặc{" "}
+              </Text>
+              <View
+                style={{
+                  height: 1,
+                  width: "45%",
+                  backgroundColor: COLORS.gray,
+                }}
+              ></View>
             </View>
             <Spacer />
             <Button
+            onPress={() => navigation.navigate('PasswordForgot')}
               label={"Đăng Nhập Bằng Zalo"}
               color={COLORS.green}
               background={COLORS.white}

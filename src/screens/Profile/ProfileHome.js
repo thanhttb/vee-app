@@ -7,13 +7,20 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../utils/theme";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { logoutAction } from "../../redux/actions/authActions";
 
 const ProfileHome = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const dispath = useDispatch()
+  const { user } = useSelector((state) => state.authReducer);
+  const logout = async () => {
+    await dispath(logoutAction());
+  }
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
@@ -24,37 +31,61 @@ const ProfileHome = () => {
             style={styles.avatar}
             source={require("../../../assets/avatar_default.jpg")}
           />
-          <Text style={styles.name}>Minh Bui</Text>
+          <Text style={styles.name}>{user?.fullname}</Text>
         </View>
       </View>
 
       <View style={styles.action}>
         <View style={styles.content}>
-          <TouchableOpacity onPress={()=> navigation.navigate("Thông tin phụ huynh")}>
-          <View style={styles.actionPush}>
-            <Ionicons name="person" size={24} color="black" />
-            <Text style={styles.textAction}>Thông tin phụ huynh</Text>
-            <MaterialIcons style={{position: "absolute", right: 0}} name="navigate-next" size={24} color="black" />
-          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Thông tin phụ huynh")}
+          >
+            <View style={styles.actionPush}>
+              <Ionicons name="person" size={24} color="black" />
+              <Text style={styles.textAction}>Thông tin phụ huynh</Text>
+              <MaterialIcons
+                style={{ position: "absolute", right: 0 }}
+                name="navigate-next"
+                size={24}
+                color="black"
+              />
+            </View>
           </TouchableOpacity>
 
           <View style={styles.actionPush}>
             <Ionicons name="person" size={24} color="black" />
             <Text style={styles.textAction}>Thông tin học sinh</Text>
-            <MaterialIcons style={{position: "absolute", right: 0}} name="navigate-next" size={24} color="black" />
+            <MaterialIcons
+              style={{ position: "absolute", right: 0 }}
+              name="navigate-next"
+              size={24}
+              color="black"
+            />
           </View>
 
           <View style={styles.actionPush}>
             <Ionicons name="person" size={24} color="black" />
             <Text style={styles.textAction}>Đổi mật khẩu</Text>
-            <MaterialIcons style={{position: "absolute", right: 0}} name="navigate-next" size={24} color="black" />
+            <MaterialIcons
+              style={{ position: "absolute", right: 0 }}
+              name="navigate-next"
+              size={24}
+              color="black"
+            />
           </View>
 
-          <View style={styles.actionPush}>
-            <Ionicons name="person" size={24} color="black" />
-            <Text style={styles.textAction}>Đăng xuất</Text>
-            <MaterialIcons style={{position: "absolute", right: 0}} name="navigate-next" size={24} color="black" />
-          </View>
+          <TouchableOpacity onPress={logout}>
+            <View style={styles.actionPush}>
+              <Ionicons name="person" size={24} color="black" />
+              <Text style={styles.textAction}>Đăng xuất</Text>
+              <MaterialIcons
+                style={{ position: "absolute", right: 0 }}
+                name="navigate-next"
+                size={24}
+                color="black"
+              />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -92,11 +123,11 @@ const styles = StyleSheet.create({
   actionPush: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: SIZES.spacing
+    paddingVertical: SIZES.spacing,
   },
   textAction: {
     fontWeight: 600,
-    fontSize:SIZES.h14,
-    paddingLeft: SIZES.spacing
-  }
+    fontSize: SIZES.h14,
+    paddingLeft: SIZES.spacing,
+  },
 });

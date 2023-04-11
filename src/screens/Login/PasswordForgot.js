@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import {
   View,
   Text,
@@ -14,6 +14,8 @@ import {
   StatusBar,
 } from "react-native";
 //npm
+import Recaptcha from 'react-native-recaptcha-that-works';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 //component
@@ -26,7 +28,23 @@ import { SIZES, COLORS } from "../../utils/theme";
 const Logo_VEE = require("../../../assets/logo_vee.jpg");
 
 const PasswordForgot = () => {
+  const recaptcha = useRef();
   const [otp, setOtp] = React.useState(false);
+  const [key, setKey] = React.useState();
+
+  const onChangeCapcha = (value) => {
+    console.log("Captcha value:", value);
+    this.recaptcha?.current?.open();
+  };
+
+  const send = React.useCallback(() => {
+    this.recaptcha?.current.open();
+  }, []);
+
+  const handleClosePress = React.useCallback(() => {
+    this.recaptcha?.current.close();
+  }, []);
+
   return (
     <GestureHandlerRootView style={styles.safeview}>
       <StatusBar barStyle="dark-content" />
@@ -60,10 +78,31 @@ const PasswordForgot = () => {
                   />
                 </View>
               </View>
+              <View>
+                <Recaptcha
+                 ref={recaptcha}
+                 headerComponent={<Button title="Close" onPress={handleClosePress} />}
+          siteKey="6Le7-FciAAAAACnKxo3JECtz17LYl2VjJgC17ydG"
+          baseUrl="http://127.0.0.1"
+                  // onVerify={onChangeCapcha}
+                  size="normal"
+                  theme="light"
+          onLoad={() => console.log('onLoad event')}
+          onClose={() => console.log('onClose event')} 
+          onError={(err) => {
+            console.warn('error', err);
+          }}
+          onExpire={() => console.log('onExpire event')}
+          onVerify={(token) => {
+            setKey(token);
+          }}
+                />
+                
+              </View>
               <Spacer />
               <View style={styles.inputs}>
                 <Button
-                  onPress={() =>setOtp(true)}
+                  onPress={send}
                   label={"Tiếp tục"}
                   color={COLORS.white}
                   background={COLORS.green}
@@ -83,7 +122,7 @@ const PasswordForgot = () => {
               </View>
               <View style={styles.inputs}>
                 <Button
-                  onPress={() =>setOtp(false)}
+                  onPress={() => setOtp(false)}
                   label={"Xác Minh"}
                   color={COLORS.white}
                   background={COLORS.green}

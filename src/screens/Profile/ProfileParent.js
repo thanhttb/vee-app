@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   container: {
     padding: SIZES.padding,
   },
-  info: { fontSize: SIZES.h2, fontWeight: 500, paddingBottom: SIZES.spacing },
+  info: { fontSize: SIZES.h2, fontWeight: 500, paddingBottom: SIZES.spacing, color: COLORS.gray },
   input: {
     height: 50,
     borderColor: COLORS.gray,

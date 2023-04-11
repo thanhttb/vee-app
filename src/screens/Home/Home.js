@@ -59,7 +59,7 @@ const Home = () => {
 
   const featureIconAnimation = {
     opacity: animatedValue.interpolate({
-      inputRange: [0, 55],
+      inputRange: [0, 20],
       outputRange: [0, 1],
       extrapolate: "clamp",
     }),
@@ -85,6 +85,7 @@ const Home = () => {
         featureIconAnimation={featureIconAnimation}
       />
       <ScrollView
+      style={{zIndex: 10}}
         showsVerticalScrollIndicator={false}
         ref={scrollViewRef}
         onScroll={(e) => {
@@ -126,6 +127,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    zIndex: 10
   },
   upperHeaderPlaceHolder: {
     height: UPPER_HEADER_HEIGHT + UPPER_HEADER_PADDING_TOP,
@@ -138,6 +140,7 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     backgroundColor: COLORS.white,
     // height: SIZES.height,
+    
   },
   textInfo: {
     color: "black",
