@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Text,
   View,
@@ -8,7 +8,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
-  Animated
+  Animated,
+  TouchableOpacity,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
@@ -121,7 +122,7 @@ const ProfileChildren = () => {
   return (
     <>
       <GestureHandlerRootView style={styles.safeview}>
-        <ScrollView  style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
           <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === "ios" ? "padding" : null}
@@ -147,76 +148,70 @@ const ProfileChildren = () => {
                         outlineStyle={{ borderWidth: 0.5 }}
                         outlineColor={COLORS.input}
                         activeOutlineColor={COLORS.input}
+                        dense={true}
+                        // contentStyle={{backgroundColor: 'red', padding: 2}}
                       />
                       <Spacer height={4} />
                       <Text style={styles.text}>Ngày sinh</Text>
                       <Animated.View style={[styles.animted, FadeIn]}>
-                      <DatePicker
-                        style={styles.datePickerStyle}
-                        date={s?.dob}
-                        mode="date"
-                        placeholder="Ngày sinh"
-                        label="Ngày sinh"
-                        format="DD/MM/YYYY"
-                        minDate="01-01-1900"
-                        maxDate="01-01-2100"
-                        confirmBtnText="Xác nhận"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                          dateIcon: {
-                            position: "absolute",
-                            right: -5,
-                            top: 4,
-                            marginLeft: 0,
-                          },
-                          dateInput: {
-                            borderColor: "gray",
-                            alignItems: "flex-start",
-                            height: 50,
-                            borderColor: COLORS.input,
-                            backgroundColor: "white",
-                            borderRadius: 4,
-                          },
-                          placeholderText: {
-                            fontSize: 17,
-                            color: "gray",
-                          },
-                          dateText: {
-                            fontSize: 17,
-                            marginLeft: 16,
-                          },
-                        }}
-                        onDateChange={(date) => {
-                          onStudentChange(date, key, "dob")
-                        }}
-                      />
+                        <DatePicker
+                          style={styles.datePickerStyle}
+                          date={s?.dob}
+                          mode="date"
+                          placeholder="Ngày sinh"
+                          label="Ngày sinh"
+                          format="DD/MM/YYYY"
+                          minDate="01-01-1900"
+                          maxDate="01-01-2100"
+                          confirmBtnText="Xác nhận"
+                          cancelBtnText="Cancel"
+                          customStyles={{
+                            dateIcon: {
+                              position: "absolute",
+                              right: -5,
+                              top: 4,
+                              marginLeft: 0,
+                            },
+                            dateInput: {
+                              borderColor: "gray",
+                              alignItems: "flex-start",
+                              height: 50,
+                              borderColor: COLORS.input,
+                              backgroundColor: "white",
+                              borderRadius: 4,
+                            },
+                            placeholderText: {
+                              fontSize: 17,
+                              color: "gray",
+                            },
+                            dateText: {
+                              fontSize: 15,
+                              marginLeft: 16,
+                            },
+                          }}
+                          onDateChange={(date) => {
+                            onStudentChange(date, key, "dob");
+                          }}
+                        />
                       </Animated.View>
                       <Spacer height={12} />
                       <View>
                         <Text>Giới tính</Text>
-                        <RadioButton.Group
-                          onValueChange={(newValue) =>
-                            onGenderChange(newValue, key)
-                          }
-                          value={s.gender}
-                        >
-                          <View
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <View style={styles.radioButton}>
-                              <Text>Nam</Text>
-                              <RadioButton value="Nam" />
+                        <View style={styles.wrapper}>
+                          {["Nam", "Nữ"].map((feeling) => (
+                            <View key={feeling} style={styles.mood}>
+                              <Text style={styles.gender}>{feeling}</Text>
+                              <TouchableOpacity
+                                style={styles.outter}
+                                onPress={(e) => onGenderChange(feeling, key)}
+                              >
+                                {s.gender == feeling && (
+                                  <View style={styles.inner}></View>
+                                )}
+                              </TouchableOpacity>
                             </View>
-                            <View style={styles.radioButton}>
-                              <Text>Nữ</Text>
-                              <RadioButton value="Nữ" />
-                            </View>
-                          </View>
-                        </RadioButton.Group>
+                          ))}
+                        </View>
                       </View>
                       <Spacer height={12} />
                       <TextInput
@@ -248,6 +243,10 @@ const ProfileChildren = () => {
                         color={COLORS.white}
                         background={COLORS.green}
                       />
+                      <Spacer height={20} />
+                      <View
+                        style={styles.dotline}
+                      ></View>
                     </View>
                   );
                 })}
@@ -280,9 +279,11 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
+    marginTop: 2,
     borderColor: COLORS.input,
     backgroundColor: "white",
     marginBottom: SIZES.spacing,
+    fontSize: 15,
   },
   text: {
     textAlign: "left",
@@ -291,10 +292,37 @@ const styles = StyleSheet.create({
   datePickerStyle: {
     width: SIZES.width - 40,
   },
-  radioButton: {
-    display: "flex",
+
+  mood: {
+    marginHorizontal: 15,
     flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: 20,
   },
+  gender: {
+    paddingRight: 4,
+  },
+  wrapper: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  inner: {
+    width: 12,
+    height: 12,
+    backgroundColor: COLORS.green,
+    borderRadius: 10,
+  },
+  outter: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: COLORS.gray,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dotline: {
+    borderStyle: "dotted",
+    borderWidth: 1,
+    borderRadius: 1,
+    color: COLORS.gray
+  }
 });

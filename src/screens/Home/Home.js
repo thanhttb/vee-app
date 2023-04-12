@@ -95,12 +95,7 @@ const Home = () => {
           lastOffsetY.current = offsetY;
           animatedValue.setValue(offsetY);
         }}
-        // onScrollEndDrag={() => {
-        //   scrollViewRef.current?.scrollTo({
-        //     y: scrollDireaction.current === 'down' ? SIZES.height : 0,
-        //     animated: true,
-        //   });
-        // }}
+       
         scrollEventThrottle={16}
       >
         <View style={styles.paddingForHeader}></View>
@@ -135,7 +130,7 @@ const styles = StyleSheet.create({
   },
   
   paddingForHeader: {
-    height: LOWER_HEADER_HEIGHT,
+    // height: LOWER_HEADER_HEIGHT,
   },
   scrollViewContent: {
     backgroundColor: COLORS.white,

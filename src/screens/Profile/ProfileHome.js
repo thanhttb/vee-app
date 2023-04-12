@@ -41,7 +41,10 @@ const ProfileHome = () => {
             onPress={() => navigation.navigate("Thông tin phụ huynh")}
           >
             <View style={styles.actionPush}>
-              <Ionicons name="person" size={24} color="black" />
+              <Image
+              source={require("../../../assets/Icon-profile/Icon_parent.png")}
+              style={styles.bellIcon}
+            />
               <Text style={styles.textAction}>Thông tin phụ huynh</Text>
               <MaterialIcons
                 style={{ position: "absolute", right: 0 }}
@@ -55,7 +58,10 @@ const ProfileHome = () => {
             onPress={() => navigation.navigate("Thông tin học sinh")}
           >
           <View style={styles.actionPush}>
-            <Ionicons name="person" size={24} color="black" />
+             <Image
+              source={require("../../../assets/Icon-profile/Icon_student.png")}
+              style={styles.bellIcon}
+            />
             <Text style={styles.textAction}>Thông tin học sinh</Text>
             <MaterialIcons
               style={{ position: "absolute", right: 0 }}
@@ -69,7 +75,10 @@ const ProfileHome = () => {
             onPress={() => navigation.navigate("Đổi mật khẩu")}
           >
           <View style={styles.actionPush}>
-            <Ionicons name="person" size={24} color="black" />
+             <Image
+              source={require("../../../assets/Icon-profile/Icon_change.png")}
+              style={styles.bellIcon}
+            />
             <Text style={styles.textAction}>Đổi mật khẩu</Text>
             <MaterialIcons
               style={{ position: "absolute", right: 0 }}
@@ -82,7 +91,10 @@ const ProfileHome = () => {
 
           <TouchableOpacity onPress={logout}>
             <View style={styles.actionPush}>
-              <Ionicons name="person" size={24} color="black" />
+               <Image
+              source={require("../../../assets/Icon-profile/Icon_logout.png")}
+              style={styles.bellIcon}
+            />
               <Text style={styles.textAction}>Đăng xuất</Text>
               <MaterialIcons
                 style={{ position: "absolute", right: 0 }}
@@ -112,6 +124,11 @@ const styles = StyleSheet.create({
   avatar: {
     height: 90,
     width: 90,
+    borderRadius: 50,
+  },
+  bellIcon: {
+    height: 40,
+    width: 40,
     borderRadius: 50,
   },
   name: {

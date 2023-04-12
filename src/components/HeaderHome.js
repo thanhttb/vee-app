@@ -33,74 +33,58 @@ const HeaderHome = ({
     <SafeAreaView style={styles.header}>
       <View style={styles.upperHeader}></View>
       <View style={styles.lowerHeader}>
-        <Animated.View style={[styles.feature, depositViewAnimation]}>
+        <Animated.View style={[styles.feature]}>
           <TouchableOpacity
             onPressIn={() => navigation.navigate("Lịch học")}
-            style={{ zIndex: 1000 }}
           >
             <Animated.Image
               source={require("../../assets/icon/Home_Focus.png")}
-              style={[styles.bellIco, featureIconCircleAnimation]}
+              style={[styles.bellIco]}
             />
           </TouchableOpacity>
-          <Animated.Image
-            source={require("../../assets/icon/Noti_Outline.png")}
-            style={[styles.bellIcon, featureIconAnimation]}
-          />
+        
 
-          <Animated.Text style={[styles.featureName, featureNameAnimation]}>
+          <Animated.Text style={[styles.featureName]}>
             Bảng tin
           </Animated.Text>
         </Animated.View>
-        <Animated.View style={[styles.feature, withdrawViewAnimation]}>
+        <Animated.View style={[styles.feature]}>
           <Animated.Image
             source={require("../../assets/icon/Home_Focus.png")}
-            style={[styles.bellIco, featureIconCircleAnimation]}
+            style={[styles.bellIco]}
           />
-          <Animated.Image
-            source={require("../../assets/icon/Noti_Outline.png")}
-            style={[styles.bellIcon, featureIconAnimation]}
-          />
-          <Animated.Text style={[styles.featureName, featureNameAnimation]}>
+         
+          <Animated.Text style={[styles.featureName]}>
             Tình hình học tập
           </Animated.Text>
         </Animated.View>
-        <Animated.View style={[styles.feature, qrViewAnimation]}>
+        <Animated.View style={[styles.feature]}>
           <TouchableOpacity
             onPressIn={() => navigation.navigate("Học phí")}
-            style={{
-              zIndex: 1000,
-            }}
+            
           >
             <Animated.Image
               source={require("../../assets/icon/Home_Focus.png")}
-              style={[styles.bellIco, featureIconCircleAnimation]}
+              style={[styles.bellIco]}
             />
           </TouchableOpacity>
-          <Animated.Image
-            source={require("../../assets/icon/Noti_Outline.png")}
-            style={[styles.bellIcon, featureIconAnimation]}
-          />
+        
 
-          <Animated.Text style={[styles.featureName, featureNameAnimation]}>
+          <Animated.Text style={[styles.featureName]}>
             Học phí
           </Animated.Text>
         </Animated.View>
-        <Animated.View style={[styles.feature, scanViewAnimation]}>
+        <Animated.View style={[styles.feature]}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Bài tập về nhà")}
           >
             <Animated.Image
               source={require("../../assets/icon/Home_Focus.png")}
-              style={[styles.bellIco, featureIconCircleAnimation]}
+              style={[styles.bellIco]}
             />
           </TouchableOpacity>
-          <Animated.Image
-            source={require("../../assets/icon/Noti_Outline.png")}
-            style={[styles.bellIcon, featureIconAnimation]}
-          />
-
-          <Animated.Text style={[styles.featureName, featureNameAnimation]}>
+         
+          <Animated.Text style={[styles.featureName]}>
             Bài tập về nhà
           </Animated.Text>
         </Animated.View>
@@ -113,19 +97,17 @@ export default HeaderHome;
 
 const styles = StyleSheet.create({
   header: {
-    position: "absolute",
+    marginTop: -(LOWER_HEADER_HEIGHT),
     width: "100%",
     backgroundColor: COLORS.green,
     zIndex: 1,
   },
   upperHeader: {
-    height: UPPER_HEADER_HEIGHT + UPPER_HEADER_PADDING_TOP,
-    paddingTop: UPPER_HEADER_PADDING_TOP,
+    height: UPPER_HEADER_HEIGHT ,
     zIndex: 1,
-    // zIndex: 1,
   },
   lowerHeader: {
-    height: LOWER_HEADER_HEIGHT,
+    // height: LOWER_HEADER_HEIGHT,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -144,7 +126,6 @@ const styles = StyleSheet.create({
   bellIcon: {
     position: "absolute",
     zIndex: 1,
-    // marginTop: 8,
     backgroundColor: "white",
   },
   featureName: {
@@ -152,6 +133,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h3,
     lineHeight: SIZES.font,
     color: "white",
-    marginTop: SIZES.spacing,
+    marginVertical: SIZES.base,
+    
   },
 });
