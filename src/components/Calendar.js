@@ -38,7 +38,7 @@ const Calendar = ({ onSelectDate, selected }) => {
   return (
     <>
       <View style={styles.centered}>
-        <Text style={styles.title}>Tháng: {currentMonth}</Text>
+        <Text style={styles.title}>{currentMonth}</Text>
       </View>
       <View style={styles.dateSection}>
         <View style={styles.scroll}>
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     color: "#212B36",
     padding: SIZES.base,
+    textTransform: 'capitalize'
   },
   dateSection: {
     width: "100%",

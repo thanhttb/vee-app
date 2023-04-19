@@ -18,7 +18,7 @@ import { getFeatureViewAnimation } from "../../utils/utils";
 import { dataPost } from "../../utils/fakeData";
 import VerticalPostCard from "../../components/VerticalPostCard";
 
-const UPPER_HEADER_HEIGHT = 32;
+const UPPER_HEADER_HEIGHT = 36;
 const UPPER_HEADER_PADDING_TOP = 4;
 
 const Home = () => {
@@ -100,6 +100,48 @@ const Home = () => {
     }),
   };
 
+  const heightViewAnimated = {
+    transform: [
+     {
+      scale: animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 8],
+        extrapolate: "clamp",
+      })
+     },
+     {
+      translateY: animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, -1.5],
+        extrapolate: "clamp",
+  })},
+    ],
+    opacity: animatedValue.interpolate({
+      inputRange: [0, 30],
+      outputRange: [0, 1],
+      extrapolate: "clamp",
+    }),
+  }
+
+  // const viewPostScrollAnimated = {
+  //   transform: [
+  //     // {
+  //     //  scale: animatedValue.interpolate({
+  //     //    inputRange: [0, 1],
+  //     //    outputRange: [1, 10],
+  //     //    extrapolate: "clamp",
+  //     //  })
+  //     // },
+  //     {
+  //      translateY: animatedValue.interpolate({
+  //        inputRange: [0, 1],
+  //        outputRange: [0, -30],
+  //        extrapolate: "clamp",
+  //  })},
+  //    ],
+    
+  // }
+
   const renderItem = ({ item, index }) => (
     <VerticalPostCard item={item} key={index} />
   );
@@ -119,6 +161,7 @@ const Home = () => {
         featureIconCircleAnimation={featureIconCircleAnimation}
         featureIconAnimation={featureIconAnimation}
         homeworkIconAnimation={homeworkIconAnimation}
+        heightViewAnimated={heightViewAnimated}
       />
       <ScrollView      
         showsVerticalScrollIndicator={false}
@@ -130,11 +173,11 @@ const Home = () => {
           lastOffsetY.current = offsetY;
           animatedValue.setValue(offsetY);
         }}
-       
+      
         scrollEventThrottle={16}
       >
         <View style={styles.paddingForHeader}></View>
-        <View style={styles.scrollViewContent}>
+        <Animated.View style={styles.scrollViewContent}>
           <Text style={styles.textInfo}>Thông tin VietElite</Text>
           <View style={{ flex: 1 }}>
             <FlatList
@@ -146,7 +189,7 @@ const Home = () => {
               renderItem={renderItem}
             />
           </View>
-        </View>
+        </Animated.View>
       </ScrollView>
     </View>
   );
@@ -157,7 +200,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    zIndex: 10
+    // zIndex: 10
   },
   upperHeaderPlaceHolder: {
     height: UPPER_HEADER_HEIGHT + UPPER_HEADER_PADDING_TOP,
@@ -165,10 +208,11 @@ const styles = StyleSheet.create({
   },
   
   paddingForHeader: {
-    // height: LOWER_HEADER_HEIGHT,
+    // height: UPPER_HEADER_HEIGHT  + UPPER_HEADER_PADDING_TOP,
   },
   scrollViewContent: {
     backgroundColor: COLORS.white,
+    zIndex: 100,
     // height: SIZES.height,
     
   },

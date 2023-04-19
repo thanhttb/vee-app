@@ -6,7 +6,8 @@ import "react-native-gesture-handler";
 import AppNav from "./src/navigation/AppNav";
 import { store } from "./src/redux/store";
 import { LogBox } from "react-native";
-
+import moment from "moment";
+require('moment/locale/vi');
 
 export default function App() {
   return (

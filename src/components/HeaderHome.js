@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 //utils
 import { COLORS, SIZES } from "../utils/theme";
-const UPPER_HEADER_HEIGHT = 32;
+const UPPER_HEADER_HEIGHT = 40;
 const UPPER_HEADER_PADDING_TOP = 4;
 const LOWER_HEADER_HEIGHT = 96;
 
@@ -27,7 +27,8 @@ const HeaderHome = ({
   featureNameAnimation,
   featureIconCircleAnimation,
   featureIconAnimation,
-  homeworkIconAnimation
+  homeworkIconAnimation,
+  heightViewAnimated
 }) => {
   const navigation = useNavigation();
   return (
@@ -42,7 +43,7 @@ const HeaderHome = ({
             />
           </TouchableOpacity>
           <Animated.Text
-            style={[styles.featureName, featureIconCircleAnimation]}
+            numberOfLines={2} style={[styles.featureName, featureIconCircleAnimation]}
           >
             Lịch học
           </Animated.Text>
@@ -53,7 +54,7 @@ const HeaderHome = ({
             style={[styles.bellIco]}
           />
 
-          <Animated.Text style={[styles.featureName, featureNameAnimation]}>
+          <Animated.Text numberOfLines={2} style={[styles.featureName, featureNameAnimation]}>
             Tình hình học tập
           </Animated.Text>
         </Animated.View>
@@ -65,7 +66,7 @@ const HeaderHome = ({
             />
           </TouchableOpacity>
 
-          <Animated.Text style={[styles.featureName,featureIconAnimation]}>Học phí</Animated.Text>
+          <Animated.Text numberOfLines={2} style={[styles.featureName,featureIconAnimation]}>Học phí</Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.feature,scanViewAnimation]}>
           <TouchableOpacity
@@ -77,11 +78,12 @@ const HeaderHome = ({
             />
           </TouchableOpacity>
 
-          <Animated.Text style={[styles.featureName,homeworkIconAnimation]}>
+          <Animated.Text numberOfLines={2} style={[styles.featureName,homeworkIconAnimation]}>
             Bài tập về nhà
           </Animated.Text>
         </Animated.View>
       </View>
+      <Animated.View style={[styles.upperHeader_2, heightViewAnimated]}></Animated.View>
     </SafeAreaView>
   );
 };
@@ -90,14 +92,20 @@ export default HeaderHome;
 
 const styles = StyleSheet.create({
   header: {
-    marginTop: -LOWER_HEADER_HEIGHT,
+    // position: 'absolute',
+    marginTop: -LOWER_HEADER_HEIGHT -UPPER_HEADER_PADDING_TOP,
     width: "100%",
     backgroundColor: COLORS.green,
     zIndex: 1,
   },
   upperHeader: {
-    height: UPPER_HEADER_HEIGHT,
+    height: UPPER_HEADER_HEIGHT -10,
     zIndex: 1,
+  },
+  upperHeader_2:{
+    height: UPPER_HEADER_PADDING_TOP ,
+    backgroundColor: 'white',
+    // zIndex: 1,
   },
   lowerHeader: {
     flexDirection: "row",
@@ -125,5 +133,6 @@ const styles = StyleSheet.create({
     lineHeight: SIZES.font,
     color: "white",
     marginVertical: SIZES.base,
+    
   },
 });
