@@ -18,7 +18,7 @@ import LessonCalendar from "../../components/LessonCalendar";
 import DetailCalendar from "../../components/DetailCalendar";
 
 const Schedule = () => {
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState("2023-04-20");
   const [selectedLesson, setSelectedLesson] = useState(false);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -38,8 +38,6 @@ const Schedule = () => {
       </View>
 
       <View style={styles.container}>
-        <LessonCalendar />
-        <LessonCalendar />
         <LessonCalendar />
 
         {/* <DetailCalendar/> */}
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: "center",
-    marginTop: SIZES.header,
+    marginTop: SIZES.spacing * 3,
     marginHorizontal: SIZES.padding,
   },
 });

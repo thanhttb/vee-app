@@ -2,18 +2,18 @@ import { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import moment from "moment";
 import Date from "./Date";
-import { SIZES } from "../utils/theme";
-const selectedDate = [ "2023-04-7", "2023-04-8"];
+import { COLORS, SIZES } from "../utils/theme";
+
 
 const Calendar = ({ onSelectDate, selected }) => {
   const [dates, setDates] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [currentMonth, setCurrentMonth] = useState();
-
+  const selectedDate = [ "2023-04-19", "2023-04-24"];
   // get the dates from today to 10 days from now, format them as strings and store them in state
   const getDates = () => {
     const _dates = [];
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 10; i++) {
       const date = moment().add(i, "days");
       _dates.push(date);
     }
@@ -34,7 +34,7 @@ const Calendar = ({ onSelectDate, selected }) => {
   useEffect(() => {
     getCurrentMonth();
   }, [scrollPosition]);
-  // console.log('selectedDate',selectedDate)
+
   return (
     <>
       <View style={styles.centered}>
@@ -56,9 +56,9 @@ const Calendar = ({ onSelectDate, selected }) => {
                   date={date}
                   onSelectDate={onSelectDate}
                   selected={selected}
-                  // active={selectedDate.includes(
-                  //   moment(date).format("YYYY-MM-DD")
-                  // )}
+                  active={selectedDate.includes(
+                    moment(date).format("YYYY-MM-DD")
+                  )}
                 />
               );
             })}
@@ -74,14 +74,13 @@ export default Calendar;
 
 const styles = StyleSheet.create({
   centered: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
     paddingLeft: SIZES.spacing,
   },
   title: {
-    fontSize: SIZES.h1,
-    fontWeight: "bold",
-    paddingTop: SIZES.base,
+    fontSize: SIZES.h2,
+    fontWeight: 600,
+    color: "#212B36",
+    padding: SIZES.base,
   },
   dateSection: {
     width: "100%",

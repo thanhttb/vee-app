@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 //utils
@@ -20,12 +21,13 @@ const HomeTuition = () => {
       <SafeAreaView style={styles.header}>
         <Text style={styles.textHeader}>Học phí</Text>
       </SafeAreaView>
-      <ScrollView
-        style={{
-          flex: 1,
-        }}
-      >
-        <View style={styles.container}>
+
+      <View style={styles.container}>
+        <ScrollView
+          style={{
+            flex: 1,
+          }}
+        >
           <View style={styles.containerMonth}>
             <View style={styles.headerMonth}>
               <Text style={[styles.headerText, { width: "30%" }]}>Tháng 3</Text>
@@ -35,14 +37,37 @@ const HomeTuition = () => {
               <Text style={styles.contentDate}>26/3/2023</Text>
               <View style={styles.contentDetail}>
                 <Text>Tổng số tiền học phí tháng 04-2023: 480.000đ</Text>
-                <View style={{ paddingLeft: 12 }}>
-                  <Text>- Học phí lớp TC5.5 tháng 04-2023: 120.000đ</Text>
-                  <Text>- Học phí lớp TC6.5 tháng 04-2023: 320.000đ</Text>
+                <View style={styles.contentDetailText}>
+                  <Text style={styles.contentText}>
+                    <View
+                      style={styles.dotText}
+                    ></View>
+                    <View
+                      style={{
+                        width: 4,
+                        height: 4,
+                      }}
+                    ></View>
+                    Học phí lớp TC5.5 tháng 04-2023: 120.000đ
+                  </Text>
+                  <Text style={styles.contentText}>
+                  <View
+                      style={styles.dotText}
+                    ></View>
+                    <View
+                      style={{
+                        width: 4,
+                        height: 4,
+                      }}
+                    ></View>
+                    Học phí lớp TC6.5 tháng 04-2023: 320.000đ
+                  </Text>
                 </View>
-                <Text>Tình trạng: Đã đóng học phí</Text>
+                <Text style={styles.status}>Tình trạng: Đã đóng học phí</Text>
               </View>
             </View>
           </View>
+
           <View style={styles.containerMonth}>
             <View style={styles.headerMonth}>
               <Text style={[styles.headerText, { width: "30%" }]}>Tháng 3</Text>
@@ -52,16 +77,38 @@ const HomeTuition = () => {
               <Text style={styles.contentDate}>26/3/2023</Text>
               <View style={styles.contentDetail}>
                 <Text>Tổng số tiền học phí tháng 04-2023: 480.000đ</Text>
-                <View style={{ paddingLeft: 12 }}>
-                  <Text>- Học phí lớp TC5.5 tháng 04-2023: 120.000đ</Text>
-                  <Text>- Học phí lớp TC6.5 tháng 04-2023: 320.000đ</Text>
+                <View style={styles.contentDetailText}>
+                  <Text style={styles.contentText}>
+                    <View
+                      style={styles.dotText}
+                    ></View>
+                    <View
+                      style={{
+                        width: 4,
+                        height: 4,
+                      }}
+                    ></View>
+                    Học phí lớp TC5.5 tháng 04-2023: 120.000đ
+                  </Text>
+                  <Text style={styles.contentText}>
+                  <View
+                      style={styles.dotText}
+                    ></View>
+                    <View
+                      style={{
+                        width: 4,
+                        height: 4,
+                      }}
+                    ></View>
+                    Học phí lớp TC6.5 tháng 04-2023: 320.000đ
+                  </Text>
                 </View>
-                <Text>Tình trạng: Đã đóng học phí</Text>
+                <Text style={styles.status}>Tình trạng: Đã đóng học phí</Text>
               </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -91,7 +138,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     margin: SIZES.padding,
-    height: SIZES.height,
+    height: SIZES.height - SIZES.header * 4.8,
   },
   containerMonth: {
     marginTop: SIZES.padding,
@@ -119,5 +166,21 @@ const styles = StyleSheet.create({
   },
   contentDetail: {
     width: "70%",
+  },
+  contentDetailText: {
+    paddingLeft: 12,
+    paddingVertical: 8,
+  },
+  dotText: {
+    width: 8,
+    height: 8,
+    borderRadius: 50,
+    backgroundColor: "#00AB55",
+  },
+  contentText: {
+    paddingBottom: 4
+  },
+  status: {
+    color: COLORS.green,
   },
 });

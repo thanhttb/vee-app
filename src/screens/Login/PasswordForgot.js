@@ -47,7 +47,7 @@ const PasswordForgot = () => {
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       {/* <SafeAreaView > */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <KeyboardAvoidingView

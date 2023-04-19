@@ -7,6 +7,7 @@ const Date = ({ date, onSelectDate, selected }) => {
   const [active, setActive] = useState(false);
   const selectedDate = ["2023-04-07", "2023-04-08","2023-04-12"];
   const da = moment(date).format("YYYY-MM-DD")
+
   /**
    * use moment to compare the date to today
    * if today, show 'Today'
@@ -45,7 +46,7 @@ const Date = ({ date, onSelectDate, selected }) => {
             <Text
               style={[
                 styles.medium,
-                selected === fullDate && { fontWeight: "bold" },
+                selected === fullDate && { color: COLORS.green },
               ]}
             >
               {dayNumber}
@@ -62,7 +63,6 @@ export default Date;
 const styles = StyleSheet.create({
   card: {
     padding: SIZES.base,
-    marginVertical: SIZES.spacing,
     alignItems: "center",
   },
   cardAc: {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h3,
   },
   medium: {
-    fontSize: SIZES.h14,
+    // fontSize: SIZES.h14,
   },
   dateN: {
     height: 30,

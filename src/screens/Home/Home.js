@@ -20,23 +20,23 @@ import VerticalPostCard from "../../components/VerticalPostCard";
 
 const UPPER_HEADER_HEIGHT = 32;
 const UPPER_HEADER_PADDING_TOP = 4;
-const LOWER_HEADER_HEIGHT = 96;
+
 const Home = () => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef(null);
   const lastOffsetY = useRef(0);
   const scrollDireaction = useRef(0);
 
-  const depositViewAnimation = getFeatureViewAnimation(animatedValue, 40);
-  const withdrawViewAnimation = getFeatureViewAnimation(animatedValue, 10);
-  const qrViewAnimation = getFeatureViewAnimation(animatedValue, -20);
-  const scanViewAnimation = getFeatureViewAnimation(animatedValue, -50);
+  const depositViewAnimation = getFeatureViewAnimation(animatedValue, 10);
+  const withdrawViewAnimation = getFeatureViewAnimation(animatedValue, 0);
+  const qrViewAnimation = getFeatureViewAnimation(animatedValue, -10);
+  const scanViewAnimation = getFeatureViewAnimation(animatedValue, -10);
 
   const featureNameAnimation = {
     transform: [
       {
         scale: animatedValue.interpolate({
-          inputRange: [0, 30],
+          inputRange: [0, 25],
           outputRange: [1, 0],
           extrapolate: "clamp",
         }),
@@ -50,17 +50,52 @@ const Home = () => {
   };
 
   const featureIconCircleAnimation = {
+    transform: [
+      {
+        scale: animatedValue.interpolate({
+          inputRange: [0, 25],
+          outputRange: [1, 0],
+          extrapolate: "clamp",
+        }),
+      },
+    ],
     opacity: animatedValue.interpolate({
-      inputRange: [0, 25],
+      inputRange: [0, 30],
       outputRange: [1, 0],
       extrapolate: "clamp",
     }),
   };
 
   const featureIconAnimation = {
+    transform: [
+      {
+        scale: animatedValue.interpolate({
+          inputRange: [0, 25],
+          outputRange: [1, 0],
+          extrapolate: "clamp",
+        }),
+      },
+    ],
     opacity: animatedValue.interpolate({
-      inputRange: [0, 20],
-      outputRange: [0, 1],
+      inputRange: [0, 30],
+      outputRange: [1, 0],
+      extrapolate: "clamp",
+    }),
+  };
+
+  const homeworkIconAnimation = {
+    transform: [
+      {
+        scale: animatedValue.interpolate({
+          inputRange: [0, 25],
+          outputRange: [1, 0],
+          extrapolate: "clamp",
+        }),
+      },
+    ],
+    opacity: animatedValue.interpolate({
+      inputRange: [0, 30],
+      outputRange: [1, 0],
       extrapolate: "clamp",
     }),
   };
@@ -83,9 +118,9 @@ const Home = () => {
         featureNameAnimation={featureNameAnimation}
         featureIconCircleAnimation={featureIconCircleAnimation}
         featureIconAnimation={featureIconAnimation}
+        homeworkIconAnimation={homeworkIconAnimation}
       />
-      <ScrollView
-      style={{zIndex: 10}}
+      <ScrollView      
         showsVerticalScrollIndicator={false}
         ref={scrollViewRef}
         onScroll={(e) => {

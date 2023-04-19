@@ -46,7 +46,7 @@ const Login = ({ navigation }) => {
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       {error == true &&
         Alert.alert("VietElite", "Tài khoản mật khẩu không chính xác", [
           {

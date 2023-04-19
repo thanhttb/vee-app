@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { COLORS } from "../utils/theme";
 import { Image } from "react-native";
 import Home from "../screens/Home/Home";
-import Notifications from "../screens/Notifications";
+import Notifications from "../screens/Notifications/Notifications";
 import Schedule from "../screens/Home/Schedule";
 import HomeDetails from "../screens/Home/HomeDetails";
 import HomeWork from "../screens/Home/HomeWork";

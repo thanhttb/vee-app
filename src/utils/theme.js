@@ -6,7 +6,7 @@ export const COLORS = {
   gray: "#637381",
   white: "#fff",
   input: "#919EAB",
-  lesson: "rgba(255, 171, 0, 0.1)"
+  lesson: "rgba(0, 171, 85, 0.1)"
 };
 
 export const SIZES = {

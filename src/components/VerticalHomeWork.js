@@ -41,10 +41,10 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.padding
   },
   lesson: {
-    width: "10%",
+    width: "8%",
     backgroundColor: '#D9D9D9',
     height: 16,
-    paddingLeft: '6%',
+    paddingLeft: '4%',
     borderTopRightRadius: SIZES.spacing,
     borderBottomRightRadius: SIZES.spacing
   },
@@ -65,9 +65,8 @@ const styles = StyleSheet.create({
     padding: 14,
   },
   className: {
-    fontWeight: "bold",
+    fontWeight: 600,
     fontSize: SIZES.h14,
-    paddingVertical: 2,
   },
   class: {
     fontSize: SIZES.h14,
