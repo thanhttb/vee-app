@@ -28,7 +28,7 @@ const HeaderHome = ({
   featureIconCircleAnimation,
   featureIconAnimation,
   homeworkIconAnimation,
-  heightViewAnimated
+  heightViewAnimated,
 }) => {
   const navigation = useNavigation();
   return (
@@ -43,7 +43,8 @@ const HeaderHome = ({
             />
           </TouchableOpacity>
           <Animated.Text
-            numberOfLines={2} style={[styles.featureName, featureIconCircleAnimation]}
+            numberOfLines={2}
+            style={[styles.featureName, featureIconCircleAnimation]}
           >
             Lịch học
           </Animated.Text>
@@ -54,21 +55,15 @@ const HeaderHome = ({
             style={[styles.bellIco]}
           />
 
-          <Animated.Text numberOfLines={2} style={[styles.featureName, featureNameAnimation]}>
+          <Animated.Text
+            numberOfLines={2}
+            style={[styles.featureName, featureNameAnimation]}
+          >
             Tình hình học tập
           </Animated.Text>
         </Animated.View>
-        <Animated.View style={[styles.feature,qrViewAnimation]}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("Học phí")}>
-            <Animated.Image
-              source={require("../../assets/icon/Home_Focus.png")}
-              style={[styles.bellIco]}
-            />
-          </TouchableOpacity>
-
-          <Animated.Text numberOfLines={2} style={[styles.featureName,featureIconAnimation]}>Học phí</Animated.Text>
-        </Animated.View>
-        <Animated.View style={[styles.feature,scanViewAnimation]}>
+        
+        <Animated.View style={[styles.feature, scanViewAnimation]}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Bài tập về nhà")}
           >
@@ -78,12 +73,32 @@ const HeaderHome = ({
             />
           </TouchableOpacity>
 
-          <Animated.Text numberOfLines={2} style={[styles.featureName,homeworkIconAnimation]}>
+          <Animated.Text
+            numberOfLines={2}
+            style={[styles.featureName, homeworkIconAnimation]}
+          >
             Bài tập về nhà
           </Animated.Text>
         </Animated.View>
+        <Animated.View style={[styles.feature, qrViewAnimation]}>
+          <TouchableOpacity onPressIn={() => navigation.navigate("Học phí")}>
+            <Animated.Image
+              source={require("../../assets/icon/Home_Focus.png")}
+              style={[styles.bellIco]}
+            />
+          </TouchableOpacity>
+
+          <Animated.Text
+            numberOfLines={2}
+            style={[styles.featureName, featureIconAnimation]}
+          >
+            Học phí
+          </Animated.Text>
+        </Animated.View>
       </View>
-      <Animated.View style={[styles.upperHeader_2, heightViewAnimated]}></Animated.View>
+      <Animated.View
+        style={[styles.upperHeader_2, heightViewAnimated]}
+      ></Animated.View>
     </SafeAreaView>
   );
 };
@@ -93,18 +108,18 @@ export default HeaderHome;
 const styles = StyleSheet.create({
   header: {
     // position: 'absolute',
-    marginTop: -LOWER_HEADER_HEIGHT -UPPER_HEADER_PADDING_TOP,
+    marginTop: -LOWER_HEADER_HEIGHT - UPPER_HEADER_PADDING_TOP,
     width: "100%",
     backgroundColor: COLORS.green,
     zIndex: 1,
   },
   upperHeader: {
-    height: UPPER_HEADER_HEIGHT -10,
+    height: UPPER_HEADER_HEIGHT,
     zIndex: 1,
   },
-  upperHeader_2:{
-    height: UPPER_HEADER_PADDING_TOP ,
-    backgroundColor: 'white',
+  upperHeader_2: {
+    height: UPPER_HEADER_PADDING_TOP,
+    backgroundColor: "white",
     // zIndex: 1,
   },
   lowerHeader: {
@@ -116,6 +131,7 @@ const styles = StyleSheet.create({
   },
   feature: {
     alignItems: "center",
+    width: "15%",
   },
   bellIco: {
     width: 32,
@@ -133,6 +149,7 @@ const styles = StyleSheet.create({
     lineHeight: SIZES.font,
     color: "white",
     marginVertical: SIZES.base,
-    
+    textAlign: "center",
+    height: 28
   },
 });

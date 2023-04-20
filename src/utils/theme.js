@@ -5,7 +5,7 @@ export const COLORS = {
   green: "#00AB55",
   gray: "#637381",
   white: "#fff",
-  input: "#919EAB",
+  input: "rgba(145, 158, 171, 0.32)",
   lesson: "rgba(0, 171, 85, 0.1)"
 };
 

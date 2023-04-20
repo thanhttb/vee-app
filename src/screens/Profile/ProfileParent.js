@@ -85,7 +85,7 @@ const ProfileParent = () => {
                     setParent({ ...parent, fullname: text })
                   }
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                 />
@@ -95,7 +95,7 @@ const ProfileParent = () => {
                   value={parent?.email}
                   onChangeText={(text) => setParent({ ...parent, email: text })}
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                 />
@@ -105,7 +105,7 @@ const ProfileParent = () => {
                   value={parent?.phone}
                   onChangeText={(text) => setParent({ ...parent, phone: text })}
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                 />
@@ -119,7 +119,7 @@ const ProfileParent = () => {
                     setParent({ ...parent, alt_fullname: text })
                   }
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                 />
@@ -131,7 +131,7 @@ const ProfileParent = () => {
                     setParent({ ...parent, alt_email: text })
                   }
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                 />
@@ -143,7 +143,7 @@ const ProfileParent = () => {
                     setParent({ ...parent, alt_phone: text })
                   }
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                 />

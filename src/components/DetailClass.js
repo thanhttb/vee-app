@@ -5,7 +5,7 @@ import Button from "./Button";
 
 import { useNavigation } from "@react-navigation/native";
 
-const DetailCalendar = () => {
+const DetailClass = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -15,35 +15,12 @@ const DetailCalendar = () => {
         <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
         <Text style={styles.class}>Thứ 3: 04/04/2023</Text>
       </View>
-      <View style={[styles.content, styles.buttons]}>
-        <View style={styles.button}>
-          <Button
-            label={"Xin nghỉ"}
-            color={COLORS.green}
-            background={COLORS.white}
-            onPress={()=>
-              navigation.navigate('Đơn xin nghỉ', {
-              id: 1
-            })}
-          />
-        </View>
-        <View style={styles.button}>
-          <Button
-            label={"Xin học phụ đạo"}
-            color={COLORS.green}
-            background={COLORS.white}
-            onPress={()=>
-              navigation.navigate('Đơn học phụ đạo', {
-              id: 1
-            })}
-          />
-        </View>
-      </View>
+      
     </View>
   );
 };
 
-export default DetailCalendar;
+export default DetailClass;
 
 const styles = StyleSheet.create({
   container: {
@@ -53,7 +30,7 @@ const styles = StyleSheet.create({
     shadowColor: "gray",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowRadius: 2,
   },
   content: {
     padding: 14,

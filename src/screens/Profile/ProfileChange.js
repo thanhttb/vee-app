@@ -88,7 +88,7 @@ const ProfileChange = () => {
                     setPassword({ ...password, current_password: text })
                   }
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                   secureTextEntry={true}
@@ -99,7 +99,7 @@ const ProfileChange = () => {
                   value={password?.password}
                   onChangeText={(text) => setPassword({ ...password, password: text })}
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                   secureTextEntry={true}
@@ -110,7 +110,7 @@ const ProfileChange = () => {
                   value={password?.confirm}
                   onChangeText={(text) => setPassword({ ...password, confirm: text })}
                   mode="outlined"
-                  outlineStyle={{ borderWidth: 0.5 }}
+                  outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                   secureTextEntry={true}

@@ -27,10 +27,10 @@ const Home = () => {
   const lastOffsetY = useRef(0);
   const scrollDireaction = useRef(0);
 
-  const depositViewAnimation = getFeatureViewAnimation(animatedValue, 10);
+  const depositViewAnimation = getFeatureViewAnimation(animatedValue, 0);
   const withdrawViewAnimation = getFeatureViewAnimation(animatedValue, 0);
-  const qrViewAnimation = getFeatureViewAnimation(animatedValue, -10);
-  const scanViewAnimation = getFeatureViewAnimation(animatedValue, -10);
+  const qrViewAnimation = getFeatureViewAnimation(animatedValue, 0);
+  const scanViewAnimation = getFeatureViewAnimation(animatedValue, 0);
 
   const featureNameAnimation = {
     transform: [

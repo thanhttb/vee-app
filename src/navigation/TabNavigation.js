@@ -5,7 +5,7 @@ import { COLORS } from "../utils/theme";
 import { Image } from "react-native";
 import Home from "../screens/Home/Home";
 import Notifications from "../screens/Notifications/Notifications";
-import Schedule from "../screens/Home/Schedule";
+import Schedule from "../screens/Home/HomeSchedule";
 import HomeDetails from "../screens/Home/HomeDetails";
 import HomeWork from "../screens/Home/HomeWork";
 import HomeTuition from "../screens/Home/HomeTuition";
@@ -14,17 +14,19 @@ import ProfileHome from "../screens/Profile/ProfileHome";
 import ProfileParent from "../screens/Profile/ProfileParent";
 import ProfileChildren from "../screens/Profile/ProfileChildren";
 import ProfileChange from "../screens/Profile/ProfileChange";
+import HomeLeave from "../screens/Home/HomeLeave";
+import HomeTutoring from "../screens/Home/HomeTutoring";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       <Stack.Screen
         name="Trang chính"
         component={Home}
-        options={{ unmountOnBlur: true }}
+        options={{ unmountOnBlur: true, headerShown: false }}
       />
       <Stack.Screen
         name="Trang thông tin"
@@ -52,6 +54,7 @@ const HomeStack = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          unmountOnBlur: true, headerShown: false
         })}
       />
       <Stack.Screen
@@ -65,19 +68,69 @@ const HomeStack = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          unmountOnBlur: true, headerShown: false
         })}
       />
+
+      <Stack.Screen
+        name="Đơn xin nghỉ"
+        component={HomeLeave}
+        options={({ route }) => ({
+          dataItem: {
+            id: route.params?.id,
+          },
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
+
+<Stack.Screen
+        name="Đơn học phụ đạo"
+        component={HomeTutoring}
+        options={({ route }) => ({
+          dataItem: {
+            id: route.params?.id,
+          },
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
+
+        <Stack.Screen
+        name="Lịch học"
+        component={Schedule}
+        options={({ route }) => ({
+          unmountOnBlur: true, headerShown: false,
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />    
     </Stack.Navigator>
   );
 };
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator >
+    <Stack.Navigator>
       <Stack.Screen
         name="Tài khoản"
         component={ProfileHome}
-        options={{ unmountOnBlur: true,headerShown: false }}
+        options={{ unmountOnBlur: true, headerShown: false }}
       />
       <Stack.Screen
         name="Thông tin phụ huynh"
@@ -99,7 +152,7 @@ const ProfileStack = () => {
           headerStyle: {
             backgroundColor: COLORS.green,
           },
-         
+
           headerTintColor: "#fff",
           headerTitleStyle: {
             fontWeight: "bold",

@@ -10,6 +10,7 @@ import {
   ScrollView,
   Animated,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,7 +25,7 @@ import DatePicker from "react-native-datepicker";
 import { COLORS, SIZES } from "../../utils/theme";
 import { BASE_URL } from "../../../config";
 import axios from "axios";
-import Button from "../../components/Button";
+import ButtonC from "../../components/Button";
 import Spacer from "../../components/Spacer";
 import { Alert } from "react-native";
 //components
@@ -34,13 +35,14 @@ const ProfileChildren = () => {
   const navigation = useNavigation();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const [students, setStudents] = useState([]);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useState(new Animated.Value(0));
+  const [dateStudent, setDateStudent] = useState([])
 
   const FadeIn = () => {
     // Will change fadeAnim value to 0 in 3 seconds
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 100,
+      duration: 1000,
       useNativeDriver: true,
     }).start();
   };
@@ -119,17 +121,18 @@ const ProfileChildren = () => {
       );
   };
 
+ 
   return (
     <>
       <GestureHandlerRootView style={styles.safeview}>
-        <ScrollView style={{ flex: 1 }}>
-          <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : null}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-          >
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : null}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+        >
+          <ScrollView style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-              <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+              <View style={{ backgroundColor: COLORS.white }}>
                 <StatusBar barStyle="light-content" />
                 {students.map((s, key) => {
                   return (
@@ -145,7 +148,7 @@ const ProfileChildren = () => {
                           onStudentChange(e, key, "fullname")
                         }
                         mode="outlined"
-                        outlineStyle={{ borderWidth: 0.5 }}
+                        outlineStyle={{ borderWidth: 1 }}
                         outlineColor={COLORS.input}
                         activeOutlineColor={COLORS.input}
                         dense={true}
@@ -158,9 +161,10 @@ const ProfileChildren = () => {
                           style={styles.datePickerStyle}
                           date={s?.dob}
                           mode="date"
+                          userInterfaceStyle={"automatic"}
                           placeholder="Ngày sinh"
                           label="Ngày sinh"
-                          format="DD/MM/YYYY"
+                          format="YYYY-MM-DD"
                           minDate="01-01-1900"
                           maxDate="01-01-2100"
                           confirmBtnText="Xác nhận"
@@ -193,7 +197,7 @@ const ProfileChildren = () => {
                             onStudentChange(date, key, "dob");
                           }}
                         />
-                      </Animated.View>
+                    </Animated.View>
                       <Spacer height={12} />
                       <View>
                         <Text>Giới tính</Text>
@@ -220,9 +224,10 @@ const ProfileChildren = () => {
                         value={s?.school}
                         onChangeText={(e) => onStudentChange(e, key, "school")}
                         mode="outlined"
-                        outlineStyle={{ borderWidth: 0.5 }}
+                        outlineStyle={{ borderWidth: 1 }}
                         outlineColor={COLORS.input}
                         activeOutlineColor={COLORS.input}
+                        
                       />
                       <TextInput
                         style={styles.input}
@@ -232,28 +237,26 @@ const ProfileChildren = () => {
                           onStudentChange(e, key, "aspiration")
                         }
                         mode="outlined"
-                        outlineStyle={{ borderWidth: 0.5 }}
+                        outlineStyle={{ borderWidth: 1 }}
                         outlineColor={COLORS.input}
                         activeOutlineColor={COLORS.input}
                       />
                       <Spacer />
-                      <Button
+                      <ButtonC
                         onPress={() => handleChangeSubmit(key)}
                         label={"Lưu thông tin học sinh"}
                         color={COLORS.white}
                         background={COLORS.green}
                       />
                       <Spacer height={20} />
-                      <View
-                        style={styles.dotline}
-                      ></View>
+                      <View style={styles.dotline}></View>
                     </View>
                   );
                 })}
               </View>
             </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </GestureHandlerRootView>
     </>
   );
@@ -323,6 +326,6 @@ const styles = StyleSheet.create({
     borderStyle: "dotted",
     borderWidth: 1,
     borderRadius: 1,
-    color: COLORS.gray
-  }
+    color: COLORS.gray,
+  },
 });

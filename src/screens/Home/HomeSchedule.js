@@ -16,6 +16,7 @@ import { COLORS, SIZES } from "../../utils/theme";
 import Calendar from "../../components/Calendar";
 import LessonCalendar from "../../components/LessonCalendar";
 import DetailCalendar from "../../components/DetailCalendar";
+import Spacer from "../../components/Spacer";
 
 const Schedule = () => {
   const [selectedDate, setSelectedDate] = useState("2023-04-20");
@@ -38,9 +39,9 @@ const Schedule = () => {
       </View>
 
       <View style={styles.container}>
-        <LessonCalendar />
-
-        {/* <DetailCalendar/> */}
+        {/* <LessonCalendar /> */}
+        <Spacer/>
+        <DetailCalendar/>
       </View>
     </View>
   );
