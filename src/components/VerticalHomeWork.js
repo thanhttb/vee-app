@@ -1,26 +1,34 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS, SIZES } from "../utils/theme";
+import { useNavigation } from "@react-navigation/native";
 
 const VerticalHomeWork = () => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.component}>
-      <View style={styles.lesson}>
-        <Text style={styles.lessonText}>
-            1
-        </Text>
-      </View>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Bài tập về nhà chi tiết", {
+          id: 1,
+        })
+      }
+    >
+      <View style={styles.component}>
+        <View style={styles.lesson}>
+          <Text style={styles.lessonText}>1</Text>
+        </View>
 
-      <View style={styles.container}>
-            <Text style={styles.className}>Lớp - TC9.1</Text>
-            <Text style={styles.class}>Thời gian: 8:00 - 9:00</Text>
-            <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
-      </View>
+        <View style={styles.container}>
+          <Text style={styles.className}>Lớp - TC9.1</Text>
+          <Text style={styles.class}>Thời gian: 8:00 - 9:00</Text>
+          <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
+        </View>
 
-      <View style={styles.date}>
-      <Text style={styles.class}>Thứ 3, 03/03/2023</Text>
+        <View style={styles.date}>
+          <Text style={styles.class}>Thứ 3, 03/03/2023</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -36,22 +44,22 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    display: 'flex',
-    flexDirection: 'row',
-    paddingVertical: SIZES.padding
+    display: "flex",
+    flexDirection: "row",
+    paddingVertical: SIZES.padding,
   },
   lesson: {
     width: "8%",
-    backgroundColor: '#D9D9D9',
+    backgroundColor: "#D9D9D9",
     height: 16,
-    paddingLeft: '4%',
+    paddingLeft: "4%",
     borderTopRightRadius: SIZES.spacing,
-    borderBottomRightRadius: SIZES.spacing
+    borderBottomRightRadius: SIZES.spacing,
   },
   lessonText: {
     color: COLORS.gray,
     fontSize: SIZES.h3,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   container: {
     borderRadius: SIZES.radius,

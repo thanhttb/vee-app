@@ -13,7 +13,7 @@ const Calendar = ({ onSelectDate, selected }) => {
   // get the dates from today to 10 days from now, format them as strings and store them in state
   const getDates = () => {
     const _dates = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = -7; i < 8; i++) {
       const date = moment().add(i, "days");
       _dates.push(date);
     }
@@ -56,7 +56,7 @@ const Calendar = ({ onSelectDate, selected }) => {
                   date={date}
                   onSelectDate={onSelectDate}
                   selected={selected}
-                  active={selectedDate.includes(
+                  activeTime={selectedDate.includes(
                     moment(date).format("YYYY-MM-DD")
                   )}
                 />

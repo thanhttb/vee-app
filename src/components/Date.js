@@ -3,10 +3,12 @@ import moment from "moment";
 import { COLORS, SIZES } from "../utils/theme";
 import { useEffect, useState } from "react";
 
-const Date = ({ date, onSelectDate, selected }) => {
+const Date = ({ date, onSelectDate, selected,activeTime }) => {
   const [active, setActive] = useState(false);
-  const selectedDate = ["2023-04-07", "2023-04-08","2023-04-12"];
+  const [dateNow, setDateNow] = useState(false);
+  const selectedDate = ["2023-04-17", "2023-04-18","2023-04-24"];
   const da = moment(date).format("YYYY-MM-DD")
+
 
   /**
    * use moment to compare the date to today
@@ -18,7 +20,7 @@ const Date = ({ date, onSelectDate, selected }) => {
   },[])
   const day =
     moment(date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")
-      ? "Today"
+      ? "Today" 
       : moment(date).format("ddd");
   // get the day number e.g 1, 2, 3, 4, 5, 6, 7
   const dayNumber = moment(date).format("D");
@@ -41,6 +43,7 @@ const Date = ({ date, onSelectDate, selected }) => {
               styles.dateN,
               selected === fullDate && selected === fullDate && styles.dateAc,
               active == true && selected !== fullDate && styles.activeAc,
+              // dateNow == true && styles.dateAc
             ]}
           >
             <Text
@@ -87,5 +90,6 @@ const styles = StyleSheet.create({
   },
   dateAc: {
     backgroundColor: COLORS.lesson
-  }
+  },
+
 });

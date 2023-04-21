@@ -28,36 +28,38 @@ const HeaderHome = ({
   featureIconCircleAnimation,
   featureIconAnimation,
   homeworkIconAnimation,
-  heightViewAnimated,
+  headerWidth,
+  headerHeight,
 }) => {
+  
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={styles.header}>
-      <View style={styles.upperHeader}></View>
+    <View style={styles.header}>
+      <Animated.View style={[styles.upperHeader, {height: headerHeight}]}></Animated.View>
       <View style={styles.lowerHeader}>
         <Animated.View style={[styles.feature, depositViewAnimation]}>
           <TouchableOpacity onPressIn={() => navigation.navigate("Lịch học")}>
             <Animated.Image
-              source={require("../../assets/icon/Home_Focus.png")}
+              source={require("../../assets/icon-home/thong-bao.jpg")}
               style={[styles.bellIco]}
             />
           </TouchableOpacity>
           <Animated.Text
             numberOfLines={2}
-            style={[styles.featureName, featureIconCircleAnimation]}
+            style={[styles.featureName, featureIconCircleAnimation, {height: headerWidth}]}
           >
             Lịch học
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.feature, withdrawViewAnimation]}>
           <Animated.Image
-            source={require("../../assets/icon/Home_Focus.png")}
+            source={require("../../assets/icon-home/hoc-tap.jpg")}
             style={[styles.bellIco]}
           />
 
           <Animated.Text
             numberOfLines={2}
-            style={[styles.featureName, featureNameAnimation]}
+            style={[styles.featureName, featureNameAnimation, {height: headerWidth}]}
           >
             Tình hình học tập
           </Animated.Text>
@@ -68,14 +70,14 @@ const HeaderHome = ({
             onPress={() => navigation.navigate("Bài tập về nhà")}
           >
             <Animated.Image
-              source={require("../../assets/icon/Home_Focus.png")}
+              source={require("../../assets/icon-home/btvn.jpg")}
               style={[styles.bellIco]}
             />
           </TouchableOpacity>
 
           <Animated.Text
             numberOfLines={2}
-            style={[styles.featureName, homeworkIconAnimation]}
+            style={[styles.featureName, homeworkIconAnimation, {height: headerWidth}]}
           >
             Bài tập về nhà
           </Animated.Text>
@@ -83,23 +85,23 @@ const HeaderHome = ({
         <Animated.View style={[styles.feature, qrViewAnimation]}>
           <TouchableOpacity onPressIn={() => navigation.navigate("Học phí")}>
             <Animated.Image
-              source={require("../../assets/icon/Home_Focus.png")}
+              source={require("../../assets/icon-home/hoc-phi.jpg")}
               style={[styles.bellIco]}
             />
           </TouchableOpacity>
 
           <Animated.Text
             numberOfLines={2}
-            style={[styles.featureName, featureIconAnimation]}
+            style={[styles.featureName, featureIconAnimation, {height: headerWidth}]}
           >
             Học phí
           </Animated.Text>
         </Animated.View>
       </View>
-      <Animated.View
+      {/* <Animated.View
         style={[styles.upperHeader_2, heightViewAnimated]}
-      ></Animated.View>
-    </SafeAreaView>
+      ></Animated.View> */}
+    </View>
   );
 };
 
@@ -108,13 +110,13 @@ export default HeaderHome;
 const styles = StyleSheet.create({
   header: {
     // position: 'absolute',
-    marginTop: -LOWER_HEADER_HEIGHT - UPPER_HEADER_PADDING_TOP,
+    marginTop: -LOWER_HEADER_HEIGHT,
     width: "100%",
     backgroundColor: COLORS.green,
     zIndex: 1,
   },
   upperHeader: {
-    height: UPPER_HEADER_HEIGHT,
+    height: UPPER_HEADER_HEIGHT *2.5,
     zIndex: 1,
   },
   upperHeader_2: {
@@ -134,9 +136,10 @@ const styles = StyleSheet.create({
     width: "15%",
   },
   bellIco: {
-    width: 32,
-    height: 32,
+    width: 36,
+    height: 36,
     zIndex: 1,
+    borderRadius: 50
   },
   bellIcon: {
     position: "absolute",
@@ -144,11 +147,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   featureName: {
-    fontWeight: "bold",
+    fontWeight: 600,
     fontSize: SIZES.h3,
     lineHeight: SIZES.font,
     color: "white",
-    marginVertical: SIZES.base,
+    marginVertical: 3,
     textAlign: "center",
     height: 28
   },
