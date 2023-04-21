@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Text,
   View,
@@ -10,6 +10,8 @@ import {
   Image,
   FlatList,
 } from "react-native";
+//npm
+import _ from "lodash";
 //component
 import HeaderHome from "../../components/HeaderHome";
 //utils
@@ -26,6 +28,9 @@ const Home = () => {
   const scrollViewRef = useRef(null);
   const lastOffsetY = useRef(0);
   const scrollDireaction = useRef(0);
+  const animatedHeightValue = useRef(new Animated.Value(0)).current;
+  const headerHeight = useRef(new Animated.Value(80)).current;
+  const headerWidth = useRef(new Animated.Value(28)).current;
 
   const depositViewAnimation = getFeatureViewAnimation(animatedValue, 0);
   const withdrawViewAnimation = getFeatureViewAnimation(animatedValue, 0);
@@ -102,45 +107,27 @@ const Home = () => {
 
   const heightViewAnimated = {
     transform: [
-     {
-      scale: animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 8],
-        extrapolate: "clamp",
-      })
-     },
-     {
-      translateY: animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [1, -1.5],
-        extrapolate: "clamp",
-  })},
+      {
+        scale: animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 8],
+          extrapolate: "clamp",
+        }),
+      },
+      {
+        translateY: animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, -1.5],
+          extrapolate: "clamp",
+        }),
+      },
     ],
     opacity: animatedValue.interpolate({
       inputRange: [0, 30],
       outputRange: [0, 1],
       extrapolate: "clamp",
     }),
-  }
-
-  // const viewPostScrollAnimated = {
-  //   transform: [
-  //     // {
-  //     //  scale: animatedValue.interpolate({
-  //     //    inputRange: [0, 1],
-  //     //    outputRange: [1, 10],
-  //     //    extrapolate: "clamp",
-  //     //  })
-  //     // },
-  //     {
-  //      translateY: animatedValue.interpolate({
-  //        inputRange: [0, 1],
-  //        outputRange: [0, -30],
-  //        extrapolate: "clamp",
-  //  })},
-  //    ],
-    
-  // }
+  };
 
   const renderItem = ({ item, index }) => (
     <VerticalPostCard item={item} key={index} />
@@ -162,18 +149,45 @@ const Home = () => {
         featureIconAnimation={featureIconAnimation}
         homeworkIconAnimation={homeworkIconAnimation}
         heightViewAnimated={heightViewAnimated}
+        headerWidth={headerWidth}
+        headerHeight={headerHeight}
+        animatedHeightValue={animatedHeightValue}
       />
-      <ScrollView      
+      <ScrollView
         showsVerticalScrollIndicator={false}
         ref={scrollViewRef}
         onScroll={(e) => {
-          const offsetY = e.nativeEvent.contentOffset.y;
-          scrollDireaction.current =
-            offsetY - lastOffsetY.current > 0 ? "down" : "up";
-          lastOffsetY.current = offsetY;
-          animatedValue.setValue(offsetY);
+          {
+            const offsetY = e.nativeEvent.contentOffset.y;
+            scrollDireaction.current =
+              offsetY - lastOffsetY.current > 0 ? "down" : "up";
+            lastOffsetY.current = offsetY;
+            if (offsetY > 24) {
+              Animated.timing(headerWidth, {
+                toValue: 0,
+                duration: 30,
+                useNativeDriver: false,
+              }).start();
+              Animated.timing(headerHeight, {
+                toValue: 70,
+                duration: 30,
+                useNativeDriver: false,
+              }).start();
+            } else {
+              Animated.timing(headerWidth, {
+                toValue: 28,
+                duration: 30,
+                useNativeDriver: false,
+              }).start();
+              Animated.timing(headerHeight, {
+                toValue: 80,
+                duration: 30,
+                useNativeDriver: false,
+              }).start();
+            }
+            animatedValue.setValue(offsetY);
+          }
         }}
-      
         scrollEventThrottle={16}
       >
         <View style={styles.paddingForHeader}></View>
@@ -206,7 +220,7 @@ const styles = StyleSheet.create({
     height: UPPER_HEADER_HEIGHT + UPPER_HEADER_PADDING_TOP,
     paddingTop: UPPER_HEADER_PADDING_TOP,
   },
-  
+
   paddingForHeader: {
     // height: UPPER_HEADER_HEIGHT  + UPPER_HEADER_PADDING_TOP,
   },
@@ -214,7 +228,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     zIndex: 100,
     // height: SIZES.height,
-    
   },
   textInfo: {
     color: "black",

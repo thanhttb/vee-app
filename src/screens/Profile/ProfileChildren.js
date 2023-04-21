@@ -11,14 +11,17 @@ import {
   Animated,
   TouchableOpacity,
   Button,
+  Image,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput, RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { useHeaderHeight } from "@react-navigation/elements";
 import DatePicker from "react-native-datepicker";
+import moment from "moment";
 
 // import DatePicker from 'react-native-date-picker'
 //utils
@@ -31,21 +34,10 @@ import { Alert } from "react-native";
 //components
 
 const ProfileChildren = () => {
-  const headerHeight = useHeaderHeight();
   const navigation = useNavigation();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const [students, setStudents] = useState([]);
-  const fadeAnim = useState(new Animated.Value(0));
-  const [dateStudent, setDateStudent] = useState([])
-
-  const FadeIn = () => {
-    // Will change fadeAnim value to 0 in 3 seconds
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   useEffect(() => {
     axios
@@ -121,7 +113,23 @@ const ProfileChildren = () => {
       );
   };
 
- 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date, key, name) => {
+    let s = [...students];
+    if (date) {
+      s[key][name] = date;
+    }
+    setStudents(s);
+    hideDatePicker();
+  };
+
   return (
     <>
       <GestureHandlerRootView style={styles.safeview}>
@@ -138,15 +146,15 @@ const ProfileChildren = () => {
                   return (
                     <View style={styles.container} key={key}>
                       <Text style={styles.info}>
-                        Hồ sơ học sinh {s?.fullname}
+                        Hồ sơ học sinh {s?.fullname} {key}
                       </Text>
                       <TextInput
                         style={styles.input}
-                        label="Họ tên học sinh"
                         value={s?.fullname}
                         onChangeText={(e) =>
                           onStudentChange(e, key, "fullname")
                         }
+                        label="Họ tên học sinh"
                         mode="outlined"
                         outlineStyle={{ borderWidth: 1 }}
                         outlineColor={COLORS.input}
@@ -155,49 +163,33 @@ const ProfileChildren = () => {
                         // contentStyle={{backgroundColor: 'red', padding: 2}}
                       />
                       <Spacer height={4} />
-                      <Text style={styles.text}>Ngày sinh</Text>
-                      <Animated.View style={[styles.animted, FadeIn]}>
-                        <DatePicker
-                          style={styles.datePickerStyle}
-                          date={s?.dob}
-                          mode="date"
-                          userInterfaceStyle={"automatic"}
-                          placeholder="Ngày sinh"
+                      <View style={styles.date}>
+                        <TextInput
+                          style={styles.input}
+                          // style={{ width: "85%" }}
                           label="Ngày sinh"
-                          format="YYYY-MM-DD"
-                          minDate="01-01-1900"
-                          maxDate="01-01-2100"
-                          confirmBtnText="Xác nhận"
-                          cancelBtnText="Cancel"
-                          customStyles={{
-                            dateIcon: {
-                              position: "absolute",
-                              right: -5,
-                              top: 4,
-                              marginLeft: 0,
-                            },
-                            dateInput: {
-                              borderColor: "gray",
-                              alignItems: "flex-start",
-                              height: 50,
-                              borderColor: COLORS.input,
-                              backgroundColor: "white",
-                              borderRadius: 4,
-                            },
-                            placeholderText: {
-                              fontSize: 17,
-                              color: "gray",
-                            },
-                            dateText: {
-                              fontSize: 15,
-                              marginLeft: 16,
-                            },
-                          }}
-                          onDateChange={(date) => {
-                            onStudentChange(date, key, "dob");
+                          mode="outlined"
+                          outlineStyle={{ borderWidth: 1 }}
+                          outlineColor={COLORS.input}
+                          activeOutlineColor={COLORS.input}
+                          dense={true}
+                          value={moment(s?.dob).format("L")}
+                          // value={s?.dob}
+                          onPressIn={showDatePicker}
+                          onChangeText={(date) => {
+                            handleConfirm(date, key, "dob");
                           }}
                         />
-                    </Animated.View>
+                        <DateTimePickerModal
+                          isVisible={isDatePickerVisible}
+                          mode="date"
+                          onConfirm={(date) => {
+                            handleConfirm(date, key, "dob");
+                          }}
+                          onCancel={hideDatePicker}
+                        />
+                      </View>
+                     
                       <Spacer height={12} />
                       <View>
                         <Text>Giới tính</Text>
@@ -227,7 +219,6 @@ const ProfileChildren = () => {
                         outlineStyle={{ borderWidth: 1 }}
                         outlineColor={COLORS.input}
                         activeOutlineColor={COLORS.input}
-                        
                       />
                       <TextInput
                         style={styles.input}

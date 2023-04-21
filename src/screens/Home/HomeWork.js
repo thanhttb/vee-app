@@ -24,13 +24,13 @@ const HomeWork = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.header}>
-        <View style={styles.header}>
+      <View style={styles.header}>
+        {/* <View style={styles.header}>
           <View>
             <Text style={styles.textHeader}>Bài tập về nhà</Text>
           </View>
-        </View>
-      </SafeAreaView>
+        </View> */}
+      </View>
       <View style={{ height: SIZES.header - SIZES.base }}></View>
       <View style={styles.headerBottom}>
         <View style={styles.calendar}>
@@ -55,7 +55,7 @@ export default HomeWork;
 const styles = StyleSheet.create({
   header: {
     width: "100%",
-    height: SIZES.header * 2.5,
+    height: SIZES.header * 1.2,
     backgroundColor: COLORS.green,
   },
   iconHeader: {

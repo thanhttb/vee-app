@@ -1,11 +1,14 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import { Ionicons } from '@expo/vector-icons'; 
+
 import { COLORS } from "../utils/theme";
 import { Image } from "react-native";
 import Home from "../screens/Home/Home";
 import Notifications from "../screens/Notifications/Notifications";
-import Schedule from "../screens/Home/HomeSchedule";
+import HomeSchedule from "../screens/Home/HomeSchedule";
 import HomeDetails from "../screens/Home/HomeDetails";
 import HomeWork from "../screens/Home/HomeWork";
 import HomeTuition from "../screens/Home/HomeTuition";
@@ -16,6 +19,7 @@ import ProfileChildren from "../screens/Profile/ProfileChildren";
 import ProfileChange from "../screens/Profile/ProfileChange";
 import HomeLeave from "../screens/Home/HomeLeave";
 import HomeTutoring from "../screens/Home/HomeTutoring";
+import HomeWorkDetail from "../screens/Home/HomeWorkDetail";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,7 +49,7 @@ const HomeStack = () => {
       />
       <Stack.Screen
         name="Bài tập về nhà"
-        component={HomeWork}
+        component={HomeWorkStack}
         options={({ route }) => ({
           headerStyle: {
             backgroundColor: COLORS.green,
@@ -54,6 +58,7 @@ const HomeStack = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+
           unmountOnBlur: true, headerShown: false
         })}
       />
@@ -68,7 +73,7 @@ const HomeStack = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          unmountOnBlur: true, headerShown: false
+          // unmountOnBlur: true, headerShown: false
         })}
       />
 
@@ -89,7 +94,7 @@ const HomeStack = () => {
         })}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="Đơn học phụ đạo"
         component={HomeTutoring}
         options={({ route }) => ({
@@ -98,6 +103,7 @@ const HomeStack = () => {
           },
           headerStyle: {
             backgroundColor: COLORS.green,
+            
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -106,20 +112,20 @@ const HomeStack = () => {
         })}
       />
 
-        <Stack.Screen
+      <Stack.Screen
         name="Lịch học"
-        component={Schedule}
+        component={HomeSchedule}
         options={({ route }) => ({
-          unmountOnBlur: true, headerShown: false,
           headerStyle: {
-            backgroundColor: COLORS.green,
+            backgroundColor: COLORS.green
           },
           headerTintColor: "#fff",
+          
           headerTitleStyle: {
             fontWeight: "bold",
           },
         })}
-      />    
+      />
     </Stack.Navigator>
   );
 };
@@ -176,6 +182,64 @@ const ProfileStack = () => {
   );
 };
 
+const HomeWorkStack = ({navigation}) => {
+  return (
+    <Stack.Navigator options={{unmountOnBlur: true, headerShown: false}}>
+      <Stack.Screen
+
+        name="Bài tập về nhà"
+        component={HomeWork}
+        options={({ route }) => ({
+          headerStyle: {
+            backgroundColor: COLORS.green
+          },
+          headerTintColor: "#fff",
+          
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          unmountOnBlur: true, headerShown: true,
+          headerLeft: () => <Ionicons name="chevron-back" size={24} color="white" onPress={() => navigation.navigate("Trang chính")}/>
+        })}
+        // options={{ unmountOnBlur: true, headerShown: false }}
+        
+      />
+      <Stack.Screen
+        name="Bài tập về nhà chi tiết"
+        component={HomeWorkDetail}
+        options={({ route }) => ({
+          dataItem: {
+            id: route.params?.id,
+          },
+          unmountOnBlur: true, headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
+      <Stack.Screen
+        name="Thông tin học sinh"
+        component={ProfileChildren}
+        options={({ route }) => ({
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
+    
+    </Stack.Navigator>
+  );
+}
+
 const TabNavigation = () => {
   return (
     <Tab.Navigator>
@@ -205,7 +269,7 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="Lịch học"
-        component={Schedule}
+        component={HomeSchedule}
         options={({ route }) => ({
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {

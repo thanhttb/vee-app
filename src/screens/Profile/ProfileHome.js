@@ -6,6 +6,7 @@ import {
   StatusBar,
   StyleSheet,
   Image,
+  TouchableHighlight,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -37,7 +38,7 @@ const ProfileHome = () => {
 
       <View style={styles.action}>
         <View style={styles.content}>
-          <TouchableOpacity
+          <TouchableHighlight
             onPress={() => navigation.navigate("Thông tin phụ huynh")}
           >
             <View style={styles.actionPush}>
@@ -53,8 +54,8 @@ const ProfileHome = () => {
                 color="black"
               />
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </TouchableHighlight>
+          <TouchableHighlight
             onPress={() => navigation.navigate("Thông tin học sinh")}
           >
           <View style={styles.actionPush}>
@@ -70,8 +71,8 @@ const ProfileHome = () => {
               color="black"
             />
           </View> 
-          </TouchableOpacity>
-          <TouchableOpacity
+          </TouchableHighlight>
+          <TouchableHighlight
             onPress={() => navigation.navigate("Đổi mật khẩu")}
           >
           <View style={styles.actionPush}>
@@ -87,9 +88,9 @@ const ProfileHome = () => {
               color="black"
             />
           </View>
-          </TouchableOpacity>
+          </TouchableHighlight>
 
-          <TouchableOpacity onPress={logout}>
+          <TouchableHighlight onPress={logout}>
             <View style={styles.actionPush}>
                <Image
               source={require("../../../assets/Icon-profile/Icon_logout.png")}
@@ -103,7 +104,7 @@ const ProfileHome = () => {
                 color="black"
               />
             </View>
-          </TouchableOpacity>
+          </TouchableHighlight>
         </View>
       </View>
     </View>

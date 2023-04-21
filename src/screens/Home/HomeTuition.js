@@ -18,9 +18,9 @@ const HomeTuition = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.header}>
-        <Text style={styles.textHeader}>Học phí</Text>
-      </SafeAreaView>
+      <View style={styles.header}>
+        {/* <Text style={styles.textHeader}>Học phí</Text> */}
+      </View>
 
       <View style={styles.container}>
         <ScrollView
@@ -118,7 +118,7 @@ export default HomeTuition;
 const styles = StyleSheet.create({
   header: {
     width: "100%",
-    height: SIZES.header * 2.5,
+    // height: SIZES.header * 1.2,
     backgroundColor: COLORS.green,
   },
 

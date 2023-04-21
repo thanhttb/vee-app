@@ -18,19 +18,19 @@ import LessonCalendar from "../../components/LessonCalendar";
 import DetailCalendar from "../../components/DetailCalendar";
 import Spacer from "../../components/Spacer";
 
-const Schedule = () => {
+const HomeSchedule = () => {
   const [selectedDate, setSelectedDate] = useState("2023-04-20");
   const [selectedLesson, setSelectedLesson] = useState(false);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.header}>
-        <View style={styles.header}>
+      <View style={styles.header}>
+        {/* <View style={styles.header}>
           <View>
             <Text style={styles.textHeader}>Lịch học</Text>
           </View>
-        </View>
-      </SafeAreaView>
+        </View> */}
+      </View>
       <View style={{ height: SIZES.header - SIZES.base }}></View>
       <View style={styles.headerBottom}>
         <View style={styles.calendar}>
@@ -39,7 +39,7 @@ const Schedule = () => {
       </View>
 
       <View style={styles.container}>
-        {/* <LessonCalendar /> */}
+        <LessonCalendar />
         <Spacer/>
         <DetailCalendar/>
       </View>
@@ -47,13 +47,15 @@ const Schedule = () => {
   );
 };
 
-export default Schedule;
+export default HomeSchedule;
 
 const styles = StyleSheet.create({
   header: {
     width: "100%",
-    height: SIZES.header * 2.5,
+    height: SIZES.header *1.2,
     backgroundColor: COLORS.green,
+    marginTop: 0,
+    
   },
   iconHeader: {
     position: "absolute",
