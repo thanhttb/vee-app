@@ -98,9 +98,6 @@ const HeaderHome = ({
           </Animated.Text>
         </Animated.View>
       </View>
-      {/* <Animated.View
-        style={[styles.upperHeader_2, heightViewAnimated]}
-      ></Animated.View> */}
     </View>
   );
 };

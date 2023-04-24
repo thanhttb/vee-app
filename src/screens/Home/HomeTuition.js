@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     borderRadius: SIZES.radius,
-    elevation: 1,
+    elevation: 5,
     shadowColor: "gray",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
   },
   contentDetail: {
     width: "70%",
+    paddingLeft: SIZES.base,
   },
   contentDetailText: {
     paddingLeft: 12,

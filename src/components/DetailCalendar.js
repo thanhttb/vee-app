@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
-    elevation: 1,
+    elevation: 5,
     shadowColor: "gray",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: "row",
-    gap: SIZES.padding
+    justifyContent: 'space-between'
+    // gap: SIZES.padding
   },
   button: {
     width: "45%",

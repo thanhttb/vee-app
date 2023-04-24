@@ -3,7 +3,7 @@ export const getFeatureViewAnimation = (animatedValue, outputX) => {
   const translateY = {
     translateY: animatedValue.interpolate({
       inputRange: [0, 30],
-      outputRange: [0, -10],
+      outputRange: [0, -4],
       extrapolate: "clamp",
     }),
   };

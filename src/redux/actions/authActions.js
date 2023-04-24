@@ -7,7 +7,6 @@ export const initialize = () => {
   return async (dispatch) => {
     let token = await AsyncStorage.getItem("tokenUser");
     if (token !== null) {
-      console.log("tokenuser fetched");
       const response = await axios.get(BASE_URL + 'validate-token', {
         headers: {
           Accept: 'application/json',

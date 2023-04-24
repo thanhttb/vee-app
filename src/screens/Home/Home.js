@@ -162,26 +162,27 @@ const Home = () => {
             scrollDireaction.current =
               offsetY - lastOffsetY.current > 0 ? "down" : "up";
             lastOffsetY.current = offsetY;
-            if (offsetY > 24) {
+            if (scrollDireaction.current =="down" && offsetY >= 24) {
               Animated.timing(headerWidth, {
                 toValue: 0,
-                duration: 30,
+                duration: 50,
                 useNativeDriver: false,
               }).start();
               Animated.timing(headerHeight, {
                 toValue: 70,
-                duration: 30,
+                duration: 50,
                 useNativeDriver: false,
               }).start();
-            } else {
+            } 
+            if( scrollDireaction.current =="up" && offsetY < 24) {
               Animated.timing(headerWidth, {
                 toValue: 28,
-                duration: 30,
+                duration: 50,
                 useNativeDriver: false,
               }).start();
               Animated.timing(headerHeight, {
                 toValue: 80,
-                duration: 30,
+                duration: 50,
                 useNativeDriver: false,
               }).start();
             }

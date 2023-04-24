@@ -295,7 +295,15 @@ const TabNavigation = () => {
         name="Thông báo"
         component={Notifications}
         options={({ route }) => ({
-          headerShown: false,
+          // headerShown: false,
+          headerStyle: {
+            backgroundColor: COLORS.green
+          },
+          headerTintColor: "#fff",
+          
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "Thông báo") {

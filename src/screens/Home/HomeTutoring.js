@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Text,
   View,
@@ -15,6 +15,10 @@ import SelectDropdown from "react-native-select-dropdown";
 import moment from "moment";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+//redux
+import { userList } from "../../redux/actions/userActions";
+import { Provider, useDispatch, useSelector } from "react-redux";
+
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import Spacer from "../../components/Spacer";
 import Button from "../../components/Button";
@@ -24,11 +28,18 @@ const types = ["Check In", "Thông báo", "Câu hỏi"];
 const HomeTutoring = ({ route, navigation }) => {
   const { id } = route.params;
   const [type, setType] = useState(1);
-  const fadeAnim = new Animated.Value(0);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.authReducer);
+  const { users } = useSelector((state) => state.userReducer);
+
+  useEffect(() => {
+    dispatch(userList(user.id));
+  }, [dispatch]);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -65,13 +76,13 @@ const HomeTutoring = ({ route, navigation }) => {
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{ margin: 12 }}>
               <SelectDropdown
-                data={types}
+                data={users}
                 buttonStyle={styles.select}
                 dropdownStyle={{
                   borderRadius: 8,
                 }}
                 buttonTextStyle={styles.customText}
-                defaultValue={types[0]}
+                defaultButtonText={"Chọn học sinh"}
                 onSelect={(selectedItem, index) => {
                   setType(index + 1);
                 }}
@@ -87,10 +98,10 @@ const HomeTutoring = ({ route, navigation }) => {
                 }}
                 dropdownIconPosition={"right"}
                 buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
+                  return selectedItem.fullname;
                 }}
                 rowTextForSelection={(item, index) => {
-                  return item;
+                  return item.fullname;
                 }}
               />
               <Spacer height={10} />

@@ -8,32 +8,24 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
-  Animated,
   TouchableOpacity,
-  Button,
-  Image,
-  Modal,
-  KeyboardAwaareScrollView 
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Ionicons } from "@expo/vector-icons";
-import DatePicker from "@dietime/react-native-date-picker";
 import { TextInput, RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
-// import DatePicker from "react-native-datepicker";
 import moment from "moment";
-
-// import DatePicker from 'react-native-date-picker'
-//utils
 import { COLORS, SIZES } from "../../utils/theme";
 import { BASE_URL } from "../../../config";
 import axios from "axios";
+import { Alert } from "react-native";
+//redux
+import { userList } from "../../redux/actions/userActions";
+//components
 import ButtonC from "../../components/Button";
 import Spacer from "../../components/Spacer";
-import { Alert } from "react-native";
-//components
+
 
 const ProfileChildren = () => {
   const navigation = useNavigation();
@@ -41,6 +33,11 @@ const ProfileChildren = () => {
   const [students, setStudents] = useState([]);
   const [selected, setSelected] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(userList(user.id));
+}, [dispatch]);
 
   useEffect(() => {
     axios

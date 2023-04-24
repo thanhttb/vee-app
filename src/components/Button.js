@@ -24,8 +24,8 @@ export default function Button({ label, onPress, color, background, loading }) {
         style={{
           color: color,
           textAlign: "center",
-          fontWeight: 700,
-          fontSize: SIZES.h2,
+          fontWeight: 600,
+          fontSize: SIZES.h14,
         }}
       >
         {label}

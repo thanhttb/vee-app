@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
@@ -8,20 +8,27 @@ import {
   Image,
   TouchableHighlight,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../utils/theme";
 import { logoutAction } from "../../redux/actions/authActions";
+//redux
+import { userList } from "../../redux/actions/userActions";
 
 const ProfileHome = () => {
   const navigation = useNavigation();
-  const dispath = useDispatch()
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer);
+  const { data } = useSelector((state) => state.userReducer);
+  
+  useEffect(() => {
+    dispatch(userList(user.id));
+  }, [dispatch]);
+
   const logout = async () => {
-    await dispath(logoutAction());
-  }
+    await dispatch(logoutAction());
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
@@ -34,6 +41,27 @@ const ProfileHome = () => {
           />
           <Text style={styles.name}>{user?.fullname}</Text>
         </View>
+
+        <View style={styles.data}>
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.textInfo}>Lớp</Text>
+            <Text style={[styles.textInfo, { fontWeight: 600, fontSize: 18 }]}>
+              {data?.class}
+            </Text>
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.textInfo}>Học sinh</Text>
+            <Text style={[styles.textInfo, { fontWeight: 600, fontSize: 18 }]}>
+              {data?.student}
+            </Text>
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.textInfo}>Kỳ thi</Text>
+            <Text style={[styles.textInfo, { fontWeight: 600, fontSize: 18 }]}>
+              {data?.event}
+            </Text>
+          </View>
+        </View>
       </View>
 
       <View style={styles.action}>
@@ -43,9 +71,9 @@ const ProfileHome = () => {
           >
             <View style={styles.actionPush}>
               <Image
-              source={require("../../../assets/Icon-profile/Icon_parent.png")}
-              style={styles.bellIcon}
-            />
+                source={require("../../../assets/Icon-profile/Icon_parent.png")}
+                style={styles.bellIcon}
+              />
               <Text style={styles.textAction}>Thông tin phụ huynh</Text>
               <MaterialIcons
                 style={{ position: "absolute", right: 0 }}
@@ -58,44 +86,44 @@ const ProfileHome = () => {
           <TouchableHighlight
             onPress={() => navigation.navigate("Thông tin học sinh")}
           >
-          <View style={styles.actionPush}>
-             <Image
-              source={require("../../../assets/Icon-profile/Icon_student.png")}
-              style={styles.bellIcon}
-            />
-            <Text style={styles.textAction}>Thông tin học sinh</Text>
-            <MaterialIcons
-              style={{ position: "absolute", right: 0 }}
-              name="navigate-next"
-              size={24}
-              color="black"
-            />
-          </View> 
+            <View style={styles.actionPush}>
+              <Image
+                source={require("../../../assets/Icon-profile/Icon_student.png")}
+                style={styles.bellIcon}
+              />
+              <Text style={styles.textAction}>Thông tin học sinh</Text>
+              <MaterialIcons
+                style={{ position: "absolute", right: 0 }}
+                name="navigate-next"
+                size={24}
+                color="black"
+              />
+            </View>
           </TouchableHighlight>
           <TouchableHighlight
             onPress={() => navigation.navigate("Đổi mật khẩu")}
           >
-          <View style={styles.actionPush}>
-             <Image
-              source={require("../../../assets/Icon-profile/Icon_change.png")}
-              style={styles.bellIcon}
-            />
-            <Text style={styles.textAction}>Đổi mật khẩu</Text>
-            <MaterialIcons
-              style={{ position: "absolute", right: 0 }}
-              name="navigate-next"
-              size={24}
-              color="black"
-            />
-          </View>
+            <View style={styles.actionPush}>
+              <Image
+                source={require("../../../assets/Icon-profile/Icon_change.png")}
+                style={styles.bellIcon}
+              />
+              <Text style={styles.textAction}>Đổi mật khẩu</Text>
+              <MaterialIcons
+                style={{ position: "absolute", right: 0 }}
+                name="navigate-next"
+                size={24}
+                color="black"
+              />
+            </View>
           </TouchableHighlight>
 
           <TouchableHighlight onPress={logout}>
             <View style={styles.actionPush}>
-               <Image
-              source={require("../../../assets/Icon-profile/Icon_logout.png")}
-              style={styles.bellIcon}
-            />
+              <Image
+                source={require("../../../assets/Icon-profile/Icon_logout.png")}
+                style={styles.bellIcon}
+              />
               <Text style={styles.textAction}>Đăng xuất</Text>
               <MaterialIcons
                 style={{ position: "absolute", right: 0 }}
@@ -123,9 +151,19 @@ const styles = StyleSheet.create({
     marginTop: SIZES.header,
   },
   avatar: {
-    height: 90,
-    width: 90,
+    height: 60,
+    width: 60,
     borderRadius: 50,
+  },
+  data: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 40,
+    marginTop: SIZES.spacing,
+  },
+  textInfo: {
+    color: COLORS.white,
+    fontSize: SIZES.h14,
   },
   bellIcon: {
     height: 40,
@@ -135,8 +173,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: SIZES.h1,
     color: COLORS.white,
-    fontWeight: "bold",
-    paddingTop: SIZES.spacing,
+    fontWeight: 600,
   },
   action: {
     flex: 1,

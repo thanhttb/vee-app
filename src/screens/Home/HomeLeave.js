@@ -1,27 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, ScrollView, TextInput } from "react-native";
-import DetailClass from "../../components/DetailClass";
-import { COLORS, SIZES } from "../../utils/theme";
+//npm
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
+//redux
+import { userList } from "../../redux/actions/userActions";
+import { Provider, useDispatch, useSelector } from "react-redux";
+//component
+import DetailClass from "../../components/DetailClass";
 import Spacer from "../../components/Spacer";
 import Button from "../../components/Button";
+import { COLORS, SIZES } from "../../utils/theme";
+
 const types = ["Check In", "Thông báo", "Câu hỏi"];
 const HomeLeave = ({ route, navigation }) => {
   const { id } = route.params;
   const [type, setType] = useState(1);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.authReducer);
+  const { users } = useSelector((state) => state.userReducer);
+
+  useEffect(() => {
+    dispatch(userList(user.id));
+  }, [dispatch]);
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
         <View style={{ margin: 4 }}>
+          {/* Select children  */}
           <SelectDropdown
-            data={types}
+            data={users}
             buttonStyle={styles.select}
             dropdownStyle={{
               borderRadius: 8,
             }}
             buttonTextStyle={styles.customText}
-            defaultValue={types[0]}
+            defaultButtonText={"Chọn học sinh"}
             onSelect={(selectedItem, index) => {
               setType(index + 1);
             }}
@@ -37,15 +51,17 @@ const HomeLeave = ({ route, navigation }) => {
             }}
             dropdownIconPosition={"right"}
             buttonTextAfterSelection={(selectedItem, index) => {
-              return selectedItem;
+              return selectedItem.fullname;
             }}
             rowTextForSelection={(item, index) => {
-              return item;
+              return item.fullname;
             }}
           />
           <Spacer />
+          {/* Lịch học  */}
           <DetailClass />
           <Spacer />
+          {/* Select lý do  */}
           <SelectDropdown
             data={types}
             buttonStyle={styles.select}
@@ -77,6 +93,7 @@ const HomeLeave = ({ route, navigation }) => {
             }}
           />
           <Spacer />
+          {/* Lý do chi tiết  */}
           <TextInput
             style={styles.TextInput}
             placeholder={`Lý do nghỉ! (*)`}
@@ -84,8 +101,6 @@ const HomeLeave = ({ route, navigation }) => {
             focusable={false}
             multiline={true}
             numberOfLines={4}
-            // value={value}
-            // onChangeText={text => setValue(text)}
             secureTextEntry={false}
           />
           <Spacer />

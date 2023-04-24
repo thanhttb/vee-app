@@ -40,7 +40,8 @@ const HomeSchedule = () => {
 
       <View style={styles.container}>
         <LessonCalendar showDetailLesson={showDetailLesson} />
-        <Spacer />
+        <LessonCalendar showDetailLesson={showDetailLesson} />
+        <LessonCalendar showDetailLesson={showDetailLesson} />
         {/* <DetailCalendar/> */}
         {selectedLesson && <SimpleModal showDetailLesson={showDetailLesson} selectedLesson={selectedLesson}/>}
       </View>
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   calendar: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
-    elevation: 1,
+    elevation: 5,
     shadowColor: "gray",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
