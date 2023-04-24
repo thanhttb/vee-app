@@ -17,20 +17,20 @@ import Calendar from "../../components/Calendar";
 import LessonCalendar from "../../components/LessonCalendar";
 import DetailCalendar from "../../components/DetailCalendar";
 import Spacer from "../../components/Spacer";
+import SimpleModal from "../../components/SimpleModal";
 
 const HomeSchedule = () => {
   const [selectedDate, setSelectedDate] = useState("2023-04-20");
   const [selectedLesson, setSelectedLesson] = useState(false);
+
+  const showDetailLesson = () => {
+    setSelectedLesson(!selectedLesson);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <View style={styles.header}>
-        {/* <View style={styles.header}>
-          <View>
-            <Text style={styles.textHeader}>Lịch học</Text>
-          </View>
-        </View> */}
-      </View>
+      <View style={styles.header}></View>
       <View style={{ height: SIZES.header - SIZES.base }}></View>
       <View style={styles.headerBottom}>
         <View style={styles.calendar}>
@@ -39,9 +39,10 @@ const HomeSchedule = () => {
       </View>
 
       <View style={styles.container}>
-        <LessonCalendar />
-        <Spacer/>
-        <DetailCalendar/>
+        <LessonCalendar showDetailLesson={showDetailLesson} />
+        <Spacer />
+        {/* <DetailCalendar/> */}
+        {selectedLesson && <SimpleModal showDetailLesson={showDetailLesson} selectedLesson={selectedLesson}/>}
       </View>
     </View>
   );
@@ -52,10 +53,9 @@ export default HomeSchedule;
 const styles = StyleSheet.create({
   header: {
     width: "100%",
-    height: SIZES.header *1.2,
+    height: SIZES.header * 1.2,
     backgroundColor: COLORS.green,
     marginTop: 0,
-    
   },
   iconHeader: {
     position: "absolute",

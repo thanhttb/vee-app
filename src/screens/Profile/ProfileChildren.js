@@ -12,15 +12,17 @@ import {
   TouchableOpacity,
   Button,
   Image,
+  Modal,
+  KeyboardAwaareScrollView 
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from "@expo/vector-icons";
+import DatePicker from "@dietime/react-native-date-picker";
 import { TextInput, RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { useHeaderHeight } from "@react-navigation/elements";
-import DatePicker from "react-native-datepicker";
+// import DatePicker from "react-native-datepicker";
 import moment from "moment";
 
 // import DatePicker from 'react-native-date-picker'
@@ -37,6 +39,7 @@ const ProfileChildren = () => {
   const navigation = useNavigation();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const [students, setStudents] = useState([]);
+  const [selected, setSelected] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   useEffect(() => {
@@ -113,46 +116,49 @@ const ProfileChildren = () => {
       );
   };
 
-  const showDatePicker = () => {
+  
+  const showDatePicker = (index) => {
     setDatePickerVisibility(true);
+    setSelected(index);
   };
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-
   const handleConfirm = (date, key, name) => {
     let s = [...students];
     if (date) {
       s[key][name] = date;
     }
-    setStudents(s);
+    setStudents(s); 
     hideDatePicker();
   };
 
   return (
     <>
       <GestureHandlerRootView style={styles.safeview}>
+        {/* <KeyboardAwaareScrollView enableOnAndroid={true}> */}
         <KeyboardAvoidingView
-          style={{ flex: 1 }}
+          style={{ flexGrow: 1 }}
           behavior={Platform.OS === "ios" ? "padding" : null}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 64}
         >
-          <ScrollView style={{ flex: 1 }}>
+         <View  style={{ flex: 1}}>
+         <ScrollView style={{ flexGrow: 1}} contentContainerStyle={{ flexGrow: 1 }}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <View style={{ backgroundColor: COLORS.white }}>
                 <StatusBar barStyle="light-content" />
-                {students.map((s, key) => {
+                {students.map((s, index) => {
                   return (
-                    <View style={styles.container} key={key}>
+                    <View style={styles.container} key={index}>
                       <Text style={styles.info}>
-                        Hồ sơ học sinh {s?.fullname} {key}
+                        Hồ sơ học sinh {s?.fullname}
                       </Text>
                       <TextInput
                         style={styles.input}
                         value={s?.fullname}
                         onChangeText={(e) =>
-                          onStudentChange(e, key, "fullname")
+                          onStudentChange(e, index, "fullname")
                         }
                         label="Họ tên học sinh"
                         mode="outlined"
@@ -160,13 +166,11 @@ const ProfileChildren = () => {
                         outlineColor={COLORS.input}
                         activeOutlineColor={COLORS.input}
                         dense={true}
-                        // contentStyle={{backgroundColor: 'red', padding: 2}}
                       />
                       <Spacer height={4} />
                       <View style={styles.date}>
                         <TextInput
                           style={styles.input}
-                          // style={{ width: "85%" }}
                           label="Ngày sinh"
                           mode="outlined"
                           outlineStyle={{ borderWidth: 1 }}
@@ -174,22 +178,20 @@ const ProfileChildren = () => {
                           activeOutlineColor={COLORS.input}
                           dense={true}
                           value={moment(s?.dob).format("L")}
-                          // value={s?.dob}
-                          onPressIn={showDatePicker}
-                          onChangeText={(date) => {
-                            handleConfirm(date, key, "dob");
-                          }}
+                          onPressIn={()=>showDatePicker(index)}
                         />
                         <DateTimePickerModal
                           isVisible={isDatePickerVisible}
+                          isDarkModeEnabled={true}
                           mode="date"
-                          onConfirm={(date) => {
-                            handleConfirm(date, key, "dob");
+                           onConfirm={(date) => {
+                            handleConfirm(date, selected, "dob");
                           }}
                           onCancel={hideDatePicker}
                         />
                       </View>
-                     
+
+
                       <Spacer height={12} />
                       <View>
                         <Text>Giới tính</Text>
@@ -199,7 +201,7 @@ const ProfileChildren = () => {
                               <Text style={styles.gender}>{feeling}</Text>
                               <TouchableOpacity
                                 style={styles.outter}
-                                onPress={(e) => onGenderChange(feeling, key)}
+                                onPress={(e) => onGenderChange(feeling, index)}
                               >
                                 {s.gender == feeling && (
                                   <View style={styles.inner}></View>
@@ -214,7 +216,9 @@ const ProfileChildren = () => {
                         style={styles.input}
                         label="Trường học"
                         value={s?.school}
-                        onChangeText={(e) => onStudentChange(e, key, "school")}
+                        onChangeText={(e) =>
+                          onStudentChange(e, index, "school")
+                        }
                         mode="outlined"
                         outlineStyle={{ borderWidth: 1 }}
                         outlineColor={COLORS.input}
@@ -225,7 +229,7 @@ const ProfileChildren = () => {
                         label="Nguyện vọng"
                         value={s?.aspiration}
                         onChangeText={(e) =>
-                          onStudentChange(e, key, "aspiration")
+                          onStudentChange(e, index, "aspiration")
                         }
                         mode="outlined"
                         outlineStyle={{ borderWidth: 1 }}
@@ -234,7 +238,7 @@ const ProfileChildren = () => {
                       />
                       <Spacer />
                       <ButtonC
-                        onPress={() => handleChangeSubmit(key)}
+                        onPress={() => handleChangeSubmit(index)}
                         label={"Lưu thông tin học sinh"}
                         color={COLORS.white}
                         background={COLORS.green}
@@ -247,7 +251,9 @@ const ProfileChildren = () => {
               </View>
             </TouchableWithoutFeedback>
           </ScrollView>
+         </View>
         </KeyboardAvoidingView>
+        {/* </KeyboardAwaareScrollView> */}
       </GestureHandlerRootView>
     </>
   );
@@ -277,7 +283,9 @@ const styles = StyleSheet.create({
     borderColor: COLORS.input,
     backgroundColor: "white",
     marginBottom: SIZES.spacing,
-    fontSize: 15,
+    fontSize: 14,
+    width: "100%",
+    paddingHorizontal: 2
   },
   text: {
     textAlign: "left",
@@ -318,5 +326,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 1,
     color: COLORS.gray,
+  },
+  bellIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    marginRight: 16,
   },
 });

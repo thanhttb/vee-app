@@ -103,7 +103,6 @@ const HomeTutoring = ({ route, navigation }) => {
                       style={{ width: "85%" }}
                       placeholder={"Chọn giờ học"}
                       placeholderTextColor={COLORS.input}
-                      //   secureTextEntry={showPassword}
                       value={selectedTime}
                       onPressIn={showTimePicker}
                     />
@@ -122,7 +121,7 @@ const HomeTutoring = ({ route, navigation }) => {
                     mode="time"
                     onConfirm={handleTimeConfirm}
                     onCancel={hideTimePicker}
-                    minuteInterval={30}
+                    // minuteInterval={30}
                   />
                 </View>
                 <View style={styles.date}>
@@ -259,7 +258,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 50,
-    backgroundColor: 'red'
   },
   input: {
     flexDirection: "row",

@@ -5,7 +5,7 @@ import Button from "./Button";
 
 import { useNavigation } from "@react-navigation/native";
 
-const DetailCalendar = () => {
+const DetailCalendar = ({showDetailLesson}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -22,9 +22,12 @@ const DetailCalendar = () => {
             color={COLORS.green}
             background={COLORS.white}
             onPress={()=>
+             {
               navigation.navigate('Đơn xin nghỉ', {
-              id: 1
-            })}
+                id: 1
+              });
+              showDetailLesson()
+             }}
           />
         </View>
         <View style={styles.button}>
@@ -33,9 +36,12 @@ const DetailCalendar = () => {
             color={COLORS.green}
             background={COLORS.white}
             onPress={()=>
-              navigation.navigate('Đơn học phụ đạo', {
-              id: 1
-            })}
+              {
+                navigation.navigate('Đơn học phụ đạo', {
+                  id: 1
+                });
+                showDetailLesson()
+              }}
           />
         </View>
       </View>
