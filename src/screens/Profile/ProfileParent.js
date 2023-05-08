@@ -23,10 +23,9 @@ import Button from "../../components/Button";
 import Spacer from "../../components/Spacer";
 import { Alert } from "react-native";
 //components
-const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
+
 const ProfileParent = () => {
-  const headerHeight = useHeaderHeight();
-  const navigation = useNavigation();
+  
   const { user, authToken } = useSelector((state) => state.authReducer);
   const [parent, setParent] = React.useState({
     fullname: user.fullname ? user.fullname : "",

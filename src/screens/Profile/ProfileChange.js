@@ -24,26 +24,25 @@ import Spacer from "../../components/Spacer";
 import { Alert } from "react-native";
 //components
 
-
 const ProfileChange = () => {
   const headerHeight = useHeaderHeight();
   const navigation = useNavigation();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const [password, setPassword] = React.useState({
-    current_password:  "",
-    password:  "",
-    confirm:  "",
+    current_password: "",
+    password: "",
+    confirm: "",
   });
 
   const handleChangeSubmit = async () => {
     axios
       .post(
-        BASE_URL + "user/change-password",
-       {
-        current_password: password?.current_password,
-        password: password?.password,
-        confirm: password?.confirm
-       } ,
+        BASE_URL + "profile/change-password",
+        {
+          old_password: password?.current_password,
+          new_password: password?.password,
+          new_password_confirmation: password?.confirm,
+        },
         {
           headers: {
             Accept: "application/json",
@@ -51,20 +50,31 @@ const ProfileChange = () => {
           },
         }
       )
-      .then((res) => console.log("res"))
-      .then((res) =>  Alert.alert('VietElite', 'Cập nhập thông tin cá nhân thành công', [
-        
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],{
-        userInterfaceStyle: "light"
-      }))
-      // .catch((err) =>  Alert.alert('VietElite', 'Cập nhập thông tin cá nhân thất bại', [
-       
-      //   {text: 'OK', onPress: () => console.log('OK Pressed')},
-      // ],{
-      //   userInterfaceStyle: "light"
-      // }))
-      .catch((err)=> console.log('VietElite', err))
+      .then((res) => {
+        Alert.alert(
+          "VietElite",
+          "Cập nhập thông tin cá nhân thành công",
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          {
+            userInterfaceStyle: "light",
+          }
+        ),
+          setPassword({
+            current_password: "",
+            password: "",
+            confirm: "",
+          });
+      })
+      .catch((err) =>
+        Alert.alert(
+          "VietElite",
+          "Cập nhập thông tin cá nhân thất bại",
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          {
+            userInterfaceStyle: "light",
+          }
+        )
+      );
   };
 
   return (
@@ -97,7 +107,9 @@ const ProfileChange = () => {
                   style={styles.input}
                   label="Mật khẩu mới"
                   value={password?.password}
-                  onChangeText={(text) => setPassword({ ...password, password: text })}
+                  onChangeText={(text) =>
+                    setPassword({ ...password, password: text })
+                  }
                   mode="outlined"
                   outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
@@ -108,14 +120,16 @@ const ProfileChange = () => {
                   style={styles.input}
                   label="Xác nhận mật khẩu mới"
                   value={password?.confirm}
-                  onChangeText={(text) => setPassword({ ...password, confirm: text })}
+                  onChangeText={(text) =>
+                    setPassword({ ...password, confirm: text })
+                  }
                   mode="outlined"
                   outlineStyle={{ borderWidth: 1 }}
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                   secureTextEntry={true}
                 />
-                
+
                 <Spacer />
                 <Button
                   onPress={handleChangeSubmit}

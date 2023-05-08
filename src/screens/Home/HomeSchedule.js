@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -9,19 +9,53 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+//redux
+import { Provider, useDispatch, useSelector } from "react-redux";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
+import { BASE_URL } from "../../../config";
 //components
 import Calendar from "../../components/Calendar";
 import LessonCalendar from "../../components/LessonCalendar";
 import DetailCalendar from "../../components/DetailCalendar";
 import Spacer from "../../components/Spacer";
 import SimpleModal from "../../components/SimpleModal";
+import axios from "axios";
 
 const HomeSchedule = () => {
-  const [selectedDate, setSelectedDate] = useState("2023-04-20");
+  const { user, authToken } = useSelector((state) => state.authReducer);
+  const [selectedDate, setSelectedDate] = useState();
+  // const [selectedDate, setSelectedDate] = useState("2023-05-11");
   const [selectedLesson, setSelectedLesson] = useState(false);
+  const [dataSessionWeek, setDataSessionWeek] = useState([]);
+  const [selectedDateWeek, setSelectedDateWeek] = useState([]);
+
+ 
+
+  useEffect(() => {
+    axios
+      .post(
+        BASE_URL + "session-week",
+        { parent_id: user?.id },
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + authToken,
+          },
+        }
+      )
+      .then((res) => setDataSessionWeek(res.data))
+      .catch((err) => console.error(err));
+  }, [user]);
+
+  useEffect(() => {
+    // const dates = dataSessionWeek.map(item => item.date);
+    // setSelectedDateWeek(dates)
+    dataSessionWeek.map((item) => {
+      setSelectedDateWeek([...selectedDateWeek, item?.date]);
+    });
+  }, [dataSessionWeek]);
+ console.log('setSelectedDateWeek', selectedDateWeek)
 
   const showDetailLesson = () => {
     setSelectedLesson(!selectedLesson);
@@ -39,11 +73,24 @@ const HomeSchedule = () => {
       </View>
 
       <View style={styles.container}>
-        <LessonCalendar showDetailLesson={showDetailLesson} />
-        <LessonCalendar showDetailLesson={showDetailLesson} />
-        <LessonCalendar showDetailLesson={showDetailLesson} />
+        {dataSessionWeek.map((item, i) => {
+          return (
+            <LessonCalendar
+            key={i}
+              showDetailLesson={showDetailLesson}
+              item={item}
+              index={i}
+            />
+          );
+        })}
+
         {/* <DetailCalendar/> */}
-        {selectedLesson && <SimpleModal showDetailLesson={showDetailLesson} selectedLesson={selectedLesson}/>}
+        {selectedLesson && (
+          <SimpleModal
+            showDetailLesson={showDetailLesson}
+            selectedLesson={selectedLesson}
+          />
+        )}
       </View>
     </View>
   );

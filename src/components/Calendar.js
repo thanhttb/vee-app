@@ -9,11 +9,11 @@ const Calendar = ({ onSelectDate, selected }) => {
   const [dates, setDates] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [currentMonth, setCurrentMonth] = useState();
-  const selectedDate = [ "2023-04-19", "2023-04-24"];
+  const selectedDate = [ "2023-05-11", "2023-05-12"];
   // get the dates from today to 10 days from now, format them as strings and store them in state
   const getDates = () => {
     const _dates = [];
-    for (let i = -7; i < 8; i++) {
+    for (let i = -4; i < 11; i++) {
       const date = moment().add(i, "days");
       _dates.push(date);
     }

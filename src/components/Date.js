@@ -3,24 +3,22 @@ import moment from "moment";
 import { COLORS, SIZES } from "../utils/theme";
 import { useEffect, useState } from "react";
 
-const Date = ({ date, onSelectDate, selected,activeTime }) => {
+const Date = ({ date, onSelectDate, selected, activeTime }) => {
   const [active, setActive] = useState(false);
-  const [dateNow, setDateNow] = useState(false);
-  const selectedDate = ["2023-04-17", "2023-04-18","2023-04-24"];
-  const da = moment(date).format("YYYY-MM-DD")
-
+  const selectedDate = ["2023-05-11", "2023-05-12"];
+  const da = moment(date).format("YYYY-MM-DD");
 
   /**
    * use moment to compare the date to today
    * if today, show 'Today'
    * if not today, show day of the week e.g 'Mon', 'Tue', 'Wed'
    */
-  useEffect(()=> {
-    setActive(selectedDate.includes(da))
-  },[])
+  useEffect(() => {
+    setActive(selectedDate.includes(da));
+  }, []);
   const day =
     moment(date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")
-      ? "Today" 
+      ? "Today"
       : moment(date).format("ddd");
   // get the day number e.g 1, 2, 3, 4, 5, 6, 7
   const dayNumber = moment(date).format("D");
@@ -31,12 +29,13 @@ const Date = ({ date, onSelectDate, selected,activeTime }) => {
   return (
     <>
       {
-       
         <TouchableOpacity
           onPress={() => onSelectDate(fullDate)}
           style={[styles.card, selected === fullDate && styles.cardAc]}
         >
-          <Text style={[styles.big, selected === fullDate && styles.cardAc]}>{day}</Text>
+          <Text style={[styles.big, selected === fullDate && styles.cardAc]}>
+            {day}
+          </Text>
           <View style={{ height: 4 }} />
           <View
             style={[
@@ -89,7 +88,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 171, 85, 0.1)",
   },
   dateAc: {
-    backgroundColor: COLORS.lesson
+    backgroundColor: COLORS.lesson,
   },
-
 });
