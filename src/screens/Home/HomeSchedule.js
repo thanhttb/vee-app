@@ -84,6 +84,7 @@ const HomeSchedule = () => {
           sessionWeekFilter.map((item, i) => {
             return (
               <LessonCalendar
+              key={i}
                 showDetailLesson={showDetailLesson}
                 item={item}
                 index={i}
