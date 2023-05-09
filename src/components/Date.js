@@ -3,10 +3,9 @@ import moment from "moment";
 import { COLORS, SIZES } from "../utils/theme";
 import { useEffect, useState } from "react";
 
-const Date = ({ date, onSelectDate, selected, activeTime }) => {
+const Date = ({ date, selectSessionDate, selected, dateWeek }) => {
   const [active, setActive] = useState(false);
-  const selectedDate = ["2023-05-11", "2023-05-12"];
-  const da = moment(date).format("YYYY-MM-DD");
+  const da = moment(date).format("DD/MM");
 
   /**
    * use moment to compare the date to today
@@ -14,23 +13,23 @@ const Date = ({ date, onSelectDate, selected, activeTime }) => {
    * if not today, show day of the week e.g 'Mon', 'Tue', 'Wed'
    */
   useEffect(() => {
-    setActive(selectedDate.includes(da));
-  }, []);
+    setActive(dateWeek.includes(da));
+  }, [dateWeek]);
   const day =
-    moment(date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")
-      ? "Today"
+    moment(date).format("DD/MM") === moment().format("DD/MM")
+      ? "Hôm nay"
       : moment(date).format("ddd");
   // get the day number e.g 1, 2, 3, 4, 5, 6, 7
   const dayNumber = moment(date).format("D");
 
   // get the full date e.g 2021-01-01 - we'll use this to compare the date to the selected date
-  const fullDate = moment(date).format("YYYY-MM-DD");
+  const fullDate = moment(date).format("DD/MM");
 
   return (
     <>
       {
         <TouchableOpacity
-          onPress={() => onSelectDate(fullDate)}
+          onPress={() => selectSessionDate(fullDate)}
           style={[styles.card, selected === fullDate && styles.cardAc]}
         >
           <Text style={[styles.big, selected === fullDate && styles.cardAc]}>
@@ -40,9 +39,8 @@ const Date = ({ date, onSelectDate, selected, activeTime }) => {
           <View
             style={[
               styles.dateN,
-              selected === fullDate && selected === fullDate && styles.dateAc,
-              active == true && selected !== fullDate && styles.activeAc,
-              // dateNow == true && styles.dateAc
+              selected === fullDate && styles.dateAc,
+              active == true && styles.activeAc,
             ]}
           >
             <Text
@@ -53,6 +51,8 @@ const Date = ({ date, onSelectDate, selected, activeTime }) => {
             >
               {dayNumber}
             </Text>
+
+            <View style={[selected === fullDate && styles.dot]}></View>
           </View>
         </TouchableOpacity>
       }
@@ -90,4 +90,5 @@ const styles = StyleSheet.create({
   dateAc: {
     backgroundColor: COLORS.lesson,
   },
+  dot: { height: 4, width: 4, backgroundColor: COLORS.green, borderRadius: 50 },
 });

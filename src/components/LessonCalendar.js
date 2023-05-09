@@ -23,9 +23,8 @@ const LessonCalendar = ({showDetailLesson, item, index}) => {
       </View>
 
       <View style={styles.container}>
-        <TouchableOpacity onPress={showDetailLesson}>
+        <TouchableOpacity onPress={()=>showDetailLesson(item)}>
           <View style={styles.content}>
-           
             <Text style={styles.className}>Lớp - {item?.class}</Text>
             <Text style={styles.class}>Thời gian: {item?.time}</Text>
             <Text style={styles.class}>Giáo viên: {item?.teacher}</Text>

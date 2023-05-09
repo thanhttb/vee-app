@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import moment from "moment";
 import Date from "./Date";
 import { COLORS, SIZES } from "../utils/theme";
 
-
-const Calendar = ({ onSelectDate, selected }) => {
+const Calendar = ({ selectSessionDate, selected, dateWeek }) => {
   const [dates, setDates] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [currentMonth, setCurrentMonth] = useState();
-  const selectedDate = [ "2023-05-11", "2023-05-12"];
+  const scrollViewRef = useRef(null);
   // get the dates from today to 10 days from now, format them as strings and store them in state
   const getDates = () => {
     const _dates = [];
@@ -26,7 +25,7 @@ const Calendar = ({ onSelectDate, selected }) => {
 
   const getCurrentMonth = () => {
     const month = moment(dates[0])
-      .add(scrollPosition / 60, "days")
+      .add(scrollPosition.x / 60, "days")
       .format("MMMM");
     setCurrentMonth(month);
   };
@@ -34,6 +33,13 @@ const Calendar = ({ onSelectDate, selected }) => {
   useEffect(() => {
     getCurrentMonth();
   }, [scrollPosition]);
+
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ x: 180, y: 0, animated: false });
+    }
+  }, []);
+
 
   return (
     <>
@@ -45,24 +51,22 @@ const Calendar = ({ onSelectDate, selected }) => {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            // onScroll is a native event that returns the number of pixels the user has scrolled
+            ref={scrollViewRef}
             onScroll={(e) => setScrollPosition(e.nativeEvent.contentOffset.x)}
             scrollEventThrottle={16}
+            contentOffset={{x: 180, y: 0}}
           >
             {dates.map((date, index) => {
               return (
                 <Date
                   key={index}
                   date={date}
-                  onSelectDate={onSelectDate}
+                  selectSessionDate={selectSessionDate}
                   selected={selected}
-                  activeTime={selectedDate.includes(
-                    moment(date).format("YYYY-MM-DD")
-                  )}
+                  dateWeek={dateWeek}
                 />
               );
             })}
-           
           </ScrollView>
         </View>
       </View>
@@ -81,7 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     color: "#212B36",
     padding: SIZES.base,
-    textTransform: 'capitalize'
+    textTransform: "capitalize",
   },
   dateSection: {
     width: "100%",

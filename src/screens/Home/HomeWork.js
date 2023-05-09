@@ -34,7 +34,7 @@ const HomeWork = () => {
       <View style={{ height: SIZES.header - SIZES.base }}></View>
       <View style={styles.headerBottom}>
         <View style={styles.calendar}>
-          <Calendar onSelectDate={setSelectedDate} selected={selectedDate} />
+          {/* <Calendar onSelectDate={setSelectedDate} selected={selectedDate} /> */}
         </View>
       </View>
 

@@ -5,15 +5,15 @@ import Button from "./Button";
 
 import { useNavigation } from "@react-navigation/native";
 
-const DetailCalendar = ({showDetailLesson}) => {
+const DetailCalendar = ({showDetailLesson, selectedSession}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.className}>Lớp - TC9.1</Text>
-        <Text style={styles.class}>Thời gian: 8:00 - 9:00</Text>
-        <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
-        <Text style={styles.class}>Thứ 3: 04/04/2023</Text>
+        <Text style={styles.className}>Lớp - {selectedSession?.class}</Text>
+        <Text style={styles.class}>Thời gian: {selectedSession?.time}</Text>
+        <Text style={styles.class}>Giáo viên: {selectedSession?.teacher}</Text>
+        <Text style={styles.class}>{selectedSession?.day}: {selectedSession?.formated_date}</Text>
       </View>
       <View style={[styles.content, styles.buttons]}>
         <View style={styles.button}>
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
-    elevation: 5,
+    elevation: 4,
     shadowColor: "gray",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowRadius: 4,
   },
   content: {
     padding: 14,
@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: "row",
     justifyContent: 'space-between'
-    // gap: SIZES.padding
   },
   button: {
     width: "45%",

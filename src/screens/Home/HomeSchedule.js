@@ -22,44 +22,47 @@ import Spacer from "../../components/Spacer";
 import SimpleModal from "../../components/SimpleModal";
 import axios from "axios";
 
+//redux
+import { session_week } from "../../redux/actions/sessionActions";
+
 const HomeSchedule = () => {
   const { user, authToken } = useSelector((state) => state.authReducer);
+  const [sessionWeek, setSessionWeek] = useState([]);
+  const [sessionWeekFilter, setSessionWeekFilter] = useState([]);
   const [selectedDate, setSelectedDate] = useState();
-  // const [selectedDate, setSelectedDate] = useState("2023-05-11");
   const [selectedLesson, setSelectedLesson] = useState(false);
-  const [dataSessionWeek, setDataSessionWeek] = useState([]);
-  const [selectedDateWeek, setSelectedDateWeek] = useState([]);
+  const [dateWeek, setDateWeek] = useState([]);
+  const [selectedSession, setSelectedSession] = useState()
 
- 
-
-  useEffect(() => {
-    axios
-      .post(
-        BASE_URL + "session-week",
-        { parent_id: user?.id },
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: "Bearer " + authToken,
-          },
-        }
-      )
-      .then((res) => setDataSessionWeek(res.data))
-      .catch((err) => console.error(err));
-  }, [user]);
+  const dispatch = useDispatch();
+  const { data } = useSelector((state) => state.sessionReducer);
 
   useEffect(() => {
-    // const dates = dataSessionWeek.map(item => item.date);
-    // setSelectedDateWeek(dates)
-    dataSessionWeek.map((item) => {
-      setSelectedDateWeek([...selectedDateWeek, item?.date]);
-    });
-  }, [dataSessionWeek]);
- console.log('setSelectedDateWeek', selectedDateWeek)
+    dispatch(session_week(user?.id));
+  }, [dispatch]);
 
-  const showDetailLesson = () => {
-    setSelectedLesson(!selectedLesson);
+  useEffect(() => {
+    const dates = data.map((item) => item.date);
+    setDateWeek(dates);
+  }, [data]);
+
+  useEffect(() => {
+    setSessionWeek(data);
+    setSessionWeekFilter(data);
+  }, [data]);
+
+  const selectSessionDate = (date) => {
+    setSelectedDate(date);
+    const data = sessionWeek.filter((item) => item.date == date);
+    setSessionWeekFilter(data);
   };
+  const showDetailLesson = (data) => {
+    setSelectedSession(data)
+    setSelectedLesson(!selectedLesson);
+
+  };
+
+  // console.log('selectedDate', selectedDate)
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -68,27 +71,38 @@ const HomeSchedule = () => {
       <View style={{ height: SIZES.header - SIZES.base }}></View>
       <View style={styles.headerBottom}>
         <View style={styles.calendar}>
-          <Calendar onSelectDate={setSelectedDate} selected={selectedDate} />
+          <Calendar
+            selectSessionDate={selectSessionDate}
+            selected={selectedDate}
+            dateWeek={dateWeek}
+          />
         </View>
       </View>
 
       <View style={styles.container}>
-        {dataSessionWeek.map((item, i) => {
-          return (
-            <LessonCalendar
-            key={i}
-              showDetailLesson={showDetailLesson}
-              item={item}
-              index={i}
-            />
-          );
-        })}
+        {sessionWeekFilter.length > 0 ? (
+          sessionWeekFilter.map((item, i) => {
+            return (
+              <LessonCalendar
+                showDetailLesson={showDetailLesson}
+                item={item}
+                index={i}
+              />
+            );
+          })
+        ) : (
+          <View>
+            <Spacer />
+            <Text>Không có lịch học ngày {selectedDate}</Text>
+          </View>
+        )}
 
         {/* <DetailCalendar/> */}
         {selectedLesson && (
           <SimpleModal
             showDetailLesson={showDetailLesson}
             selectedLesson={selectedLesson}
+            selectedSession={selectedSession}
           />
         )}
       </View>
