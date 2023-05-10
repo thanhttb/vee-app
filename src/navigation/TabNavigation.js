@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from "@expo/vector-icons";
 
 import { COLORS } from "../utils/theme";
 import { Image } from "react-native";
@@ -20,6 +20,8 @@ import ProfileChange from "../screens/Profile/ProfileChange";
 import HomeLeave from "../screens/Home/HomeLeave";
 import HomeTutoring from "../screens/Home/HomeTutoring";
 import HomeWorkDetail from "../screens/Home/HomeWorkDetail";
+import HomeSituation from "../screens/Home/HomeSituation";
+import HomeDetailTution from "../screens/Home/HomeDetailTution";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -48,6 +50,20 @@ const HomeStack = () => {
         })}
       />
       <Stack.Screen
+        name="Tình hình học tập"
+        component={HomeSituation}
+        options={({ route }) => ({
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
+      <Stack.Screen
         name="Bài tập về nhà"
         component={HomeWorkStack}
         options={({ route }) => ({
@@ -59,7 +75,8 @@ const HomeStack = () => {
             fontWeight: "bold",
           },
 
-          unmountOnBlur: true, headerShown: false
+          unmountOnBlur: true,
+          headerShown: false,
         })}
       />
       <Stack.Screen
@@ -74,6 +91,23 @@ const HomeStack = () => {
             fontWeight: "bold",
           },
           // unmountOnBlur: true, headerShown: false
+        })}
+      />
+
+      <Stack.Screen
+        name="Chi tiết học phí"
+        component={HomeDetailTution}
+        options={({ route }) => ({
+          dataItem: {
+            id: route.params?.id,
+          },
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         })}
       />
 
@@ -103,7 +137,6 @@ const HomeStack = () => {
           },
           headerStyle: {
             backgroundColor: COLORS.green,
-            
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -117,10 +150,10 @@ const HomeStack = () => {
         component={HomeSchedule}
         options={({ route }) => ({
           headerStyle: {
-            backgroundColor: COLORS.green
+            backgroundColor: COLORS.green,
           },
           headerTintColor: "#fff",
-          
+
           headerTitleStyle: {
             fontWeight: "bold",
           },
@@ -182,27 +215,33 @@ const ProfileStack = () => {
   );
 };
 
-const HomeWorkStack = ({navigation}) => {
+const HomeWorkStack = ({ navigation }) => {
   return (
-    <Stack.Navigator options={{unmountOnBlur: true, headerShown: false}}>
+    <Stack.Navigator options={{ unmountOnBlur: true, headerShown: false }}>
       <Stack.Screen
-        
         name="Bài tập về nhà"
         component={HomeWork}
         options={({ route }) => ({
           headerStyle: {
-            backgroundColor: COLORS.green
+            backgroundColor: COLORS.green,
           },
           headerTintColor: "#fff",
-          
+
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          unmountOnBlur: true, headerShown: true,
-          headerLeft: () => <Ionicons name="chevron-back" size={24} color="white" onPress={() => navigation.navigate("Trang chính")}/>
+          unmountOnBlur: true,
+          headerShown: true,
+          headerLeft: () => (
+            <Ionicons
+              name="chevron-back"
+              size={24}
+              color="white"
+              onPress={() => navigation.navigate("Trang chính")}
+            />
+          ),
         })}
         // options={{ unmountOnBlur: true, headerShown: false }}
-        
       />
       <Stack.Screen
         name="Bài tập về nhà chi tiết"
@@ -211,7 +250,8 @@ const HomeWorkStack = ({navigation}) => {
           dataItem: {
             id: route.params?.id,
           },
-          unmountOnBlur: true, headerShown: true,
+          unmountOnBlur: true,
+          headerShown: true,
           headerStyle: {
             backgroundColor: COLORS.green,
           },
@@ -235,10 +275,9 @@ const HomeWorkStack = ({navigation}) => {
           },
         })}
       />
-    
     </Stack.Navigator>
   );
-}
+};
 
 const TabNavigation = () => {
   return (
@@ -297,10 +336,10 @@ const TabNavigation = () => {
         options={({ route }) => ({
           // headerShown: false,
           headerStyle: {
-            backgroundColor: COLORS.green
+            backgroundColor: COLORS.green,
           },
           headerTintColor: "#fff",
-          
+
           headerTitleStyle: {
             fontWeight: "bold",
           },

@@ -9,106 +9,206 @@ import {
   ScrollView,
   FlatList,
   Image,
+  Button,
+  Linking
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
+import * as Clipboard from "expo-clipboard";
+import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
+import Toast, {DURATION} from 'react-native-easy-toast'
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
-
+const data = [
+  {
+    id: 1,
+    title: "Nguyễn Văn A lớp TC9.1 học phí thu học phí môn Toán",
+    time: "04/05/2023",
+    money: 4500000,
+  },
+  {
+    id: 2,
+    title: "Nguyễn Văn B lớp TC9.1 học phí thu",
+    time: "04/05/2023",
+    money: -2500000,
+  },
+  {
+    id: 2,
+    title: "Nguyễn Văn B lớp TC9.1 học phí thu",
+    time: "04/05/2023",
+    money: 2500000,
+  },
+  {
+    id: 2,
+    title: "Nguyễn Văn B lớp TC9.1 học phí thu",
+    time: "04/05/2023",
+    money: 2500000,
+  },
+  {
+    id: 2,
+    title: "Nguyễn Văn B lớp TC9.1 học phí thu",
+    time: "04/05/2023",
+    money: 2500000,
+  },
+  {
+    id: 2,
+    title: "Nguyễn Văn B lớp TC9.1 học phí thu",
+    time: "04/05/2023",
+    money: 2500000,
+  },
+];
 const HomeTuition = () => {
+  const navigation = useNavigation();
+  const copyToClipboard = async (data) => {
+    await Clipboard.setStringAsync(data);
+  };
+
+  const money = 123456789;
+  const config = {
+    style: "currency",
+    currency: "VND",
+    maximumFractionDigits: 9,
+  };
+  const formated = new Intl.NumberFormat("vi-VN", config).format(money);
+
+  const VerticalStatistical = ({ item }) => {
+    const config = {
+      style: "currency",
+      currency: "VND",
+      maximumFractionDigits: 9,
+    };
+    const formated = new Intl.NumberFormat("vi-VN", config).format(item.money);
+    return (
+      <View
+        style={{
+          borderBottomWidth: 1,
+          borderBottomColor: "#EDEFF1",
+          width: "100%",
+        }}
+      >
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Chi tiết học phí", {
+              id: 1,
+            })
+          }
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              padding: SIZES.padding,
+            }}
+          >
+            <View style={{ width: "65%" }}>
+              <Text numberOfLines={1} ellipsizeMode="tail">
+                {item.title}
+              </Text>
+              <Text style={{ fontSize: 12, color: COLORS.gray, paddingTop: 2 }}>
+                {item.time}
+              </Text>
+            </View>
+            <View>
+              <Text style={item.money > 0 ? {color: '#005AA9'} : {color : 'red'} }>{formated}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <View style={styles.header}>
-        {/* <Text style={styles.textHeader}>Học phí</Text> */}
-      </View>
 
       <View style={styles.container}>
-        <ScrollView
-          style={{
-            flex: 1,
-          }}
+        {/* Tổng tiền  */}
+        <LinearGradient
+          style={styles.containerSum}
+          colors={["rgba(116, 208, 104, 1)", "rgba(8, 225, 174, 0.5)"]}
+          start={{ x: 0.35, y: 0.2 }}
+          end={{ x: 1, y: 1 }}
         >
-          <View style={styles.containerMonth}>
-            <View style={styles.headerMonth}>
-              <Text style={[styles.headerText, { width: "30%" }]}>Tháng 3</Text>
-              <Text style={styles.headerText}>Nội dung</Text>
+          <View style={styles.sumTop}>
+            <View style={styles.sumTopLeft}>
+              <Text style={styles.textSum}>Số tiền cần đóng</Text>
+              <Text style={[styles.textSum, { fontSize: 24, fontWeight: 500 }]}>
+                {formated}
+              </Text>
             </View>
-            <View style={styles.contentMonth}>
-              <Text style={styles.contentDate}>26/3/2023</Text>
-              <View style={styles.contentDetail}>
-                <Text>Tổng số tiền học phí tháng 04-2023: 480.000đ</Text>
-                <View style={styles.contentDetailText}>
-                  <Text style={styles.contentText}>
-                    <View
-                      style={styles.dotText}
-                    ></View>
-                    <View
-                      style={{
-                        width: 4,
-                        height: 4,
-                      }}
-                    ></View>
-                    Học phí lớp TC5.5 tháng 04-2023: 120.000đ
-                  </Text>
-                  <Text style={styles.contentText}>
-                  <View
-                      style={styles.dotText}
-                    ></View>
-                    <View
-                      style={{
-                        width: 4,
-                        height: 4,
-                      }}
-                    ></View>
-                    Học phí lớp TC6.5 tháng 04-2023: 320.000đ
-                  </Text>
-                </View>
-                <Text style={styles.status}>Tình trạng: Đã đóng học phí</Text>
-              </View>
-            </View>
-          </View>
 
-          <View style={styles.containerMonth}>
-            <View style={styles.headerMonth}>
-              <Text style={[styles.headerText, { width: "30%" }]}>Tháng 3</Text>
-              <Text style={styles.headerText}>Nội dung</Text>
-            </View>
-            <View style={styles.contentMonth}>
-              <Text style={styles.contentDate}>26/3/2023</Text>
-              <View style={styles.contentDetail}>
-                <Text>Tổng số tiền học phí tháng 04-2023: 480.000đ</Text>
-                <View style={styles.contentDetailText}>
-                  <Text style={styles.contentText}>
-                    <View
-                      style={styles.dotText}
-                    ></View>
-                    <View
-                      style={{
-                        width: 4,
-                        height: 4,
-                      }}
-                    ></View>
-                    Học phí lớp TC5.5 tháng 04-2023: 120.000đ
-                  </Text>
-                  <Text style={styles.contentText}>
-                  <View
-                      style={styles.dotText}
-                    ></View>
-                    <View
-                      style={{
-                        width: 4,
-                        height: 4,
-                      }}
-                    ></View>
-                    Học phí lớp TC6.5 tháng 04-2023: 320.000đ
-                  </Text>
-                </View>
-                <Text style={styles.status}>Tình trạng: Đã đóng học phí</Text>
-              </View>
+            <View style={styles.sumTopRight}>
+              <Text style={styles.textSum}>Hạn thanh toán</Text>
+              <Text style={[styles.textSum, { textAlign: "right" }]}>
+                15/06/2023
+              </Text>
             </View>
           </View>
-        </ScrollView>
+          <Text style={[styles.textSum, { fontSize: 10}]}>
+            Mọi thắc mắc vui lòng liên hệ theo số Hotline  
+            <TouchableOpacity onPress={()=>{
+                  Linking.openURL('tel:02473065565')
+                }}>
+                  <Text  style={styles.textPhone}>
+                   024.730.65565 <Feather name="copy" size={10} color="white" />
+                  </Text>
+                </TouchableOpacity>
+          </Text>
+        </LinearGradient>
+
+        {/* Thông tin chuyển khoản  */}
+        <View style={styles.containerInfo}>
+          <Text style={styles.title}>Thông tin chuyển khoản</Text>
+          <View style={styles.viewComponent}>
+            <View style={styles.viewInfoLeft}>
+              <View style={{ flexDirection: "column", gap: 10, marginTop: 4 }}>
+                <Text style={styles.textInfoLeft}>Ngân hàng</Text>
+                <Text style={styles.textInfoLeft}>Số tài khoản</Text>
+                <Text style={styles.textInfoLeft}>Chủ tài khoản</Text>
+              </View>
+              <View style={{ flexDirection: "column", gap: 10, marginTop: 4 }}>
+                <Text style={styles.textInfoRight}>ACB</Text>
+                <TouchableOpacity onPress={()=>{
+                  copyToClipboard("12479287484"),
+                  this.toast.show('Copy thành công',1500)
+                }} on>
+                  <Text style={styles.textInfoRight}>
+                    12479287484 <Feather name="copy" size={12} color="black" />
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.textInfoRight}>Phan Việt Anh</Text>
+              </View>
+            </View>
+
+            <View style={styles.viewInfoRight}>
+              <Image source={require("../../../assets/qr_vnpay.jpg")} />
+            </View>
+          </View>
+        </View>
+
+        {/* Bảng thống kê chi tiết  */}
+        <View style={[styles.containerInfo, { flex: 1 }]}>
+          <Text style={styles.title}>Bảng thống kê chi tiết</Text>
+          <View style={[styles.viewComponentStatistical]}>
+            <FlatList
+              data={data}
+              renderItem={({ item }) => <VerticalStatistical item={item} />}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+        </View>
       </View>
+
+      <Toast
+                ref={(toast) => this.toast = toast}
+                style={{backgroundColor:'white'}}
+                position='top'
+                positionValue={30}
+                fadeInDuration={750}
+                fadeOutDuration={1000}
+                opacity={0.8}
+                textStyle={{color:'black'}}
+            />
     </View>
   );
 };
@@ -116,72 +216,71 @@ const HomeTuition = () => {
 export default HomeTuition;
 
 const styles = StyleSheet.create({
-  header: {
-    width: "100%",
-    // height: SIZES.header * 1.2,
-    backgroundColor: COLORS.green,
-  },
-
-  textHeader: {
-    textAlign: "center",
-    fontWeight: 600,
-    fontSize: 18,
-    color: COLORS.white,
-    paddingTop: SIZES.padding,
-  },
   container: {
     backgroundColor: "white",
-    borderRadius: SIZES.radius,
-    elevation: 5,
-    shadowColor: "gray",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
     margin: SIZES.padding,
-    height: SIZES.height - SIZES.header * 4.8,
+    flex: 1,
+    flexDirection: "column",
   },
-  containerMonth: {
-    marginTop: SIZES.padding,
-  },
-  headerMonth: {
-    backgroundColor: "rgba(145, 158, 171, 0.16)",
-    flexDirection: "row",
-    alignItems: "center",
-    height: 40,
-  },
-  headerText: {
-    color: "#212B36",
-    fontSize: SIZES.h14,
-    fontWeight: 600,
-    paddingLeft: SIZES.spacing,
-  },
-  contentMonth: {
+  containerSum: {
+    borderRadius: SIZES.radius,
+    backgroundColor: COLORS.green,
+    height: 104,
+    width: "100%",
     padding: SIZES.spacing,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  sumTop: {
     flexDirection: "row",
+    justifyContent: "space-between",
   },
-  contentDate: {
+  textSum: {
+    color: COLORS.white,
+    fontSize: 15,
+    paddingTop: 2,
+  },
+  textPhone:{ fontSize: 10, paddingTop: 6,paddingLeft: 2, position: 'absolute', top: 8, color:'white' },
+  containerInfo: {
+    marginTop: SIZES.spacing,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 600,
+  },
+  viewComponent: {
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.radius,
+    elevation: 4,
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    height: 106,
+    marginTop: 8,
+    padding: SIZES.base,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  viewComponentStatistical: {
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.radius,
+    elevation: 4,
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    marginTop: 8,
+    flexDirection: "row",
+    flex: 1,
+  },
+  viewInfoLeft: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "60%",
+  },
+  textInfoLeft: {
     color: COLORS.gray,
-    fontSize: SIZES.h14,
-    width: "30%",
-  },
-  contentDetail: {
-    width: "70%",
-    paddingLeft: SIZES.base,
-  },
-  contentDetailText: {
-    paddingLeft: 12,
-    paddingVertical: 8,
-  },
-  dotText: {
-    width: 8,
-    height: 8,
-    borderRadius: 50,
-    backgroundColor: "#00AB55",
-  },
-  contentText: {
-    paddingBottom: 4
-  },
-  status: {
-    color: COLORS.green,
   },
 });

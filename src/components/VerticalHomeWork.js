@@ -15,18 +15,15 @@ const VerticalHomeWork = () => {
     >
       <View style={styles.component}>
         <View style={styles.lesson}>
-          <Text style={styles.lessonText}>1</Text>
+          <Text style={styles.lessonText}></Text>
         </View>
 
         <View style={styles.container}>
-          <Text style={styles.className}>Lớp - TC9.1</Text>
-          <Text style={styles.class}>Thời gian: 8:00 - 9:00</Text>
+          <Text style={styles.className}>Thứ 3, 03/03/2023</Text>
+          <Text style={styles.class} numberOfLines={1} ellipsizeMode="tail">Ca 1: Luyện tập các bài tập hình học nâng cao trang 5</Text>
           <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
         </View>
 
-        <View style={styles.date}>
-          <Text style={styles.class}>Thứ 3, 03/03/2023</Text>
-        </View>
       </View>
     </TouchableOpacity>
   );
@@ -39,18 +36,18 @@ const styles = StyleSheet.create({
     marginTop: SIZES.padding,
     backgroundColor: "white",
     borderRadius: SIZES.radius,
-    elevation: 5,
+    elevation: 4,
     shadowColor: "gray",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowRadius: 4,
     display: "flex",
     flexDirection: "row",
     paddingVertical: SIZES.padding,
   },
   lesson: {
     width: "8%",
-    backgroundColor: "#D9D9D9",
+    backgroundColor: COLORS.green,
     height: 16,
     paddingLeft: "4%",
     borderTopRightRadius: SIZES.spacing,
@@ -63,11 +60,9 @@ const styles = StyleSheet.create({
   },
   container: {
     borderRadius: SIZES.radius,
-    width: "50%",
-    marginLeft: SIZES.spacing,
-  },
-  date: {
-    width: "40%",
+    width: "100%",
+    paddingHorizontal: SIZES.spacing,
+    flex:1,
   },
   content: {
     padding: 14,
@@ -79,6 +74,6 @@ const styles = StyleSheet.create({
   class: {
     fontSize: SIZES.h14,
     color: COLORS.gray,
-    paddingVertical: 2,
+    paddingTop: 4,
   },
 });

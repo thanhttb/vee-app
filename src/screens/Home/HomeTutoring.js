@@ -25,6 +25,7 @@ import Button from "../../components/Button";
 import { COLORS, SIZES } from "../../utils/theme";
 
 const types = ["Check In", "Thông báo", "Câu hỏi"];
+
 const HomeTutoring = ({ route, navigation }) => {
   const { id } = route.params;
   const [type, setType] = useState(1);

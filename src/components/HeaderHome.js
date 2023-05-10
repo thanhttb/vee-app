@@ -31,11 +31,12 @@ const HeaderHome = ({
   headerWidth,
   headerHeight,
 }) => {
-  
   const navigation = useNavigation();
   return (
     <View style={styles.header}>
-      <Animated.View style={[styles.upperHeader, {height: headerHeight}]}></Animated.View>
+      <Animated.View
+        style={[styles.upperHeader, { height: headerHeight }]}
+      ></Animated.View>
       <View style={styles.lowerHeader}>
         <Animated.View style={[styles.feature, depositViewAnimation]}>
           <TouchableOpacity onPressIn={() => navigation.navigate("Lịch học")}>
@@ -46,25 +47,34 @@ const HeaderHome = ({
           </TouchableOpacity>
           <Animated.Text
             numberOfLines={2}
-            style={[styles.featureName, featureIconCircleAnimation, {height: headerWidth}]}
+            style={[
+              styles.featureName,
+              featureIconCircleAnimation,
+              { height: headerWidth },
+            ]}
           >
             Lịch học
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.feature, withdrawViewAnimation]}>
-          <Animated.Image
-            source={require("../../assets/icon-home/hoc-tap.jpg")}
-            style={[styles.bellIco]}
-          />
-
+          <TouchableOpacity onPressIn={() => navigation.navigate("Tình hình học tập")}>
+            <Animated.Image
+              source={require("../../assets/icon-home/hoc-tap.jpg")}
+              style={[styles.bellIco]}
+            />
+          </TouchableOpacity>
           <Animated.Text
             numberOfLines={2}
-            style={[styles.featureName, featureNameAnimation, {height: headerWidth}]}
+            style={[
+              styles.featureName,
+              featureNameAnimation,
+              { height: headerWidth },
+            ]}
           >
             Tình hình học tập
           </Animated.Text>
         </Animated.View>
-        
+
         <Animated.View style={[styles.feature, scanViewAnimation]}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Bài tập về nhà")}
@@ -77,7 +87,11 @@ const HeaderHome = ({
 
           <Animated.Text
             numberOfLines={2}
-            style={[styles.featureName, homeworkIconAnimation, {height: headerWidth}]}
+            style={[
+              styles.featureName,
+              homeworkIconAnimation,
+              { height: headerWidth },
+            ]}
           >
             Bài tập về nhà
           </Animated.Text>
@@ -92,7 +106,11 @@ const HeaderHome = ({
 
           <Animated.Text
             numberOfLines={2}
-            style={[styles.featureName, featureIconAnimation, {height: headerWidth}]}
+            style={[
+              styles.featureName,
+              featureIconAnimation,
+              { height: headerWidth },
+            ]}
           >
             Học phí
           </Animated.Text>
@@ -113,7 +131,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   upperHeader: {
-    height: UPPER_HEADER_HEIGHT *2.5,
+    height: UPPER_HEADER_HEIGHT * 2.5,
     zIndex: 1,
   },
   upperHeader_2: {
@@ -136,7 +154,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     zIndex: 1,
-    borderRadius: 50
+    borderRadius: 50,
   },
   bellIcon: {
     position: "absolute",
@@ -150,6 +168,6 @@ const styles = StyleSheet.create({
     color: "white",
     marginVertical: 3,
     textAlign: "center",
-    height: 28
+    height: 28,
   },
 });
