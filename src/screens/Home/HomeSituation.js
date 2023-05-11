@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-import { View, StyleSheet, StatusBar } from "react-native";
+import { View, StyleSheet, StatusBar, Text, FlatList } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
 //components
-import VerticalHomeWork from "../../components/VerticalHomeWork";
+import VerticalHomeSituation from "../../components/VerticalHomeSituation";
 
-const types = ["Lớp TC9.1 - Năm học 2023-2024", "Lớp TC9.2 - Năm học 2023-2024", "Lớp TC9.3 - Năm học 2023-2024"];
+const types = [
+  "Lớp TC9.1 - Năm học 2023-2024",
+  "Lớp TC9.2 - Năm học 2023-2024",
+  "Lớp TC9.3 - Năm học 2023-2024",
+];
 const HomeSituation = () => {
-    const [type, setType] = useState(1);
+  const [type, setType] = useState(1);
+  const data = [1, 1, 2, 3];
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
@@ -45,10 +50,37 @@ const HomeSituation = () => {
           }}
         />
 
-        <VerticalHomeWork />
-        <VerticalHomeWork />
-        <VerticalHomeWork />
+        <View style={styles.buttons}>
+          <View
+            style={{
+              backgroundColor: COLORS.green,
+              borderRadius: SIZES.radius,
+            }}
+          >
+            <Text style={styles.textButton}>Chính khóa</Text>
+          </View>
+          <View
+            style={{ backgroundColor: COLORS.blue, borderRadius: SIZES.radius }}
+          >
+            <Text style={styles.textButton}>Phụ đạo</Text>
+          </View>
+          <View
+            style={{ backgroundColor: COLORS.red, borderRadius: SIZES.radius }}
+          >
+            <Text style={styles.textButton}>Kiểm tra định kỳ</Text>
+          </View>
+        </View>
+
+        
       </View>
+      <View style={styles.components}>
+          <FlatList
+            style={{ padding: SIZES.padding, marginTop: SIZES.spacing}}
+            data={data}
+            renderItem={(item) => <VerticalHomeSituation item={item} />}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
     </View>
   );
 };
@@ -69,4 +101,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 0.7,
   },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: SIZES.padding,
+  },
+  textButton: { color: "white", paddingHorizontal: 20, paddingVertical: 10 },
+  components: {flex: 1, paddingBottom: SIZES.padding}
 });

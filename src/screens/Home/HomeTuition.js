@@ -10,13 +10,13 @@ import {
   FlatList,
   Image,
   Button,
-  Linking
+  Linking,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
-import Toast, {DURATION} from 'react-native-easy-toast'
+import Toast, { DURATION } from "react-native-easy-toast";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
 const data = [
@@ -109,7 +109,11 @@ const HomeTuition = () => {
               </Text>
             </View>
             <View>
-              <Text style={item.money > 0 ? {color: '#005AA9'} : {color : 'red'} }>{formated}</Text>
+              <Text
+                style={item.money > 0 ? { color: "#005AA9" } : { color: "red" }}
+              >
+                {formated}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -144,15 +148,17 @@ const HomeTuition = () => {
               </Text>
             </View>
           </View>
-          <Text style={[styles.textSum, { fontSize: 10}]}>
-            Mọi thắc mắc vui lòng liên hệ theo số Hotline  
-            <TouchableOpacity onPress={()=>{
-                  Linking.openURL('tel:02473065565')
-                }}>
-                  <Text  style={styles.textPhone}>
-                   024.730.65565 <Feather name="copy" size={10} color="white" />
-                  </Text>
-                </TouchableOpacity>
+          <Text style={[styles.textSum, { fontSize: 10 }]}>
+            Mọi thắc mắc vui lòng liên hệ theo số Hotline
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("tel:02473065565");
+              }}
+            >
+              <Text style={styles.textPhone}>
+                024.730.65565 <Feather name="copy" size={10} color="white" />
+              </Text>
+            </TouchableOpacity>
           </Text>
         </LinearGradient>
 
@@ -168,10 +174,13 @@ const HomeTuition = () => {
               </View>
               <View style={{ flexDirection: "column", gap: 10, marginTop: 4 }}>
                 <Text style={styles.textInfoRight}>ACB</Text>
-                <TouchableOpacity onPress={()=>{
-                  copyToClipboard("12479287484"),
-                  this.toast.show('Copy thành công',1500)
-                }} on>
+                <TouchableOpacity
+                  onPress={() => {
+                    copyToClipboard("12479287484"),
+                      this.toast.show("Copy thành công", 1500);
+                  }}
+                  on
+                >
                   <Text style={styles.textInfoRight}>
                     12479287484 <Feather name="copy" size={12} color="black" />
                   </Text>
@@ -200,15 +209,15 @@ const HomeTuition = () => {
       </View>
 
       <Toast
-                ref={(toast) => this.toast = toast}
-                style={{backgroundColor:'white'}}
-                position='top'
-                positionValue={30}
-                fadeInDuration={750}
-                fadeOutDuration={1000}
-                opacity={0.8}
-                textStyle={{color:'black'}}
-            />
+        ref={(toast) => (this.toast = toast)}
+        style={{ backgroundColor: "white" }}
+        position="top"
+        positionValue={30}
+        fadeInDuration={750}
+        fadeOutDuration={1000}
+        opacity={0.8}
+        textStyle={{ color: "black" }}
+      />
     </View>
   );
 };
@@ -240,7 +249,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingTop: 2,
   },
-  textPhone:{ fontSize: 10, paddingTop: 6,paddingLeft: 2, position: 'absolute', top: 8, color:'white' },
+  textPhone: {
+    fontSize: 10,
+    paddingTop: 6,
+    paddingLeft: 2,
+    position: "absolute",
+    top: 8,
+    color: "white",
+  },
   containerInfo: {
     marginTop: SIZES.spacing,
   },

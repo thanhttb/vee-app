@@ -6,6 +6,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 const VerticalHomeWork = ({item}) => {
   const navigation = useNavigation();
+  console.log('item', item)
   return (
     <View style={styles.component}>
       <View style={[styles.lesson, 
