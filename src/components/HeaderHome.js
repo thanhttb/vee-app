@@ -77,7 +77,7 @@ const HeaderHome = ({
 
         <Animated.View style={[styles.feature, scanViewAnimation]}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Bài tập về nhà")}
+            onPress={() => navigation.navigate("Tư liệu buổi học")}
           >
             <Animated.Image
               source={require("../../assets/icon-home/btvn.jpg")}
@@ -93,7 +93,7 @@ const HeaderHome = ({
               { height: headerWidth },
             ]}
           >
-            Bài tập về nhà
+            Tư liệu buổi học
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.feature, qrViewAnimation]}>

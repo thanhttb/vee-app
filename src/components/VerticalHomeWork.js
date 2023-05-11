@@ -1,31 +1,46 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { COLORS, SIZES } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
-const VerticalHomeWork = () => {
+const VerticalHomeWork = ({item}) => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("Bài tập về nhà chi tiết", {
-          id: 1,
-        })
-      }
-    >
-      <View style={styles.component}>
-        <View style={styles.lesson}>
-          <Text style={styles.lessonText}></Text>
-        </View>
+    <View style={styles.component}>
+      <View style={[styles.lesson, 
+        item.item == 1 && {backgroundColor: COLORS.green}, 
+        item.item == 2 && {backgroundColor: COLORS.red},
+        item.item == 3 && {backgroundColor: COLORS.blue}  ]}>
+      </View>
 
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <View style={{ width: "75%" }}>
           <Text style={styles.className}>Thứ 3, 03/03/2023</Text>
-          <Text style={styles.class} numberOfLines={1} ellipsizeMode="tail">Ca 1: Luyện tập các bài tập hình học nâng cao trang 5</Text>
+          <Text style={styles.class} numberOfLines={1} ellipsizeMode="tail">
+            Ca 1: Luyện tập các bài tập hình học nâng cao trang 5
+          </Text>
           <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
         </View>
-
+        <View
+          style={{
+            width: "25%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Tư liệu buổi học chi tiết", {
+                id: 1,
+              })
+            }
+          >
+            <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
+          </TouchableOpacity>
+        </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -33,7 +48,8 @@ export default VerticalHomeWork;
 
 const styles = StyleSheet.create({
   component: {
-    marginTop: SIZES.padding,
+    marginHorizontal: SIZES.padding,
+    marginVertical: SIZES.spacing,
     backgroundColor: "white",
     borderRadius: SIZES.radius,
     elevation: 4,
@@ -47,7 +63,6 @@ const styles = StyleSheet.create({
   },
   lesson: {
     width: "8%",
-    backgroundColor: COLORS.green,
     height: 16,
     paddingLeft: "4%",
     borderTopRightRadius: SIZES.spacing,
@@ -62,7 +77,8 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.radius,
     width: "100%",
     paddingHorizontal: SIZES.spacing,
-    flex:1,
+    flex: 1,
+    flexDirection: "row",
   },
   content: {
     padding: 14,
