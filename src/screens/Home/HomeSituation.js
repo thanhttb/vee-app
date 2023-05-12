@@ -75,7 +75,7 @@ const HomeSituation = () => {
       </View>
       <View style={styles.components}>
           <FlatList
-            style={{ padding: SIZES.padding, marginTop: SIZES.spacing}}
+            style={{ padding: SIZES.padding}}
             data={data}
             renderItem={(item) => <VerticalHomeSituation item={item} />}
             keyExtractor={(item, index) => index.toString()}
@@ -107,5 +107,5 @@ const styles = StyleSheet.create({
     marginTop: SIZES.padding,
   },
   textButton: { color: "white", paddingHorizontal: 20, paddingVertical: 10 },
-  components: {flex: 1, paddingBottom: SIZES.padding}
+  components: {flex: 1}
 });

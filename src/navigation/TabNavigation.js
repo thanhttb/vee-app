@@ -22,6 +22,7 @@ import HomeTutoring from "../screens/Home/HomeTutoring";
 import HomeWorkDetail from "../screens/Home/HomeWorkDetail";
 import HomeSituation from "../screens/Home/HomeSituation";
 import HomeDetailTution from "../screens/Home/HomeDetailTution";
+import HomeDetailSituation from "../screens/Home/HomeDetailSituation";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,6 +64,26 @@ const HomeStack = () => {
           },
         })}
       />
+
+      <Stack.Screen
+        name="Tình hình học tập chi tiết"
+        component={HomeDetailSituation}
+        options={({ route }) => ({
+          dataItem: {
+            id: route.params?.id,
+          },
+          unmountOnBlur: true,
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
+
       <Stack.Screen
         name="Tư liệu buổi học"
         component={HomeWork}
@@ -232,7 +253,6 @@ const ProfileStack = () => {
     </Stack.Navigator>
   );
 };
-
 
 const TabNavigation = () => {
   return (

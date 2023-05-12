@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { COLORS, SIZES } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
@@ -54,7 +54,11 @@ const VerticalHomeSituation = () => {
         </Text>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() =>
+              navigation.navigate("Tình hình học tập chi tiết", {
+                id: 1,
+              })
+            }>
         <View
           style={styles.button}
         >
@@ -69,7 +73,7 @@ export default VerticalHomeSituation;
 
 const styles = StyleSheet.create({
   component: {
-    marginBottom: SIZES.spacing,
+    marginBottom: SIZES.padding,
     backgroundColor: "white",
     borderRadius: SIZES.radius,
     elevation: 4,

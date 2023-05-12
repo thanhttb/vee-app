@@ -3,17 +3,21 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { COLORS, SIZES } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
+// import Pdf from "react-native-pdf";
 
-const VerticalHomeWork = ({item}) => {
+
+const VerticalHomeWork = ({ item ,setShow, show}) => {
   const navigation = useNavigation();
-  console.log('item', item)
   return (
     <View style={styles.component}>
-      <View style={[styles.lesson, 
-        item.item == 1 && {backgroundColor: COLORS.green}, 
-        item.item == 2 && {backgroundColor: COLORS.red},
-        item.item == 3 && {backgroundColor: COLORS.blue}  ]}>
-      </View>
+      <View
+        style={[
+          styles.lesson,
+          item.item == 1 && { backgroundColor: COLORS.green },
+          item.item == 2 && { backgroundColor: COLORS.red },
+          item.item == 3 && { backgroundColor: COLORS.blue },
+        ]}
+      ></View>
 
       <View style={styles.container}>
         <View style={{ width: "75%" }}>
@@ -31,13 +35,15 @@ const VerticalHomeWork = ({item}) => {
           }}
         >
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("Tư liệu buổi học chi tiết", {
-                id: 1,
-              })
-            }
+            // onPress={() =>
+            //   navigation.navigate("Tư liệu buổi học chi tiết", {
+            //     id: 1,
+            //   })
+            // }
+            onPress={()=> setShow(!show)}
           >
-            <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
+          
+          <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
           </TouchableOpacity>
         </View>
       </View>
