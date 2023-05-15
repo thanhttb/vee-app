@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "VEE_APP",
-    "slug": "VEE_APP",
+    "name": "VietElite",
+    "slug": "vietelite-parent-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
@@ -19,6 +19,12 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       }
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "04b3d310-7a3e-493d-80ea-8917e541fd1e"
+      }
+    },
+    "owner": "tranthanhuet"
   }
 }
