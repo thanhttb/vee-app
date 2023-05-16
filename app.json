@@ -1,23 +1,30 @@
 {
   "expo": {
-    "name": "VietElite",
+    "name": "VietElite Students",
     "slug": "vietelite-parent-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
+    "icon": "./assets/fav.png",
     "splash": {
       "resizeMode": "contain",
+      "image": "./assets/splash.png",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "versionCode": 1,
+      "bundleIdentifier": "com.veesoft.vietelitestudents"
     },
     "android": {
+      "package": "com.veesoft.vietelitestudents",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "foregroundColor": "./assets/fav.png"
       }
     },
     "extra": {

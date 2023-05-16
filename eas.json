@@ -1,0 +1,27 @@
+{
+  "cli": {
+    "version": ">= 3.12.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {
+      "ios":{
+        "appleId": "tranthanhuet@gmail.com",
+        "ascAppId": "6449212239",
+        "appleTeamId": "KGW66YB3Q9"
+      },
+      "android": {
+        "serviceAccountKeyPath": "../pc-api-5593317136894639479-758-13c7d39aa0fe.json"
+      }
+    }
+  }
+}
