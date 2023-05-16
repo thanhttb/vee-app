@@ -71,6 +71,7 @@ const HomeStack = () => {
         options={({ route }) => ({
           dataItem: {
             id: route.params?.id,
+            data: route.params?.data
           },
           unmountOnBlur: true,
           headerShown: true,

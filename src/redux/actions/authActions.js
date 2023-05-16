@@ -18,6 +18,7 @@ export const initialize = () => {
         type: type.SET_INITIAL_STATE,
         payload: {
           user: user,
+          classes: user.classes,
           authToken: token,
           isLoggedIn: true,
           error: false,
@@ -55,6 +56,7 @@ export const loginAction = (phone, password) => {
         type: type.SET_LOGIN_STATE,
         payload: {
           user: user,
+          classes: user.classes,
           authToken: access_token,
           isLoggedIn: true,
           error: false,

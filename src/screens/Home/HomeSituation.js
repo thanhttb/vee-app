@@ -1,35 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, StatusBar, Text, FlatList } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import axios from "axios";
+// redux
+import { useNavigation } from "@react-navigation/native";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { listClass } from "../../redux/actions/classActions";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
+import { BASE_URL } from "../../../config";
 //components
 import VerticalHomeSituation from "../../components/VerticalHomeSituation";
+import { TouchableOpacity } from "react-native";
 
-const types = [
-  "Lớp TC9.1 - Năm học 2023-2024",
-  "Lớp TC9.2 - Năm học 2023-2024",
-  "Lớp TC9.3 - Năm học 2023-2024",
-];
 const HomeSituation = () => {
-  const [type, setType] = useState(1);
-  const data = [1, 1, 2, 3];
+  const dispatch = useDispatch();
+  const { user, authToken } = useSelector((state) => state.authReducer);
+  const { classes } = useSelector((state) => state.classReducer);
+  const [selectedItem, setSelectItem] = useState(classes?.length > 0 ? classes[0].id : -1);
+  const [defaultValue, setDefaultValue] = useState(classes?.length > 0 ? classes[0] : null);
+
+  const [data, setData] = useState([]);
+  const [dataFilter, setDataFilter] = useState([]);
+
+  useEffect(() => {
+    dispatch(listClass(user?.id));
+  }, [dispatch]);
+  
+  const filterData = (v) => {
+    const data = dataFilter.filter((item) =>item.type == v);
+    setData(data);
+  }
+
+  useEffect(() => {
+    axios
+      .post(
+        BASE_URL + "sessions",
+        {
+          parent_id: user.id,
+          class_id: selectedItem,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + authToken,
+          },
+        }
+      )
+      .then((response) => {
+        setData(response.data.sessions)
+        setDataFilter(response.data.sessions)
+      })
+      .catch((err) => {});
+  }, [defaultValue,selectedItem]);
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
       <View style={styles.container}>
         <SelectDropdown
-          data={types}
+          data={classes}
           buttonStyle={styles.select}
           dropdownStyle={{
             borderRadius: 8,
           }}
           defaultButtonText={"Chọn lớp học"}
           buttonTextStyle={styles.customText}
-          // defaultValue={types[0]}
+          defaultValue={defaultValue}
+          // defaultValueByIndex={0}
           onSelect={(selectedItem, index) => {
-            setType(index + 1);
+            setSelectItem(selectedItem.id);
           }}
           renderDropdownIcon={(isOpened) => {
             return (
@@ -43,44 +84,57 @@ const HomeSituation = () => {
           }}
           dropdownIconPosition={"right"}
           buttonTextAfterSelection={(selectedItem, index) => {
-            return selectedItem;
+            return `Lớp ${selectedItem.name} - Năm học ${selectedItem.year}`;
           }}
           rowTextForSelection={(item, index) => {
-            return item;
+            return `Lớp ${item.name} - Năm học ${item.year}`;
           }}
         />
 
         <View style={styles.buttons}>
-          <View
+         <TouchableOpacity onPress={()=>filterData('main')}>
+         <View
             style={{
-              backgroundColor: COLORS.green,
               borderRadius: SIZES.radius,
+              borderColor: COLORS.green,
+              borderWidth: 1
             }}
           >
-            <Text style={styles.textButton}>Chính khóa</Text>
+            <Text style={[styles.textButton, {color: COLORS.green}]}>Chính khóa</Text>
           </View>
+         </TouchableOpacity>
+         <TouchableOpacity onPress={()=>filterData('tutor')}>
           <View
-            style={{ backgroundColor: COLORS.blue, borderRadius: SIZES.radius }}
+            style={{
+              borderRadius: SIZES.radius,
+              borderColor: COLORS.blue,
+              borderWidth: 1
+            }}
           >
-            <Text style={styles.textButton}>Phụ đạo</Text>
+            <Text style={[styles.textButton, {color: COLORS.blue}]}>Phụ đạo</Text>
           </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>filterData('exam')}>
           <View
-            style={{ backgroundColor: COLORS.red, borderRadius: SIZES.radius }}
+            style={{
+              borderRadius: SIZES.radius,
+              borderColor: COLORS.red,
+              borderWidth: 1
+            }}
           >
-            <Text style={styles.textButton}>Kiểm tra định kỳ</Text>
+            <Text style={[styles.textButton, {color: COLORS.red}]}>Kiểm tra định kỳ</Text>
           </View>
+          </TouchableOpacity>
         </View>
-
-        
       </View>
       <View style={styles.components}>
-          <FlatList
+        <FlatList
             style={{ padding: SIZES.padding}}
             data={data}
             renderItem={(item) => <VerticalHomeSituation item={item} />}
             keyExtractor={(item, index) => index.toString()}
           />
-        </View>
+      </View>
     </View>
   );
 };
@@ -107,5 +161,5 @@ const styles = StyleSheet.create({
     marginTop: SIZES.padding,
   },
   textButton: { color: "white", paddingHorizontal: 20, paddingVertical: 10 },
-  components: {flex: 1}
+  components: { flex: 1 },
 });

@@ -35,11 +35,6 @@ const VerticalHomeWork = ({ item ,setShow, show}) => {
           }}
         >
           <TouchableOpacity
-            // onPress={() =>
-            //   navigation.navigate("Tư liệu buổi học chi tiết", {
-            //     id: 1,
-            //   })
-            // }
             onPress={()=> setShow(!show)}
           >
           

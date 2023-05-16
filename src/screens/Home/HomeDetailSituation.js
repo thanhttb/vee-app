@@ -10,46 +10,9 @@ import {
 import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome } from "@expo/vector-icons";
 
-const data = [
-  {
-    id: 1,
-    title: "Tài liệu buổi học",
-    description:
-      "Hoàn thành bài 1, 3, 5 trong phiếu Vị trí đường tròn và tiếp tuyến",
-    exam: [
-      {
-        id: 1,
-        title: "Vị trí dường tròn và tiếp truyến",
-        src: "file1.pdf",
-      },
-      {
-        id: 2,
-        title: "File nghe bài nghe 01.mp3",
-        src: "file2.mp3",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Bài tập về nhà",
-    description:
-      "Hoàn thành bài 1, 3, 5 tron phiếu Vị trí đường tròn và tiếp tuyến",
-    exam: [
-      {
-        id: 1,
-        title: "Vị trí dường tròn và tiếp truyến",
-        src: "file1.pdf",
-      },
-      {
-        id: 2,
-        title: "File nghe bài nghe 01.mp3",
-        src: "file2.mp3",
-      },
-    ],
-  },
-];
 
 const VerticalSituation = ({ item }) => {
+  console.log('item', item.item)
   return (
     <View style={{ margin: SIZES.padding }}>
       <Text style={styles.title}>{item.item.title}</Text>
@@ -68,17 +31,37 @@ const VerticalSituation = ({ item }) => {
     </View>
   );
 };
-const HomeDetailSituation = () => {
+const HomeDetailSituation = ({ route, navigation }) => {
+  const { id, data } = route.params;
+  console.log('data', data)
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
-        {/*  */}
-        <FlatList
-        style={{height: '100%'}}
-          data={data}
-          renderItem={(item) => <VerticalSituation item={item} />}
-          keyExtractor={(item, index) => item.id.toString()}
-        />
+         <View style={{ margin: SIZES.padding }}>
+      <Text style={styles.title}>{data.content}</Text>
+
+      <View style={styles.boxs}>
+        {data.documents.map((item, index) => {
+          return (
+            <View style={styles.box} key={index}>
+              <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
+              <Text style={styles.textBox}>{item}</Text>
+            </View>
+          );
+        })}
+      </View>
+
+      <View style={styles.boxs}>
+        {data.exercices.map((item, index) => {
+          return (
+            <View style={styles.box} key={index}>
+              <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
+              <Text style={styles.textBox}>{item}</Text>
+            </View>
+          );
+        })}
+      </View>
+    </View>
       </View>
     </View>
   );
@@ -105,6 +88,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
+    marginTop: 8
   },
   box: {
     padding: SIZES.spacing,

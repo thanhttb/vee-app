@@ -3,6 +3,7 @@ const initialState = {
     authToken: null,
     isLoggedIn: false,
     user: null,
+    classess: null,
     error: false,
 }
 
@@ -13,6 +14,7 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: action.payload.user,
+                classes: action.payload.classes,
                 isLoggedIn: true,
                 authToken: action.payload.authToken,
             }
@@ -20,6 +22,7 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: action.payload.user,
+                classes: action.payload.classes,
                 isLoggedIn: true,
                 authToken: action.payload.authToken,
             }
@@ -27,6 +30,7 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: action.payload.user,
+                classes: action.payload.classes,
                 isLoggedIn: true,
                 authToken: action.payload.authToken,
             }
@@ -34,7 +38,8 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoggedIn: false,
-                user:[],
+                user:null,
+                classes:null,
                 authToken: null,
             }
         case type.SET_LOGIN_FAIL_STATE:

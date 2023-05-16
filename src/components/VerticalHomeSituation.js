@@ -4,27 +4,50 @@ import { COLORS, SIZES } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 
-const VerticalHomeSituation = () => {
+const VerticalHomeSituation = ({ item }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.component}>
       <View style={styles.containerTop}>
         <View style={{ width: "75%" }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.className}>Thứ 3, 03/03/2023 </Text>
-            <View
-              style={{
-                backgroundColor: COLORS.blue,
-                borderRadius: SIZES.radius,
-              }}
-            >
-              <Text style={styles.note}>Phụ đạo</Text>
-            </View>
+            <Text style={styles.className}>{item.item?.date}</Text>
+            {item.item.type == "exam" ? (
+              <View
+                style={{
+                  backgroundColor: COLORS.red,
+                  borderRadius: SIZES.radius,
+                  marginLeft: SIZES.base,
+                }}
+              >
+                <Text style={styles.note}>Kiểm tra định kỳ</Text>
+              </View>
+            ) : item.item.type == "main" ? (
+              <View
+                style={{
+                  backgroundColor: COLORS.green,
+                  borderRadius: SIZES.radius,
+                  marginLeft: SIZES.base,
+                }}
+              >
+                <Text style={styles.note}>Chính khóa</Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  backgroundColor: COLORS.blue,
+                  borderRadius: SIZES.radius,
+                  marginLeft: SIZES.base,
+                }}
+              >
+                <Text style={styles.note}>Phụ đạo</Text>
+              </View>
+            )}
           </View>
           <Text style={styles.class} numberOfLines={1} ellipsizeMode="tail">
-            Ca 1: Luyện tập các bài tập hình học nâng cao trang 5
+            {item.item?.content}
           </Text>
-          <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
+          <Text style={styles.class}>Giáo viên: {item.item?.teacher}</Text>
         </View>
         <View
           style={{
@@ -42,26 +65,26 @@ const VerticalHomeSituation = () => {
 
       <View style={styles.containerBottom}>
         <Text style={styles.classBottom}>
-          Điểm bài tập về nhà: Nguyễn Trung Tấn
+          Điểm bài tập về nhà: {item.item?.btvn_score}
         </Text>
         <Text style={styles.classBottom}>
-          Nhận xét bài tập về nhà: Nguyễn Trung Tấn
+          Nhận xét bài tập về nhà: {item.item?.btvn_comment}
         </Text>
-        <Text style={styles.classBottom}>Điểm trên lớp: Nguyễn Trung Tấn</Text>
         <Text style={styles.classBottom}>
-          Nhận xét: Nội dung buổi học ngày hôm nay không khó, con hoàn toàn có
-          thể theo được. Con chú ý học thuộc lý thuyết và làm bài tập thực hành.
+          Điểm trên lớp: {item.item?.score}
         </Text>
+        <Text style={styles.classBottom}>Nhận xét: {item.item?.comment}.</Text>
       </View>
 
-      <TouchableOpacity onPress={() =>
-              navigation.navigate("Tình hình học tập chi tiết", {
-                id: 1,
-              })
-            }>
-        <View
-          style={styles.button}
-        >
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Tình hình học tập chi tiết", {
+            id: 1,
+            data: item.item
+          })
+        }
+      >
+        <View style={styles.button}>
           <Text style={styles.textButon}>Tài liệu buổi học</Text>
         </View>
       </TouchableOpacity>
@@ -127,6 +150,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     fontSize: 10,
+    // marginLeft: 10
   },
   button: {
     backgroundColor: COLORS.white,
@@ -135,13 +159,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 160,
     margin: 10,
-    alignSelf: 'flex-end'
+    alignSelf: "flex-end",
   },
   textButon: {
     color: "black",
     paddingHorizontal: 20,
     paddingVertical: 10,
     fontSize: 14,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
