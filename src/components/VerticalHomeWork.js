@@ -1,31 +1,32 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, {useState, useEffect} from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image,useWindowDimensions  } from "react-native";
 import { COLORS, SIZES } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
-import { FontAwesome } from "@expo/vector-icons";
-// import Pdf from "react-native-pdf";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Audio } from 'expo-av';
+import * as FileSystem from 'expo-file-system';
 
-
-const VerticalHomeWork = ({ item ,setShow, show}) => {
+const VerticalHomeWork = ({ item ,handleShowModal, show}) => {
   const navigation = useNavigation();
+ 
   return (
     <View style={styles.component}>
       <View
         style={[
           styles.lesson,
-          item.item == 1 && { backgroundColor: COLORS.green },
-          item.item == 2 && { backgroundColor: COLORS.red },
-          item.item == 3 && { backgroundColor: COLORS.blue },
+          item.item.type == 'main' && { backgroundColor: COLORS.green },
+          item.item.type == 'exam' && { backgroundColor: COLORS.red },
+          item.item.type == 'tutor' && { backgroundColor: COLORS.blue },
         ]}
       ></View>
 
       <View style={styles.container}>
         <View style={{ width: "75%" }}>
-          <Text style={styles.className}>Thứ 3, 03/03/2023</Text>
-          <Text style={styles.class} numberOfLines={1} ellipsizeMode="tail">
-            Ca 1: Luyện tập các bài tập hình học nâng cao trang 5
+          <Text style={styles.className}>{item.item.date}</Text>
+          <Text style={styles.class}  ellipsizeMode="tail">
+            {item.item.content}
           </Text>
-          <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
+          <Text style={styles.class}>Giáo viên: {item.item.teacher}</Text>
         </View>
         <View
           style={{
@@ -35,13 +36,15 @@ const VerticalHomeWork = ({ item ,setShow, show}) => {
           }}
         >
           <TouchableOpacity
-            onPress={()=> setShow(!show)}
+            // onPress={()=> setShow(!show)}
+            // onPress={()=>handleShowModal(show)}
           >
           
           <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
           </TouchableOpacity>
         </View>
       </View>
+     
     </View>
   );
 };

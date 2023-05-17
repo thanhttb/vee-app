@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, StatusBar, Text, FlatList } from "react-native";
+import { View, StyleSheet, StatusBar, Text, FlatList,TouchableOpacity } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
@@ -12,7 +12,6 @@ import { COLORS, SIZES } from "../../utils/theme";
 import { BASE_URL } from "../../../config";
 //components
 import VerticalHomeSituation from "../../components/VerticalHomeSituation";
-import { TouchableOpacity } from "react-native";
 
 const HomeSituation = () => {
   const dispatch = useDispatch();

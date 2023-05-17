@@ -250,11 +250,10 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   textPhone: {
-    fontSize: 10,
+    fontSize: 12,
     paddingTop: 6,
     paddingLeft: 2,
-    position: "absolute",
-    top: 8,
+    top: 5,
     color: "white",
   },
   containerInfo: {
