@@ -175,7 +175,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 <View style={styles.buttons}>
                   <Button
                     title={status.isPlaying ? "Pause" : "Play"}
-                    onPress={() =>
+                    onPress={() => 
                       status.isPlaying
                         ? ref.current.pauseAsync()
                         : ref.current.playAsync()
