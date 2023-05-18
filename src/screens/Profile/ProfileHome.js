@@ -6,7 +6,7 @@ import {
   StatusBar,
   StyleSheet,
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -66,7 +66,7 @@ const ProfileHome = () => {
 
       <View style={styles.action}>
         <View style={styles.content}>
-          <TouchableHighlight
+          <TouchableOpacity
             onPress={() => navigation.navigate("Thông tin phụ huynh")}
           >
             <View style={styles.actionPush}>
@@ -82,8 +82,8 @@ const ProfileHome = () => {
                 color="black"
               />
             </View>
-          </TouchableHighlight>
-          <TouchableHighlight
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => navigation.navigate("Thông tin học sinh")}
           >
             <View style={styles.actionPush}>
@@ -99,8 +99,8 @@ const ProfileHome = () => {
                 color="black"
               />
             </View>
-          </TouchableHighlight>
-          <TouchableHighlight
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => navigation.navigate("Đổi mật khẩu")}
           >
             <View style={styles.actionPush}>
@@ -116,9 +116,9 @@ const ProfileHome = () => {
                 color="black"
               />
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
 
-          <TouchableHighlight onPress={logout}>
+          <TouchableOpacity onPress={logout}>
             <View style={styles.actionPush}>
               <Image
                 source={require("../../../assets/Icon-profile/Icon_logout.png")}
@@ -132,7 +132,7 @@ const ProfileHome = () => {
                 color="black"
               />
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

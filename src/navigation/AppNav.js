@@ -61,6 +61,7 @@ const AppNav = () => {
   useEffect(() => {
     
     const dataRes = async () => {
+      console.log('expoPushToken', expoPushToken)
       await axios
         .post(
          BASE_URL+ 'device-token',
@@ -74,7 +75,7 @@ const AppNav = () => {
           },
         )
         .then((response)=> console.log('device-token successfully'))
-        .catch((err)=> console.error('device-token failed'));
+        .catch((err)=> console.error('device-token failed', err));
     };
     dataRes();
   }, [authToken]);
@@ -87,6 +88,10 @@ const AppNav = () => {
   useEffect(() => {
     init()
   }, [])
+
+  // useEffect(() => {
+  //   setTimeout(() => SplashScreen.hideAsync(), 1000);
+  // }, []);
 
   if (loading) {
     return (
