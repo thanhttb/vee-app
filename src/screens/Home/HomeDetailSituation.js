@@ -13,8 +13,7 @@ import {
 import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import PDFReader from "rn-pdf-reader-js";
-import {Audio, Video as OriginalVideo, ResizeMode } from "expo-av";
-
+import { Audio, Video as OriginalVideo, ResizeMode } from "expo-av";
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
 const triggerAudio = async (ref) => {
@@ -48,8 +47,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
       setShow(!show);
     }
   };
-  
-  
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -65,7 +62,11 @@ const HomeDetailSituation = ({ route, navigation }) => {
                   onPress={() => handleShowModal(item)}
                   key={index}
                 >
-                  <View style={styles.box}>
+                  <View 
+                  style={[
+                    styles.box,
+                    index === (data.documents.length - 1) ? styles.lastBox : null,
+                  ]}>
                     <FontAwesome
                       name="folder"
                       size={28}
@@ -81,12 +82,18 @@ const HomeDetailSituation = ({ route, navigation }) => {
           <View style={styles.boxs}>
             {data?.exercices?.map((item, index) => {
               let myArray = item.split("/");
+              console.log('data.exercices.length - 1', index, data.exercices.length - 1)
               return (
                 <TouchableOpacity
                   onPress={() => handleShowModal(item)}
                   key={index}
                 >
-                  <View style={styles.box}>
+                  <View
+                    style={[
+                      styles.box,
+                      index === (data.exercices.length - 1) ? styles.lastBox : null,
+                    ]}
+                  >
                     <FontAwesome
                       name="folder"
                       size={28}
@@ -108,7 +115,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
         onRequestClose={() => {
           console.log("Modal has been closed.");
         }}
-
       >
         {show && (
           <>
@@ -169,13 +175,13 @@ const HomeDetailSituation = ({ route, navigation }) => {
                   resizeMode={ResizeMode.CONTAIN}
                   isLooping
                   onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-                  playsInSilentLockedModeIOS={ true }
-                  ignoreSilentSwitch={'ignore'}
+                  playsInSilentLockedModeIOS={true}
+                  ignoreSilentSwitch={"ignore"}
                 />
                 <View style={styles.buttons}>
                   <Button
                     title={status.isPlaying ? "Pause" : "Play"}
-                    onPress={() => 
+                    onPress={() =>
                       status.isPlaying
                         ? ref.current.pauseAsync()
                         : ref.current.playAsync()
@@ -183,7 +189,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                   />
                 </View>
               </>
-             )}
+            )}
           </>
         )}
       </Modal>
@@ -221,6 +227,13 @@ const styles = StyleSheet.create({
     borderBottomColor: "#EDEFF1",
     borderBottomWidth: 1,
   },
+  lastBox: {
+    padding: SIZES.spacing,
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 0,
+    // backgroundColor: 'red'
+  },
   image: {
     height: 30,
     width: 30,
@@ -234,7 +247,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 320,
     height: 200,
-    marginTop: SIZES.height /4
+    marginTop: SIZES.height / 4,
   },
   buttons: {
     flexDirection: "row",
