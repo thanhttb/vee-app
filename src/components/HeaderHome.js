@@ -38,11 +38,11 @@ const HeaderHome = ({
         style={[styles.upperHeader, { height: headerHeight }]}
       ></Animated.View>
       <View style={styles.lowerHeader}>
-        <Animated.View style={[styles.feature, depositViewAnimation]}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("Lịch học")}>
+        <Animated.View style={[styles.featureSmall, depositViewAnimation]}>
+          <TouchableOpacity onPressIn={() => navigation.navigate("Lịch học")} style={{height: 33}}>
             <Animated.Image
-              source={require("../../assets/icon-home/thong-bao.jpg")}
-              style={[styles.bellIco]}
+              source={require("../../assets/icon-home/bang-tin.png")}
+              style={[styles.bangtin]}
             />
           </TouchableOpacity>
           <Animated.Text
@@ -56,11 +56,11 @@ const HeaderHome = ({
             Lịch học
           </Animated.Text>
         </Animated.View>
-        <Animated.View style={[styles.feature, withdrawViewAnimation]}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("Tình hình học tập")}>
+        <Animated.View style={[styles.featureBig, withdrawViewAnimation]}>
+          <TouchableOpacity onPressIn={() => navigation.navigate("Tình hình học tập")} style={{height: 33,paddingTop:9}}>
             <Animated.Image
-              source={require("../../assets/icon-home/hoc-tap.jpg")}
-              style={[styles.bellIco]}
+              source={require("../../assets/icon-home/thht1.png")}
+              style={[styles.thht]}
             />
           </TouchableOpacity>
           <Animated.Text
@@ -75,18 +75,19 @@ const HeaderHome = ({
           </Animated.Text>
         </Animated.View>
 
-        <Animated.View style={[styles.feature, scanViewAnimation]}>
+        <Animated.View style={[styles.featureBig, scanViewAnimation]}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Tư liệu buổi học")}
+            style={{height: 33,paddingTop:5}}
           >
             <Animated.Image
-              source={require("../../assets/icon-home/btvn.jpg")}
-              style={[styles.bellIco]}
+              source={require("../../assets/icon-home/tlbh.png")}
+              style={[styles.tlbh]}
             />
           </TouchableOpacity>
 
           <Animated.Text
-            numberOfLines={2}
+            numberOfLines={1}
             style={[
               styles.featureName,
               homeworkIconAnimation,
@@ -96,11 +97,15 @@ const HeaderHome = ({
             Tư liệu buổi học
           </Animated.Text>
         </Animated.View>
-        <Animated.View style={[styles.feature, qrViewAnimation]}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("Học phí")}>
+        <Animated.View style={[styles.featureSmall, qrViewAnimation]}>
+          <TouchableOpacity 
+            onPressIn={() => navigation.navigate("Học phí")}
+            style={{height: 33,paddingTop:10}}
+          >
+            
             <Animated.Image
-              source={require("../../assets/icon-home/hoc-phi.jpg")}
-              style={[styles.bellIco]}
+              source={require("../../assets/icon-home/hoc-phi.png")}
+              style={[styles.hocphi]}
             />
           </TouchableOpacity>
 
@@ -146,9 +151,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     // zIndex: 1,
   },
-  feature: {
+  featureSmall: {
     alignItems: "center",
     width: "15%",
+  },
+  featureBig: {
+    alignItems: "center",
+    width: "30%",
+  },
+  thht:{
+    height: 20,
+    width: 30,
+  },
+  tlbh:{
+    width: 27,
+    height: 27,
+  },
+  bangtin:{
+    width: 24,
+    height: 33,
+  },
+  hocphi:{
+    width: 27,
+    height: 20
   },
   bellIco: {
     width: 36,
