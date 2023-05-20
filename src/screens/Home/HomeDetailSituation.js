@@ -14,6 +14,8 @@ import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import PDFReader from "rn-pdf-reader-js";
 import { Audio, Video as OriginalVideo, ResizeMode } from "expo-av";
+import * as OpenAnything from 'react-native-openanything'
+import * as Linking from 'expo-linking';
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
 const triggerAudio = async (ref) => {
@@ -41,6 +43,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
         const checkType = value?.includes(type);
         if (checkType) {
           setType(type);
+          Linking.openURL(value)
         }
       });
     } else {
@@ -84,7 +87,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
               let myArray = item.split("/");
               return (
                 <TouchableOpacity
-                  onPress={() => handleShowModal(item)}
+                  onPress={() => Linking.openURL(item)}
                   key={index}
                 >
                   <View
@@ -107,7 +110,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
         </View>
       </View>
 
-      <Modal
+      {/* <Modal
         animationType={"slide"}
         transparent={false}
         visible={show}
@@ -130,29 +133,39 @@ const HomeDetailSituation = ({ route, navigation }) => {
               />
             </TouchableOpacity>
             {type == "doc" && (
-              <PDFReader
-                customStyle={{
-                  readerContainerNavigateArrow: true,
-                  readerContainerNavigate: true,
-                }}
-                style={{ flex: 1 }}
-                source={{
-                  uri: value,
-                }}
-              />
+              // <PDFReader
+              //   customStyle={{
+              //     readerContainerNavigateArrow: true,
+              //     readerContainerNavigate: true,
+              //   }}
+              //   style={{ flex: 1 }}
+              //   source={{
+              //     uri: value,cache: true
+              //   }}
+              //   webviewProps={{
+              //     startInLoadingState: true,
+              //   }}
+              // />
+              // OpenAnything.Web(value)
+              Linking.openURL(value)
             )}
 
             {type == "pdf" && (
-              <PDFReader
-                customStyle={{
-                  readerContainerNavigateArrow: true,
-                  readerContainerNavigate: true,
-                }}
-                style={{ flex: 1 }}
-                source={{
-                  uri: value,
-                }}
-              />
+              // <PDFReader
+              //   customStyle={{
+              //     readerContainerNavigateArrow: true,
+              //     readerContainerNavigate: true,
+              //   }}
+              //   style={{ flex: 1 }}
+              //   source={{
+              //     uri: value,cache: true
+              //   }}
+              //   webviewProps={{
+              //     startInLoadingState: true,
+              //   }}
+              // />
+              // OpenAnything.Pdf(value)
+              Linking.openURL(value)
             )}
 
             {type == "png" && (
@@ -191,7 +204,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
             )}
           </>
         )}
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
