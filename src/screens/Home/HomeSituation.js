@@ -63,6 +63,7 @@ const HomeSituation = () => {
           buttonStyle={styles.select}
           dropdownStyle={{
             borderRadius: 8,
+            
           }}
           defaultButtonText={"Chọn lớp học"}
           buttonTextStyle={styles.customText}
@@ -83,10 +84,12 @@ const HomeSituation = () => {
           }}
           dropdownIconPosition={"right"}
           buttonTextAfterSelection={(selectedItem, index) => {
-            return `Lớp ${selectedItem.name} - Năm học ${selectedItem.year}`;
+            const x = new Number(selectedItem.year);
+            return `Lớp ${selectedItem.name} - Năm học ${selectedItem.year}-${x+1}`;
           }}
           rowTextForSelection={(item, index) => {
-            return `Lớp ${item.name} - Năm học ${item.year}`;
+            const x = new Number(item.year);
+            return `Lớp ${item.name} - Năm học ${item.year}-${x +1}`;
           }}
         />
 
@@ -148,17 +151,20 @@ const styles = StyleSheet.create({
   select: {
     width: "100%",
     borderRadius: SIZES.base,
-    height: 56,
     marginTop: SIZES.padding,
     borderColor: COLORS.input,
     backgroundColor: "white",
     borderWidth: 0.7,
+    
+  },
+  customText:{
+    textAlign: 'left'
   },
   buttons: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: SIZES.padding,
   },
-  textButton: { color: "white", paddingHorizontal: 20, paddingVertical: 10 },
+  textButton: { color: "white", paddingHorizontal: 16, paddingVertical: 8 },
   components: { flex: 1 },
 });

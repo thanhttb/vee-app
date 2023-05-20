@@ -82,7 +82,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
           <View style={styles.boxs}>
             {data?.exercices?.map((item, index) => {
               let myArray = item.split("/");
-              console.log('data.exercices.length - 1', index, data.exercices.length - 1)
               return (
                 <TouchableOpacity
                   onPress={() => handleShowModal(item)}

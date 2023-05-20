@@ -3,15 +3,17 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { COLORS, SIZES } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
+import moment from "moment";
 
 const VerticalHomeSituation = ({ item }) => {
   const navigation = useNavigation();
+  const date = moment(item.item?.date).format('DD-MM-YYYY');
   return (
     <View style={styles.component}>
       <View style={styles.containerTop}>
         <View style={{ width: "75%" }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.className}>{item.item?.date}</Text>
+            <Text style={styles.className}>Ca học ngày {date}</Text>
             {item.item.type == "exam" ? (
               <View
                 style={{
@@ -51,7 +53,7 @@ const VerticalHomeSituation = ({ item }) => {
         </View>
         <View
           style={{
-            width: "25%",
+            width: "40%",
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -65,15 +67,15 @@ const VerticalHomeSituation = ({ item }) => {
 
       <View style={styles.containerBottom}>
         <Text style={styles.classBottom}>
-          Điểm bài tập về nhà: {item.item?.btvn_score}
+          Điểm bài tập về nhà:<Text style={styles.textBold}> {item.item?.btvn_score}</Text>
         </Text>
         <Text style={styles.classBottom}>
-          Nhận xét bài tập về nhà: {item.item?.btvn_comment}
+          Nhận xét bài tập về nhà:<Text style={styles.textBold}> {item.item?.btvn_comment}</Text> 
         </Text>
         <Text style={styles.classBottom}>
-          Điểm trên lớp: {item.item?.score}
+          Điểm trên lớp: <Text style={styles.textBold}>{item.item?.score}</Text>
         </Text>
-        <Text style={styles.classBottom}>Nhận xét: {item.item?.comment}.</Text>
+        <Text style={styles.classBottom}>Nhận xét: <Text style={styles.textBold}>{item.item?.comment}.</Text></Text>
       </View>
 
       <TouchableOpacity
@@ -85,7 +87,7 @@ const VerticalHomeSituation = ({ item }) => {
         }
       >
         <View style={styles.button}>
-          <Text style={styles.textButon}>Tài liệu buổi học</Text>
+          <Text style={styles.textButton}>Tài liệu buổi học</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -154,18 +156,22 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: COLORS.white,
-    borderRadius: SIZES.radius,
+    borderRadius: 12,
     borderColor: COLORS.green,
     borderWidth: 1,
     width: 160,
     margin: 10,
     alignSelf: "flex-end",
   },
-  textButon: {
+  textButton: {
     color: "black",
     paddingHorizontal: 20,
     paddingVertical: 10,
     fontSize: 14,
     textAlign: "center",
   },
+  textBold: {
+    fontWeight: 500,
+    color: 'black'
+  }
 });
