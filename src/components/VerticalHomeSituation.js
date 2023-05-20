@@ -75,7 +75,7 @@ const VerticalHomeSituation = ({ item }) => {
         <Text style={styles.classBottom}>
           Điểm trên lớp: <Text style={styles.textBold}>{item.item?.score}</Text>
         </Text>
-        <Text style={styles.classBottom}>Nhận xét: <Text style={styles.textBold}>{item.item?.comment}.</Text></Text>
+        <Text style={styles.classBottom}>Nhận xét: <Text style={styles.textBold}>{item.item?.comment}</Text></Text>
       </View>
 
       <TouchableOpacity
@@ -99,6 +99,7 @@ export default VerticalHomeSituation;
 const styles = StyleSheet.create({
   component: {
     marginBottom: SIZES.padding,
+    marginHorizontal: SIZES.padding,
     backgroundColor: "white",
     borderRadius: SIZES.radius,
     elevation: 4,
@@ -108,6 +109,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     display: "flex",
     paddingVertical: SIZES.spacing,
+    borderWidth: 1,
+    borderColor: '#EDEFF1'
   },
 
   lessonText: {

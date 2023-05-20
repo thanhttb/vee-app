@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   },
   textPhone: {
     fontSize: 12,
-    paddingTop: 6,
+    paddingTop: 4,
     paddingLeft: 2,
     top: 5,
     color: "white",
@@ -262,6 +262,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 600,
+  },
+  textInfoRight: {
+    // marginLeft: 10
   },
   viewComponent: {
     backgroundColor: COLORS.white,
@@ -293,7 +296,7 @@ const styles = StyleSheet.create({
   viewInfoLeft: {
     flexDirection: "row",
     justifyContent: "space-around",
-    width: "60%",
+    width: "70%",
   },
   textInfoLeft: {
     color: COLORS.gray,

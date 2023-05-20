@@ -131,7 +131,7 @@ const HomeSituation = () => {
       </View>
       <View style={styles.components}>
         <FlatList
-            style={{ padding: SIZES.padding}}
+            style={{ paddingTop: SIZES.padding}}
             data={data}
             renderItem={(item) => <VerticalHomeSituation item={item} />}
             keyExtractor={(item, index) => index.toString()}
@@ -162,9 +162,10 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
+    columnGap: 6,
     marginTop: SIZES.padding,
   },
-  textButton: { color: "white", paddingHorizontal: 16, paddingVertical: 8 },
+  textButton: { color: "white", paddingHorizontal: 14, paddingVertical: 7 },
   components: { flex: 1 },
 });
