@@ -10,7 +10,7 @@ import {
 import { COLORS, SIZES } from "../../utils/theme";
 
 const HomeDetailSituation = ({ route, navigation }) => {
-  const { id } = route.params;
+  const { id,item } = route.params;
   const [checkPayment, setCheckPayment] = useState(0);
   const config = {
     style: "currency",
@@ -80,7 +80,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
             </View>
           </View>
 
-          {checkPayment == 1 ? (
+          {item.type == 0 ? (
             <>
               {/* Đơn giá  */}
               <View

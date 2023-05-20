@@ -150,12 +150,8 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 source={{
                   uri: value
                 }}
-                // webviewProps={{
-                //   startInLoadingState: true,
-                // }}
+               
               />
-              // OpenAnything.Web(value)
-              // Linking.openURL(value)
             )}
 
             {type == "pdf" && (
@@ -168,12 +164,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 source={{
                   uri: value
                 }}
-                // webviewProps={{
-                //   startInLoadingState: true,
-                // }}
               />
-              // OpenAnything.Pdf(value)
-              // Linking.openURL(value)
             )}
 
             {type == "png" && (

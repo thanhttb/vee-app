@@ -25,36 +25,42 @@ const data = [
     title: "Nguyễn Văn A lớp TC9.1 học phí thu học phí môn Toán",
     time: "04/05/2023",
     money: 4500000,
+    type: 1
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: -2500000,
+    type: 0
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: 2500000,
+    type: 1
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: 2500000,
+    type: 1
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: 2500000,
+    type: 1
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: 2500000,
+    type: 1
   },
 ];
 const HomeTuition = () => {
@@ -90,6 +96,7 @@ const HomeTuition = () => {
           onPress={() =>
             navigation.navigate("Chi tiết học phí", {
               id: 1,
+              item: item
             })
           }
         >
