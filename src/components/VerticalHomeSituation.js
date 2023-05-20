@@ -109,8 +109,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     display: "flex",
     paddingVertical: SIZES.spacing,
-    borderWidth: 1,
-    borderColor: '#EDEFF1'
   },
 
   lessonText: {

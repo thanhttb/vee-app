@@ -330,8 +330,8 @@ const TabNavigation = () => {
             let iconName;
             if (route.name === "Thông báo") {
               iconName = !focused
-                ? require("../../assets/Icon-bottom/Thong_Bao.png")
-                : require("../../assets/Icon-bottom/Thong_Bao_Xanh.png");
+                ? require("../../assets/Icon-bottom/Thong_Bao2.jpg")
+                : require("../../assets/Icon-bottom/Thong_Bao_Xanh2.jpg");
             }
             return (
               <Image

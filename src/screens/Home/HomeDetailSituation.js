@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Modal,
   Button,
+  Platform,
 } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -43,7 +44,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
         const checkType = value?.includes(type);
         if (checkType) {
           setType(type);
-          Linking.openURL(value)
         }
       });
     } else {
@@ -54,15 +54,18 @@ const HomeDetailSituation = ({ route, navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
-        <View style={{ margin: SIZES.padding }}>
-          <Text style={styles.title}>{data?.content}</Text>
+        <View style={{ marginHorizontal: SIZES.padding }}>
+          <Text style={styles.title}>Nội dung ca học</Text>
+          <Text style={{paddingVertical : 4}}>{data?.content}</Text>
 
           <View style={styles.boxs}>
             {data?.documents?.map((item, index) => {
               let myArray = item.split("/");
               return (
                 <TouchableOpacity
-                  onPress={() => handleShowModal(item)}
+                onPress={() => 
+                  Platform.OS === 'ios' ? handleShowModal(item) : Linking.openURL(item)
+                }
                   key={index}
                 >
                   <View 
@@ -82,12 +85,17 @@ const HomeDetailSituation = ({ route, navigation }) => {
             })}
           </View>
 
+
+          <Text style={styles.title}>Bài tập về nhà</Text>
+          <Text style={{paddingVertical : 4}}>{data?.btvn_content}</Text>
           <View style={styles.boxs}>
             {data?.exercices?.map((item, index) => {
               let myArray = item.split("/");
               return (
                 <TouchableOpacity
-                  onPress={() => Linking.openURL(item)}
+                  onPress={() => 
+                    Platform.OS === 'ios' ? handleShowModal(item) : Linking.openURL(item)
+                  }
                   key={index}
                 >
                   <View
@@ -110,7 +118,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
         </View>
       </View>
 
-      {/* <Modal
+      <Modal
         animationType={"slide"}
         transparent={false}
         visible={show}
@@ -133,39 +141,39 @@ const HomeDetailSituation = ({ route, navigation }) => {
               />
             </TouchableOpacity>
             {type == "doc" && (
-              // <PDFReader
-              //   customStyle={{
-              //     readerContainerNavigateArrow: true,
-              //     readerContainerNavigate: true,
-              //   }}
-              //   style={{ flex: 1 }}
-              //   source={{
-              //     uri: value,cache: true
-              //   }}
-              //   webviewProps={{
-              //     startInLoadingState: true,
-              //   }}
-              // />
+              <PDFReader
+                customStyle={{
+                  readerContainerNavigateArrow: true,
+                  readerContainerNavigate: true,
+                }}
+                style={{ flex: 1 }}
+                source={{
+                  uri: value
+                }}
+                // webviewProps={{
+                //   startInLoadingState: true,
+                // }}
+              />
               // OpenAnything.Web(value)
-              Linking.openURL(value)
+              // Linking.openURL(value)
             )}
 
             {type == "pdf" && (
-              // <PDFReader
-              //   customStyle={{
-              //     readerContainerNavigateArrow: true,
-              //     readerContainerNavigate: true,
-              //   }}
-              //   style={{ flex: 1 }}
-              //   source={{
-              //     uri: value,cache: true
-              //   }}
-              //   webviewProps={{
-              //     startInLoadingState: true,
-              //   }}
-              // />
+              <PDFReader
+                customStyle={{
+                  readerContainerNavigateArrow: true,
+                  readerContainerNavigate: true,
+                }}
+                style={{ flex: 1 }}
+                source={{
+                  uri: value
+                }}
+                // webviewProps={{
+                //   startInLoadingState: true,
+                // }}
+              />
               // OpenAnything.Pdf(value)
-              Linking.openURL(value)
+              // Linking.openURL(value)
             )}
 
             {type == "png" && (
@@ -204,7 +212,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
             )}
           </>
         )}
-      </Modal> */}
+      </Modal>
     </View>
   );
 };
@@ -218,6 +226,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 600,
+    marginTop: SIZES.padding
   },
   desc: {
     paddingVertical: 10,
