@@ -12,7 +12,7 @@ import {
 import { COLORS, SIZES } from "../../utils/theme";
 import { ScrollView } from "react-native";
 
-const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+const array = [1];
 const Notifications = () => {
   return (
     <View
@@ -45,7 +45,7 @@ const Notifications = () => {
                     <Text style={styles.name}>
                       Giáo viên đã duyệt đơn xin nghỉ
                     </Text>{" "}
-                    If you are going to use a passage of Lorem Ipsum, you
+                    
                   </Text>
                   <Text style={styles.time}>2 giờ trước</Text>
                 </View>
@@ -69,7 +69,7 @@ const Notifications = () => {
                     <Text style={styles.name}>
                       Giáo viên đã duyệt đơn xin nghỉ
                     </Text>{" "}
-                    If you are going to use a passage of Lorem Ipsum, you
+                    If you are going to use a passage of, you
                   </Text>
                   <Text style={styles.time}>2 giờ trước</Text>
                 </View>

@@ -347,13 +347,13 @@ const TabNavigation = () => {
         })}
       />
       <Tab.Screen
-        name="Profile"
+        name="Cá nhân"
         component={ProfileStack}
         options={({ route }) => ({
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-            if (route.name === "Profile") {
+            if (route.name === "Cá nhân") {
               iconName = !focused
                 ? require("../../assets/Icon-bottom/Tai_Khoan.png")
                 : require("../../assets/Icon-bottom/Tai_Khoan_Xanh.png");

@@ -53,7 +53,7 @@ const HeaderHome = ({
               { height: headerWidth },
             ]}
           >
-            Lịch học
+            Bảng tin
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.featureBig, withdrawViewAnimation]}>

@@ -2,7 +2,7 @@
   "expo": {
     "name": "VietElite Students",
     "slug": "vietelite-parent-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/fav.png",
@@ -16,28 +16,35 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "versionCode": 1,
+      "versionCode": "2",
       "bundleIdentifier": "com.veesoft.vietelitestudents",
       "infoPlist": {
         "UIBackgroundModes": [
           "audio"
         ]
+      },
+      "runtimeVersion": {
+        "policy": "sdkVersion"
       }
     },
     "android": {
       "package": "com.veesoft.vietelitestudents",
-      "versionCode": 1,
+      "versionCode": 2,
       "adaptiveIcon": {
         "backgroundColor": "#ffffff",
         "foregroundColor": "./assets/fav.png"
-      }
+      },
+      "runtimeVersion": "1.0.0"
     },
     "extra": {
       "eas": {
         "projectId": "04b3d310-7a3e-493d-80ea-8917e541fd1e"
       }
     },
-    "owner": "tranthanhuet"
+    "owner": "tranthanhuet",
+    "updates": {
+      "url": "https://u.expo.dev/04b3d310-7a3e-493d-80ea-8917e541fd1e"
+    }
   },
   "displayName": "VietElite Students",
   "plugins": [
