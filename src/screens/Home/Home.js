@@ -24,10 +24,12 @@ const UPPER_HEADER_HEIGHT = 36;
 const UPPER_HEADER_PADDING_TOP = 4;
 
 const Home = () => {
-  const animatedValue = useRef(new Animated.Value(0)).current;
+ 
   const scrollViewRef = useRef(null);
   const lastOffsetY = useRef(0);
   const scrollDireaction = useRef(0);
+  
+  const animatedValue = useRef(new Animated.Value(0)).current;
   const animatedHeightValue = useRef(new Animated.Value(0)).current;
   const headerHeight = useRef(new Animated.Value(80)).current;
   const headerWidth = useRef(new Animated.Value(28)).current;

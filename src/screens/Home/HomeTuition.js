@@ -163,7 +163,7 @@ const HomeTuition = () => {
               }}
             >
               <Text style={styles.textPhone}>
-                024.730.65565 <Feather name="copy" size={10} color="white" />
+                024.730.65565 <Feather name="phone-call" size={10} color="white" />
               </Text>
             </TouchableOpacity>
           </Text>

@@ -1,51 +1,62 @@
-import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image,useWindowDimensions  } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  useWindowDimensions,
+} from "react-native";
 import { COLORS, SIZES } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Audio } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
+import { Audio } from "expo-av";
+import * as FileSystem from "expo-file-system";
 
-const VerticalHomeWork = ({ item ,handleShowModal, show}) => {
+const VerticalHomeWork = ({ item, handleShowModal, show }) => {
   const navigation = useNavigation();
- 
-  return (
-    <View style={styles.component}>
-      <View
-        style={[
-          styles.lesson,
-          item.item.type == 'main' && { backgroundColor: COLORS.green },
-          item.item.type == 'exam' && { backgroundColor: COLORS.red },
-          item.item.type == 'tutor' && { backgroundColor: COLORS.blue },
-        ]}
-      ></View>
 
-      <View style={styles.container}>
-        <View style={{ width: "75%" }}>
-          <Text style={styles.className}>{item.item.date}</Text>
-          <Text style={styles.class}  ellipsizeMode="tail">
-            {item.item.content}
-          </Text>
-          <Text style={styles.class}>Giáo viên: {item.item.teacher}</Text>
-        </View>
+  return (
+    <TouchableOpacity
+    onPress={() =>
+      navigation.navigate("Tình hình học tập chi tiết", {
+        id: 1,
+        data: item.item,
+      })
+    }
+  >
+    <View style={styles.component}>
+     
         <View
-          style={{
-            width: "25%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity
-            // onPress={()=> setShow(!show)}
-            // onPress={()=>handleShowModal(show)}
+          style={[
+            styles.lesson,
+            item.item.type == "main" && { backgroundColor: COLORS.green },
+            item.item.type == "exam" && { backgroundColor: COLORS.red },
+            item.item.type == "tutor" && { backgroundColor: COLORS.blue },
+          ]}
+        ></View>
+
+        <View style={styles.container}>
+          <View style={{ width: "75%" }}>
+            <Text style={styles.className}>{item.item.date}</Text>
+            <Text style={styles.class} ellipsizeMode="tail">
+              {item.item.content}
+            </Text>
+            <Text style={styles.class}>Giáo viên: {item.item.teacher}</Text>
+          </View>
+          <View
+            style={{
+              width: "25%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-          
-          <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
-          </TouchableOpacity>
+            <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
+          </View>
         </View>
-      </View>
      
     </View>
+    </TouchableOpacity>
   );
 };
 

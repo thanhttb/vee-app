@@ -4,10 +4,12 @@ import { COLORS, SIZES } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
+import HTMLView from "react-native-htmlview";
 
 const VerticalHomeSituation = ({ item }) => {
   const navigation = useNavigation();
-  const date = moment(item.item?.date).format('DD-MM-YYYY');
+  const date = moment(item.item?.date).format("DD-MM-YYYY");
+
   return (
     <View style={styles.component}>
       <View style={styles.containerTop}>
@@ -46,9 +48,12 @@ const VerticalHomeSituation = ({ item }) => {
               </View>
             )}
           </View>
-          <Text style={styles.class} numberOfLines={1} ellipsizeMode="tail">
-            {item.item?.content}
-          </Text>
+          {item.item?.content != "[]" && item.item?.content != null && (
+            <Text style={styles.class} numberOfLines={1} ellipsizeMode="tail">
+              {item.item?.content}
+            </Text>
+          )}
+
           <Text style={styles.class}>Giáo viên: {item.item?.teacher}</Text>
         </View>
         <View
@@ -66,23 +71,40 @@ const VerticalHomeSituation = ({ item }) => {
       </View>
 
       <View style={styles.containerBottom}>
-        <Text style={styles.classBottom}>
-          Điểm bài tập về nhà:<Text style={styles.textBold}> {item.item?.btvn_score}</Text>
-        </Text>
-        <Text style={styles.classBottom}>
-          Nhận xét bài tập về nhà:<Text style={styles.textBold}> {item.item?.btvn_comment}</Text> 
-        </Text>
-        <Text style={styles.classBottom}>
-          Điểm trên lớp: <Text style={styles.textBold}>{item.item?.score}</Text>
-        </Text>
-        <Text style={styles.classBottom}>Nhận xét: <Text style={styles.textBold}>{item.item?.comment}</Text></Text>
+        {item.item?.btvn_score != "//" && item.item?.btvn_score != null && (
+          <Text style={styles.classBottom}>
+            Điểm bài tập về nhà:
+            <Text style={styles.textBold}> {item.item?.btvn_score}</Text>
+          </Text>
+        )}
+        {item.item?.btvn_comment != null && (
+          <Text style={styles.classBottom}>
+            Nhận xét bài tập về nhà:
+            <Text style={styles.textBold}> {item.item?.btvn_comment}</Text>
+          </Text>
+        )}
+
+        {item.item?.score != null && item.item?.score != " " && (
+          <Text style={styles.classBottom}>
+            Điểm trên lớp:{" "}
+            <Text style={styles.textBold}>{item.item?.score}</Text>
+          </Text>
+        )}
+
+        {item.item?.comment != null && (
+          // <Text style={styles.classBottom}>
+          //   Nhận xét: <Text style={styles.textBold}>{item.item?.comment}</Text>
+          // </Text>
+
+          <HTMLView value={item.item?.comment} />
+        )}
       </View>
 
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("Tình hình học tập chi tiết", {
             id: 1,
-            data: item.item
+            data: item.item,
           })
         }
       >
@@ -98,7 +120,7 @@ export default VerticalHomeSituation;
 
 const styles = StyleSheet.create({
   component: {
-    marginBottom: SIZES.padding,
+    marginVertical: 10,
     marginHorizontal: SIZES.padding,
     backgroundColor: "white",
     borderRadius: SIZES.radius,
@@ -173,6 +195,6 @@ const styles = StyleSheet.create({
   },
   textBold: {
     fontWeight: 500,
-    color: 'black'
-  }
+    color: "black",
+  },
 });

@@ -37,6 +37,7 @@ const HomeSchedule = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.sessionReducer);
 
+
   useEffect(() => {
     dispatch(session_week(user?.id));
   }, [dispatch]);

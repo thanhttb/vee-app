@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -6,9 +6,12 @@ import {
   FlatList,
   Button,
   Modal,
+  Animated,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
 import PDFReader from "rn-pdf-reader-js";
 import axios from "axios";
 import { Video, ResizeMode } from "expo-av";
@@ -41,7 +44,17 @@ const HomeWork = () => {
   const [show, setShow] = useState(false);
   const [value, setValue] = useState("");
   const [type, setType] = useState("");
-  const [recording, setRecording] = React.useState();
+
+  const scrollViewRef = useRef();
+  const lastOffsetY = useRef(0);
+  const scrollDireaction = useRef(0);
+  const headerHeight = useRef(new Animated.Value(70)).current;
+  const spacingHeight = useRef(new Animated.Value(10)).current;
+  const showArrowUp = useRef(new Animated.Value(0)).current;
+
+  const upButtonHandler = () => {
+    scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
+  };
 
   const handleShowModal = (value) => {
     if (typeof value == "string") {
@@ -86,7 +99,12 @@ const HomeWork = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <View style={styles.container}>
+      <Animated.View
+        style={[
+          styles.container,
+          { height: headerHeight, marginBottom: spacingHeight },
+        ]}
+      >
         <SelectDropdown
           data={classes}
           buttonStyle={styles.select}
@@ -118,12 +136,65 @@ const HomeWork = () => {
             return `Lớp ${item.name} - Năm học ${item.year}`;
           }}
         />
-      </View>
+      </Animated.View>
       <FlatList
-        style={{ marginTop: SIZES.spacing }}
+        ref={scrollViewRef}
+        onScroll={(e) => {
+          const offsetY = e.nativeEvent.contentOffset.y;
+          scrollDireaction.current =
+            offsetY - lastOffsetY.current > 0 ? "down" : "up";
+          lastOffsetY.current = offsetY;
+          if (scrollDireaction.current == "down" && offsetY >= 30) {
+            Animated.timing(headerHeight, {
+              toValue: 0,
+              duration: 40,
+              useNativeDriver: false,
+            }).start();
+
+            Animated.timing(spacingHeight, {
+              toValue: 0,
+              duration: 40,
+              useNativeDriver: false,
+            }).start();
+
+            Animated.timing(showArrowUp, {
+              toValue: 1,
+              duration: 40,
+              useNativeDriver: false,
+            }).start();
+          }
+          if (scrollDireaction.current == "up" && offsetY < 30) {
+            Animated.timing(headerHeight, {
+              toValue: 70,
+              duration: 40,
+              useNativeDriver: false,
+            }).start();
+
+            Animated.timing(spacingHeight, {
+              toValue: 10,
+              duration: 40,
+              useNativeDriver: false,
+            }).start();
+
+            Animated.timing(showArrowUp, {
+              toValue: 0,
+              duration: 40,
+              useNativeDriver: false,
+            }).start();
+          }
+          // animatedValue.setValue(offsetY);
+        }}
+        style={{ backgroundColor: "white", zIndex: 10 }}
         data={data}
-        renderItem={(item) => <VerticalHomeWork item={item} handleShowModal={handleShowModal} show={show}/>}
+        renderItem={(item) => (
+          <VerticalHomeWork
+            item={item}
+            handleShowModal={handleShowModal}
+            show={show}
+          />
+        )}
         keyExtractor={(item, index) => index.toString()}
+        scrollEventThrottle={16}
       />
 
       <Modal
@@ -156,6 +227,23 @@ const HomeWork = () => {
           />
         </View>
       </Modal>
+
+      <Animated.View 
+       style={[styles.upButtonStyle, {opacity: showArrowUp }]}
+       >
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={upButtonHandler}
+         
+        >
+          <Entypo
+            name="chevron-up"
+            size={36}
+            color={COLORS.green}
+            style={styles.upButtonImageStyle}
+          />
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 };
@@ -166,6 +254,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     marginHorizontal: SIZES.padding,
+    marginBottom: SIZES.spacing,
+    zIndex: 1,
   },
   select: {
     width: "100%",
@@ -175,6 +265,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.input,
     backgroundColor: "white",
     borderWidth: 0.7,
+    zIndex: 1,
     // marginHorizontal: SIZES.padding,
   },
   video: {
@@ -186,5 +277,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  upButtonStyle: {
+    position: "absolute",
+    width: 30,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    right: 20,
+    bottom:10,
+    zIndex: 100,
+  },
+  upButtonImageStyle: {
+    width: 30,
+    height: 30,
   },
 });
