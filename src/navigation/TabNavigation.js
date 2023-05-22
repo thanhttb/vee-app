@@ -17,6 +17,8 @@ import ProfileHome from "../screens/Profile/ProfileHome";
 import ProfileParent from "../screens/Profile/ProfileParent";
 import ProfileChildren from "../screens/Profile/ProfileChildren";
 import ProfileChange from "../screens/Profile/ProfileChange";
+
+import HomeNews from "../screens/Home/HomeNews";
 import HomeLeave from "../screens/Home/HomeLeave";
 import HomeTutoring from "../screens/Home/HomeTutoring";
 import HomeWorkDetail from "../screens/Home/HomeWorkDetail";
@@ -36,11 +38,11 @@ const HomeStack = () => {
         options={{ unmountOnBlur: true, headerShown: false }}
       />
       <Stack.Screen
-        name="Trang thông tin"
-        component={HomeDetails}
+        name="Bảng tin"
+        component={HomeNews}
         options={({ route }) => ({
-          id: route.params.id,
-          title: route.params.name,
+          // id: route.params.id,
+          // title: route.params.name,
           headerStyle: {
             backgroundColor: COLORS.green,
           },

@@ -194,7 +194,7 @@ const Home = () => {
         scrollEventThrottle={16}
       >
         <View style={styles.paddingForHeader}></View>
-        <Animated.View style={styles.scrollViewContent}>
+        {/* <Animated.View style={styles.scrollViewContent}>
           <Text style={styles.textInfo}>Thông tin VietElite</Text>
           <View style={{ flex: 1 }}>
             <FlatList
@@ -206,7 +206,7 @@ const Home = () => {
               renderItem={renderItem}
             />
           </View>
-        </Animated.View>
+        </Animated.View> */}
       </ScrollView>
     </View>
   );

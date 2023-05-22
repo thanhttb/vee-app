@@ -39,7 +39,7 @@ const HeaderHome = ({
       ></Animated.View>
       <View style={styles.lowerHeader}>
         <Animated.View style={[styles.featureSmall, depositViewAnimation]}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("Lịch học")} style={{height: 33}}>
+          <TouchableOpacity onPressIn={() => navigation.navigate("Bảng tin")} style={{height: 33}}>
             <Animated.Image
               source={require("../../assets/icon-home/bang-tin.png")}
               style={[styles.bangtin]}
