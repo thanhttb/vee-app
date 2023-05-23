@@ -8,7 +8,6 @@ import { COLORS } from "../utils/theme";
 import { Image } from "react-native";
 import Home from "../screens/Home/Home";
 import Notifications from "../screens/Notifications/Notifications";
-import HomeSchedule from "../screens/Home/HomeSchedule";
 import HomeDetails from "../screens/Home/HomeDetails";
 import HomeWork from "../screens/Home/HomeWork";
 import HomeTuition from "../screens/Home/HomeTuition";
@@ -19,12 +18,15 @@ import ProfileChildren from "../screens/Profile/ProfileChildren";
 import ProfileChange from "../screens/Profile/ProfileChange";
 
 import HomeNews from "../screens/Home/HomeNews";
-import HomeLeave from "../screens/Home/HomeLeave";
-import HomeTutoring from "../screens/Home/HomeTutoring";
+
 import HomeWorkDetail from "../screens/Home/HomeWorkDetail";
 import HomeSituation from "../screens/Home/HomeSituation";
 import HomeDetailTution from "../screens/Home/HomeDetailTution";
 import HomeDetailSituation from "../screens/Home/HomeDetailSituation";
+
+import Schedule from "../screens/Schedule/Schedule";
+import ScheduleLeave from "../screens/Schedule/ScheduleLeave";
+import ScheduleTutoring from "../screens/Schedule/ScheduleTutoring";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,8 +43,6 @@ const HomeStack = () => {
         name="Bảng tin"
         component={HomeNews}
         options={({ route }) => ({
-          // id: route.params.id,
-          // title: route.params.name,
           headerStyle: {
             backgroundColor: COLORS.green,
           },
@@ -73,7 +73,7 @@ const HomeStack = () => {
         options={({ route }) => ({
           dataItem: {
             id: route.params?.id,
-            data: route.params?.data
+            data: route.params?.data,
           },
           unmountOnBlur: true,
           headerShown: true,
@@ -142,7 +142,7 @@ const HomeStack = () => {
         options={({ route }) => ({
           dataItem: {
             id: route.params?.id,
-            item: route.params.item
+            item: route.params.item,
           },
           headerStyle: {
             backgroundColor: COLORS.green,
@@ -153,10 +153,29 @@ const HomeStack = () => {
           },
         })}
       />
+    </Stack.Navigator>
+  );
+};
 
+const ScheduleStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Lịch học"
+        component={Schedule}
+        options={{ unmountOnBlur: true ,
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },}}
+      />
+      
       <Stack.Screen
         name="Đơn xin nghỉ"
-        component={HomeLeave}
+        component={ScheduleLeave}
         options={({ route }) => ({
           dataItem: {
             id: route.params?.id,
@@ -173,7 +192,7 @@ const HomeStack = () => {
 
       <Stack.Screen
         name="Đơn học phụ đạo"
-        component={HomeTutoring}
+        component={ScheduleTutoring}
         options={({ route }) => ({
           dataItem: {
             id: route.params?.id,
@@ -188,20 +207,7 @@ const HomeStack = () => {
         })}
       />
 
-      <Stack.Screen
-        name="Lịch học"
-        component={HomeSchedule}
-        options={({ route }) => ({
-          headerStyle: {
-            backgroundColor: COLORS.green,
-          },
-          headerTintColor: "#fff",
-
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        })}
-      />
+      
     </Stack.Navigator>
   );
 };
@@ -266,6 +272,7 @@ const TabNavigation = () => {
         component={HomeStack}
         options={({ route }) => ({
           headerShown: false,
+          unmountOnBlur: true,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "Trang chủ") {
@@ -287,11 +294,13 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="Lịch học"
-        component={HomeSchedule}
+        component={ScheduleStack}
         options={({ route }) => ({
           headerStyle: {
             backgroundColor: COLORS.green,
           },
+          unmountOnBlur: true,
+          headerShown: false,
           headerTintColor: "#fff",
 
           headerTitleStyle: {
@@ -321,6 +330,7 @@ const TabNavigation = () => {
         component={Notifications}
         options={({ route }) => ({
           // headerShown: false,
+          
           headerStyle: {
             backgroundColor: COLORS.green,
           },
@@ -334,7 +344,7 @@ const TabNavigation = () => {
             if (route.name === "Thông báo") {
               iconName = !focused
                 ? require("../../assets/Icon-bottom/Thong_Bao.png")
-                : require("../../assets/Icon-bottom/Thong_Bao_Xanh.png");
+                : require("../../assets/Icon-bottom/Thong_Bao(1).png");
             }
             return (
               <Image

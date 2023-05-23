@@ -31,7 +31,6 @@ export const session_week = (id) => {
         });
       }
     } catch (e) {
-      console.log("login failed", e);
       dispatch({
         type: type.SET_SESSION_FAIL,
         payload: {

@@ -13,8 +13,8 @@ import Button from "../../components/Button";
 import { COLORS, SIZES } from "../../utils/theme";
 
 const types = ["Check In", "Thông báo", "Câu hỏi"];
-const HomeLeave = ({ route, navigation }) => {
-  const { id } = route.params;
+const ScheduleLeave = ({ route, navigation }) => {
+  // const { id } = route.params;
   const [type, setType] = useState(1);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer);
@@ -116,7 +116,7 @@ const HomeLeave = ({ route, navigation }) => {
   );
 };
 
-export default HomeLeave;
+export default ScheduleLeave;
 
 const styles = StyleSheet.create({
   container: {

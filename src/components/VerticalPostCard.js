@@ -178,13 +178,7 @@ const VerticalPostCard = ({ item }) => {
         {/* Comments  */}
         {isComment && (
           <View
-            style={{
-              color: "white",
-              paddingVertical: 10,
-              paddingHorizontal: 12,
-              borderTopWidth: 1,
-              borderColor: COLORS.input,
-            }}
+            style={styles.comments}
           >
             <View
               style={{
@@ -298,7 +292,7 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   file: {
-    marginTop: 4,
+    // marginTop: 4,
     height: (SIZES.width - (SIZES.padding *2)) * 9 / 16,
     width: SIZES.width - (SIZES.padding *2),
     resizeMode: "cover",
@@ -308,6 +302,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 10,
     paddingHorizontal: SIZES.padding,
+  },
+  comments : {
+    color: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderTopWidth: 1,
+    borderColor: COLORS.input,
   },
   action: {
     flexDirection: "row",

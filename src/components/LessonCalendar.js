@@ -1,39 +1,66 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS, SIZES } from "../utils/theme";
+import { useNavigation } from "@react-navigation/native";
+import ButtonAction from "./ButtonAction";
 
 const LessonCalendar = ({ showDetailLesson, item, index }) => {
+  const navigation = useNavigation();
+  const goToA2 = () => {
+    navigation.navigate("Trang chủ", {
+      screen: "Tình hình học tập chi tiết",
+      params: {
+        id: 1,
+        data: item.previous_session,
+      },
+    });
+  };
   return (
     <View style={styles.component} key={index}>
-      {/* <View style={styles.lesson}>
-        <View
-          style={{
-            display: "flex",
-            height: 45,
-            width: 45,
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-            backgroundColor: COLORS.lesson,
-            borderRadius: 50,
-          }}
-        >
-          <Text style={styles.lessonText}>
-            Ca <Text style={styles.lessonNumber}>{index+1}</Text>
-          </Text>
-        </View>
-      </View> */}
-
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => showDetailLesson(item)}>
-          <View style={styles.content}>
-            <Text style={styles.className}>Lớp - {item?.class}</Text>
-            <Text style={styles.class}>
-              Thời gian: {item?.day} | {item?.time}
-            </Text>
-            <Text style={styles.class}>Giáo viên: {item?.teacher}</Text>
+        <View style={styles.content}>
+          <Text style={styles.className}>Lớp - {item?.class}</Text>
+          <Text style={styles.class}>
+            Thời gian: {item?.day} | {item?.time}
+          </Text>
+          <Text style={styles.class}>Giáo viên: {item?.teacher}</Text>
+        </View>
+
+        <View style={styles.buttons}>
+          <View style={styles.button}>
+            <ButtonAction
+              label={"Xin nghỉ"}
+              color={COLORS.green}
+              background={COLORS.white}
+              onPress={() => {
+                navigation.navigate("Đơn xin nghỉ", {
+                  id: 1,
+                });
+              }}
+            />
           </View>
-        </TouchableOpacity>
+          <View style={styles.button}>
+            <ButtonAction
+              label={"Xin học phụ đạo"}
+              color={COLORS.green}
+              background={COLORS.white}
+              onPress={() => {
+                navigation.navigate("Đơn học phụ đạo", {
+                  id: 1,
+                });
+              }}
+            />
+          </View>
+
+          <View style={styles.button}>
+            <ButtonAction
+              label={"Tài liệu buổi trước"}
+              color={COLORS.white}
+              background={COLORS.green}
+              onPress={goToA2}
+            />
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -70,7 +97,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   content: {
-    padding: 18,
+    padding: SIZES.spacing,
   },
   className: {
     fontWeight: "bold",
@@ -82,5 +109,15 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
     paddingVertical: 2,
     fontWeight: 500,
+  },
+
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: SIZES.spacing,
+    paddingBottom: SIZES.spacing,
+  },
+  button: {
+    width: "32%",
   },
 });

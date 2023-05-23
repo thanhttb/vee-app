@@ -25,18 +25,17 @@ import axios from "axios";
 //redux
 import { session_week } from "../../redux/actions/sessionActions";
 
-const HomeSchedule = () => {
+const Schedule = () => {
   const { user, authToken } = useSelector((state) => state.authReducer);
   const [sessionWeek, setSessionWeek] = useState([]);
   const [sessionWeekFilter, setSessionWeekFilter] = useState([]);
   const [selectedDate, setSelectedDate] = useState();
   const [selectedLesson, setSelectedLesson] = useState(false);
   const [dateWeek, setDateWeek] = useState([]);
-  const [selectedSession, setSelectedSession] = useState()
+  const [selectedSession, setSelectedSession] = useState();
 
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.sessionReducer);
-
 
   useEffect(() => {
     dispatch(session_week(user?.id));
@@ -58,12 +57,10 @@ const HomeSchedule = () => {
     setSessionWeekFilter(data);
   };
   const showDetailLesson = (data) => {
-    setSelectedSession(data)
+    setSelectedSession(data);
     setSelectedLesson(!selectedLesson);
-
   };
 
-  // console.log('selectedDate', selectedDate)
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -85,7 +82,7 @@ const HomeSchedule = () => {
           sessionWeekFilter.map((item, i) => {
             return (
               <LessonCalendar
-              key={i}
+                key={i}
                 showDetailLesson={showDetailLesson}
                 item={item}
                 index={i}
@@ -99,20 +96,12 @@ const HomeSchedule = () => {
           </View>
         )}
 
-        {/* <DetailCalendar/> */}
-        {selectedLesson && (
-          <SimpleModal
-            showDetailLesson={showDetailLesson}
-            selectedLesson={selectedLesson}
-            selectedSession={selectedSession}
-          />
-        )}
       </View>
     </View>
   );
 };
 
-export default HomeSchedule;
+export default Schedule;
 
 const styles = StyleSheet.create({
   header: {

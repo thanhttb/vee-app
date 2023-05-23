@@ -38,7 +38,6 @@ const HomeSituation = () => {
   const listViewRef = useRef();
   const lastOffsetY = useRef(0);
   const scrollDireaction = useRef(0);
-  const headerHeight = useRef(new Animated.Value(120)).current;
   const showArrowUp = useRef(new Animated.Value(0)).current;
 
   const upButtonHandler = () => {
@@ -79,85 +78,7 @@ const HomeSituation = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <Animated.View style={[styles.container, { height: headerHeight }]}>
-        <SelectDropdown
-          data={classes}
-          buttonStyle={styles.select}
-          dropdownStyle={{
-            borderRadius: 8,
-          }}
-          defaultButtonText={"Chọn lớp học"}
-          buttonTextStyle={styles.customText}
-          defaultValue={defaultValue}
-          // defaultValueByIndex={0}
-          onSelect={(selectedItem, index) => {
-            setSelectItem(selectedItem.id);
-          }}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <FontAwesome
-                name={isOpened ? "chevron-up" : "chevron-down"}
-                color={"#637381"}
-                size={14}
-                style={{ marginRight: 10 }}
-              />
-            );
-          }}
-          dropdownIconPosition={"right"}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            const x = new Number(selectedItem.year);
-            return `Lớp ${selectedItem.name} - Năm học ${selectedItem.year}-${
-              x + 1
-            }`;
-          }}
-          rowTextForSelection={(item, index) => {
-            const x = new Number(item.year);
-            return `Lớp ${item.name} - Năm học ${item.year}-${x + 1}`;
-          }}
-        />
 
-        <View style={styles.buttons}>
-          <TouchableOpacity onPress={() => filterData("main")}>
-            <View
-              style={{
-                borderRadius: SIZES.radius,
-                borderColor: COLORS.green,
-                borderWidth: 1,
-              }}
-            >
-              <Text style={[styles.textButton, { color: COLORS.green }]}>
-                Chính khóa
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => filterData("tutor")}>
-            <View
-              style={{
-                borderRadius: SIZES.radius,
-                borderColor: COLORS.blue,
-                borderWidth: 1,
-              }}
-            >
-              <Text style={[styles.textButton, { color: COLORS.blue }]}>
-                Phụ đạo
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => filterData("exam")}>
-            <View
-              style={{
-                borderRadius: SIZES.radius,
-                borderColor: COLORS.red,
-                borderWidth: 1,
-              }}
-            >
-              <Text style={[styles.textButton, { color: COLORS.red }]}>
-                Kiểm tra định kỳ
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </Animated.View>
       <View style={styles.components}>
         <FlatList
           ref={listViewRef}
@@ -166,48 +87,113 @@ const HomeSituation = () => {
             scrollDireaction.current =
               offsetY - lastOffsetY.current > 0 ? "down" : "up";
             lastOffsetY.current = offsetY;
-            if (scrollDireaction.current == "down" && offsetY >= 60) {
-              Animated.timing(headerHeight, {
-                toValue: 0,
-                duration: 50,
-                useNativeDriver: false,
-              }).start();
+            if (scrollDireaction.current == "down" && offsetY >= 100) {
               Animated.timing(showArrowUp, {
                 toValue: 1,
-                duration: 50,
+                duration: 40,
                 useNativeDriver: false,
               }).start();
             }
-            if (scrollDireaction.current == "up" && offsetY < 60) {
-              Animated.timing(headerHeight, {
-                toValue: 120,
-                duration: 50,
-                useNativeDriver: false,
-              }).start();
-
+            if (scrollDireaction.current == "up" && offsetY < 100) {
               Animated.timing(showArrowUp, {
                 toValue: 0,
-                duration: 50,
+                duration: 40,
                 useNativeDriver: false,
               }).start();
             }
           }}
-          style={{ flex: 1, backgroundColor: 'white', zIndex:10 }}
+          style={{ flex: 1, backgroundColor: "white", zIndex: 10 }}
           data={data}
           renderItem={(item) => <VerticalHomeSituation item={item} />}
           keyExtractor={(item, index) => index.toString()}
           scrollEventThrottle={16}
+          removeClippedSubviews={true}
+          ListHeaderComponent={
+            <View style={styles.container}>
+              <SelectDropdown
+                data={classes}
+                buttonStyle={styles.select}
+                dropdownStyle={{
+                  borderRadius: 8,
+                }}
+                defaultButtonText={"Chọn lớp học"}
+                buttonTextStyle={styles.customText}
+                defaultValue={defaultValue}
+                // defaultValueByIndex={0}
+                onSelect={(selectedItem, index) => {
+                  setSelectItem(selectedItem.id);
+                }}
+                renderDropdownIcon={(isOpened) => {
+                  return (
+                    <FontAwesome
+                      name={isOpened ? "chevron-up" : "chevron-down"}
+                      color={"#637381"}
+                      size={14}
+                      style={{ marginRight: 10 }}
+                    />
+                  );
+                }}
+                dropdownIconPosition={"right"}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  const x = new Number(selectedItem.year);
+                  return `Lớp ${selectedItem.name} - Năm học ${
+                    selectedItem.year
+                  }-${x + 1}`;
+                }}
+                rowTextForSelection={(item, index) => {
+                  const x = new Number(item.year);
+                  return `Lớp ${item.name} - Năm học ${item.year}-${x + 1}`;
+                }}
+              />
+
+              <View style={styles.buttons}>
+                <TouchableOpacity onPress={() => filterData("main")}>
+                  <View
+                    style={{
+                      borderRadius: SIZES.radius,
+                      borderColor: COLORS.green,
+                      borderWidth: 1,
+                    }}
+                  >
+                    <Text style={[styles.textButton, { color: COLORS.green }]}>
+                      Chính khóa
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => filterData("tutor")}>
+                  <View
+                    style={{
+                      borderRadius: SIZES.radius,
+                      borderColor: COLORS.blue,
+                      borderWidth: 1,
+                    }}
+                  >
+                    <Text style={[styles.textButton, { color: COLORS.blue }]}>
+                      Phụ đạo
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => filterData("exam")}>
+                  <View
+                    style={{
+                      borderRadius: SIZES.radius,
+                      borderColor: COLORS.red,
+                      borderWidth: 1,
+                    }}
+                  >
+                    <Text style={[styles.textButton, { color: COLORS.red }]}>
+                      Kiểm tra định kỳ
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          }
         />
       </View>
 
-      <Animated.View 
-       style={[styles.upButtonStyle, {opacity: showArrowUp }]}
-       >
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={upButtonHandler}
-         
-        >
+      <Animated.View style={[styles.upButtonStyle, { opacity: showArrowUp }]}>
+        <TouchableOpacity activeOpacity={0.5} onPress={upButtonHandler}>
           <Entypo
             name="chevron-up"
             size={40}
@@ -226,7 +212,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     marginHorizontal: SIZES.padding,
-    zIndex: 1
+    zIndex: 1,
   },
   select: {
     width: "100%",
@@ -235,7 +221,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.input,
     backgroundColor: "white",
     borderWidth: 0.7,
-    zIndex:1
+    zIndex: 1,
   },
   customText: {
     textAlign: "left",
@@ -244,10 +230,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     columnGap: 6,
     marginTop: SIZES.padding,
-    zIndex: 1
+    zIndex: 1,
   },
   textButton: { color: "white", paddingHorizontal: 14, paddingVertical: 7 },
-  components: { flex: 1 , zIndex:10},
+  components: { flex: 1, zIndex: 10 },
   upButtonStyle: {
     position: "absolute",
     width: 50,
@@ -255,7 +241,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     left: 20,
-    bottom:10,
+    bottom: 10,
     zIndex: 100,
   },
   upButtonImageStyle: {

@@ -61,7 +61,6 @@ const AppNav = () => {
   useEffect(() => {
     
     const dataRes = async () => {
-      console.log('expoPushToken', expoPushToken)
       await axios
         .post(
          BASE_URL+ 'device-token',

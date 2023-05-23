@@ -92,10 +92,6 @@ const VerticalHomeSituation = ({ item }) => {
         )}
 
         {item.item?.comment != null && (
-          // <Text style={styles.classBottom}>
-          //   Nhận xét: <Text style={styles.textBold}>{item.item?.comment}</Text>
-          // </Text>
-
           <HTMLView value={item.item?.comment} />
         )}
       </View>

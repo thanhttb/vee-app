@@ -26,7 +26,7 @@ import { COLORS, SIZES } from "../../utils/theme";
 
 const types = ["Check In", "Thông báo", "Câu hỏi"];
 
-const HomeTutoring = ({ route, navigation }) => {
+const ScheduleTutoring = ({ route, navigation }) => {
   const { id } = route.params;
   const [type, setType] = useState(1);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
@@ -225,7 +225,7 @@ const HomeTutoring = ({ route, navigation }) => {
   );
 };
 
-export default HomeTutoring;
+export default ScheduleTutoring;
 
 const styles = StyleSheet.create({
   container: {

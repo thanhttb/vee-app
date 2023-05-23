@@ -11,6 +11,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 //npm
 import _ from "lodash";
@@ -53,15 +54,16 @@ const Home = () => {
   const [dataPost, setDataPost] = useState();
   const [arrClass, setArrClass] = useState();
 
+  const [loading, setLoading] = useState(false);
   const [onReached, setOnReached] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setOnReached(true)
+    setOnReached(true);
     setTimeout(() => {
       setRefreshing(false);
-      setOnReached(false)
+      setOnReached(false);
     }, 500);
   }, []);
 
@@ -75,6 +77,7 @@ const Home = () => {
   }, [classes]);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .post(
         BASE_URL + "feed/get",
@@ -93,6 +96,7 @@ const Home = () => {
         setDataPost(response.data);
       })
       .catch((err) => {});
+    setLoading(false);
   }, [arrClass, onReached]);
 
   const featureNameAnimation = {
@@ -257,25 +261,50 @@ const Home = () => {
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={onRefresh}
-                tintColor={'#01A191'}
-                title={'Loading...'}
-                titleColor={'#01A191'}
-                colors={['#01A191', '#41CFBD']}
-                progressBackgroundColor={'#FFFFFF'}
+                tintColor={"#01A191"}
+                title={"Loading..."}
+                titleColor={"#01A191"}
+                colors={["#01A191", "#41CFBD"]}
+                progressBackgroundColor={"#FFFFFF"}
               />
-            }>
+            }
+          >
             <View style={styles.paddingForHeader}></View>
             <Animated.View style={styles.scrollViewContent}>
-              <View style={{ flex: 1 }}>
-                <FlatList
-                  nestedScrollEnabled
-                  style={{ flex: 1, paddingBottom: 20 }}
-                  keyExtractor={(item, index) => index.toString()}
-                  data={dataPost}
-                  scrollEnabled={false}
-                  renderItem={renderItem}
-                />
-              </View>
+              {dataPost && loading == false && dataPost?.length > 0 && (
+                <View style={{ flex: 1 }}>
+                  <FlatList
+                    nestedScrollEnabled
+                    style={{ flex: 1, paddingBottom: 20 }}
+                    keyExtractor={(item, index) => index.toString()}
+                    data={dataPost}
+                    scrollEnabled={false}
+                    renderItem={renderItem}
+                  />
+                </View>
+              )}
+              {dataPost && loading == true && (
+                <View
+                  style={{
+                    height: SIZES.height * 0.7,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <ActivityIndicator size={"small"} />
+                </View>
+              )}
+              {dataPost && loading == false && dataPost?.length == 0 && (
+                <View
+                  style={{
+                    height: SIZES.height * 0.7,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text>Chưa có bài viết</Text>
+                </View>
+              )}
             </Animated.View>
           </ScrollView>
         </View>
@@ -287,7 +316,7 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
-  safeview: { flex: 1, backgroundColor: 'white' },
+  safeview: { flex: 1, backgroundColor: "white" },
   container: {
     flex: 1,
     // zIndex: 10
