@@ -2,34 +2,31 @@
   "expo": {
     "name": "VietElite Students",
     "slug": "vietelite-parent-app",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/fav.png",
     "splash": {
       "resizeMode": "contain",
       "image": "./assets/splash.png",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#64b445"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "versionCode": "2",
+      "buildNumber": "4",
       "bundleIdentifier": "com.veesoft.vietelitestudents",
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ]
-      },
       "runtimeVersion": {
         "policy": "sdkVersion"
       }
     },
     "android": {
       "package": "com.veesoft.vietelitestudents",
-      "versionCode": 2,
+      "versionCode": 4,
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "backgroundColor": "#ffffff",
         "foregroundColor": "./assets/fav.png"
@@ -38,7 +35,7 @@
     },
     "extra": {
       "eas": {
-        // "projectId": "04b3d310-7a3e-493d-80ea-8917e541fd1e"
+        "projectId": "04b3d310-7a3e-493d-80ea-8917e541fd1e"
       }
     },
     "owner": "tranthanhuet",
