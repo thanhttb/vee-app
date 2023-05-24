@@ -5,15 +5,15 @@ import Button from "./Button";
 
 import { useNavigation } from "@react-navigation/native";
 
-const DetailClass = () => {
+const DetailClass = ({data}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.className}>Lớp - TC9.1</Text>
-        <Text style={styles.class}>Thời gian: 8:00 - 9:00</Text>
-        <Text style={styles.class}>Giáo viên: Nguyễn Trung Tấn</Text>
-        <Text style={styles.class}>Thứ 3: 04/04/2023</Text>
+        <Text style={styles.className}>Lớp - {data.class}</Text>
+        <Text style={styles.class}>Thời gian: {data.time}</Text>
+        <Text style={styles.class}>Giáo viên: {data.teacher}</Text>
+        <Text style={styles.class}>Ngày học: {data.formated_date}</Text>
       </View>
       
     </View>

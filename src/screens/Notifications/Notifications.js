@@ -1,5 +1,5 @@
-import React from "react";
-import { StatusBar } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StatusBar, TouchableOpacity } from "react-native";
 import {
   Text,
   View,
@@ -7,13 +7,70 @@ import {
   SafeAreaView,
   Image,
   FlatList,
+  ScrollView,
 } from "react-native";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
-import { ScrollView } from "react-native";
 
-const array = [1];
+// redux
+import { useNavigation } from "@react-navigation/native";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { BASE_URL } from "../../../config";
+import moment from "moment";
+
 const Notifications = () => {
+  const dispatch = useDispatch();
+  const { user, authToken } = useSelector((state) => state.authReducer);
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .post(
+        BASE_URL + "notification",
+        {
+          parent_id: user.id,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + authToken,
+          },
+        }
+      )
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    setLoading(false);
+  }, [user]);
+
+  const renderItem = ({ item, index }) => {
+    const date = moment(item.created_at).fromNow();
+    return (
+      <TouchableOpacity>
+      <View style={styles.noti} key={index}>
+        <Image style={styles.avatar} source={{ uri: item.avatar }} />
+        <View
+          style={{
+            marginHorizontal: 10,
+          }}
+        >
+          <Text style={styles.name} ellipsizeMode="middle">
+            {item.content}
+          </Text>
+          <Text style={styles.time}>{date}</Text>
+        </View>
+      </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View
       style={{
@@ -23,60 +80,16 @@ const Notifications = () => {
     >
       <StatusBar barStyle="light-content" />
 
-      <View style={{ flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View style={styles.container}>
           <FlatList
-            data={array}
+            data={data}
             listKey={(item, index) => `_key${index.toString()}`}
             keyExtractor={(item, index) => `_key${index.toString()}`}
             showsHorizontalScrollIndicator={false}
-            renderItem={({ arr, i }) => (
-              <View style={styles.noti} key={arr}>
-                <Image
-                  style={styles.avatar}
-                  source={require("../../../assets/avatar_default.jpg")}
-                />
-                <View
-                  style={{
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text style={styles.title}>
-                    <Text style={styles.name}>
-                      Giáo viên đã duyệt đơn xin nghỉ
-                    </Text>{" "}
-                    
-                  </Text>
-                  <Text style={styles.time}>2 giờ trước</Text>
-                </View>
-              </View>
-            )}
+            renderItem={renderItem}
           />
-          {/* <ScrollView style={{ flex: 1}}>
-            {array.map((arr, i) =>{
-              return (
-                <View style={styles.noti} key={arr}>
-                <Image
-                  style={styles.avatar}
-                  source={require("../../../assets/avatar_default.jpg")}
-                />
-                <View
-                  style={{
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text style={styles.title}>
-                    <Text style={styles.name}>
-                      Giáo viên đã duyệt đơn xin nghỉ
-                    </Text>{" "}
-                    If you are going to use a passage of, you
-                  </Text>
-                  <Text style={styles.time}>2 giờ trước</Text>
-                </View>
-              </View>
-              )
-            })}
-          </ScrollView> */}
+          
         </View>
       </View>
     </View>
@@ -99,7 +112,7 @@ const styles = StyleSheet.create({
     paddingTop: SIZES.padding,
   },
   container: {
-    margin: SIZES.padding,
+    padding: SIZES.padding,
   },
   noti: { flexDirection: "row", marginBottom: SIZES.padding },
   avatar: {
@@ -109,8 +122,8 @@ const styles = StyleSheet.create({
   },
   title: { fontSize: 14, color: COLORS.gray },
   name: {
-    fontWeight: 600,
-    color: "black",
+    fontWeight: 500,
+    maxWidth: SIZES.width - 100,
   },
   time: {
     fontSize: 12,
