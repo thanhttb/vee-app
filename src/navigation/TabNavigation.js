@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from '@react-navigation/native';
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -37,6 +38,7 @@ const HomeStack = () => {
       <Stack.Screen
         name="Trang chính"
         component={Home}
+        lazy={false}
         options={{ unmountOnBlur: true, headerShown: false }}
       />
       <Stack.Screen
@@ -264,11 +266,34 @@ const ProfileStack = () => {
   );
 };
 
+const NotiStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Thông báo"
+        component={Notifications}
+        options={{ unmountOnBlur: true,
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },}}
+      />
+    
+    </Stack.Navigator>
+  );
+};
+
 const TabNavigation = () => {
   return (
+    <NavigationContainer>
     <Tab.Navigator>
       <Tab.Screen
         name="Trang chủ"
+        lazy={true}
         component={HomeStack}
         options={({ route }) => ({
           headerShown: false,
@@ -327,10 +352,10 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="Thông báo"
-        component={Notifications}
+        component={NotiStack}
         options={({ route }) => ({
-          // headerShown: false,
-          
+          headerShown: false,
+          unmountOnBlur: true,
           headerStyle: {
             backgroundColor: COLORS.green,
           },
@@ -383,6 +408,7 @@ const TabNavigation = () => {
         })}
       />
     </Tab.Navigator>
+    </NavigationContainer>
   );
 };
 

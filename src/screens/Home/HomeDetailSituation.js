@@ -50,7 +50,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
       setShow(!show);
     }
   };
-  console.log('dât', data)
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>

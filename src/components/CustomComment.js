@@ -4,7 +4,6 @@ import moment from 'moment';
 
 const CustomComment = ({item}) => {
   const date = new Date(item?.created_at);
-//   console.log('item', item)
   return (
     <View
       style={{

@@ -99,7 +99,6 @@ const VerticalHomeSituation = ({ item }) => {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("Tình hình học tập chi tiết", {
-            id: 1,
             data: item.item,
           })
         }

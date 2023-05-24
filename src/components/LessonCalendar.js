@@ -10,6 +10,7 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
   const goToA2 = () => {
     navigation.navigate("Trang chủ", {
       screen: "Tình hình học tập chi tiết",
+      initial: false,
       params: {
         data: item.previous_session,
       },

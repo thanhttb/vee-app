@@ -21,6 +21,7 @@ import moment from "moment";
 
 const Notifications = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { user, authToken } = useSelector((state) => state.authReducer);
 
   const [data, setData] = useState([]);
@@ -51,9 +52,39 @@ const Notifications = () => {
   }, [user]);
 
   const renderItem = ({ item, index }) => {
+    
     const date = moment(item.created_at).fromNow();
+
+    const goToSitua = () => {
+     
+      item.type == 1 &&  navigation.navigate("Trang chủ", {
+      screen: "Tình hình học tập",
+      initial: false,
+      params: {
+        dataSituation: item,
+      },
+    })
+
+    item.type == 2 &&  navigation.navigate("Trang chủ", {
+      screen: "Trang chính",
+      initial: false,
+      params: {
+        dataSituation: item,
+      },
+    });
+    
+
+    item.type == 3 &&  navigation.navigate("Học phí", {
+      // screen: "Trang chính",
+      // initial: false,
+      params: {
+        dataSituation: item,
+      },
+    })
+
+    };
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={goToSitua}>
       <View style={styles.noti} key={index}>
         <Image style={styles.avatar} source={{ uri: item.avatar }} />
         <View

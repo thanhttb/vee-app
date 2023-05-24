@@ -21,7 +21,8 @@ import { BASE_URL } from "../../../config";
 //components
 import VerticalHomeSituation from "../../components/VerticalHomeSituation";
 
-const HomeSituation = () => {
+const HomeSituation = ({route, navigation}) => {
+  // const {  dataSituation } = route?.params
   const dispatch = useDispatch();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { classes } = useSelector((state) => state.classReducer);
@@ -32,6 +33,9 @@ const HomeSituation = () => {
     classes?.length > 0 ? classes[0] : null
   );
 
+  // console.log('dataSituation',dataSituation)
+
+  // const [dataSitua, setDataSitua] = useState(dataSituation)
   const [data, setData] = useState([]);
   const [dataFilter, setDataFilter] = useState([]);
 
@@ -73,7 +77,17 @@ const HomeSituation = () => {
         setDataFilter(response.data.sessions);
       })
       .catch((err) => {});
-  }, [defaultValue, selectedItem]);
+  }, [selectedItem,defaultValue]);
+
+
+  // useEffect(()=> {
+  //  const index = classes.findIndex((item) => item.id === dataSituation.class_id);
+  //  if(index !== -1){
+  //   setSelectItem(dataSituation.class_id)
+  //  }
+  // }, [dataSituation])
+
+  // console.log('selectedItem',dataSitua)
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>

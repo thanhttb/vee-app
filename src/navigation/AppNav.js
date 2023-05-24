@@ -100,14 +100,14 @@ const AppNav = () => {
     )
   }
   return (
-    <NavigationContainer>
+    <>
       <StatusBar backgroundColor='black' barStyle="light-content" />
       {
         authToken == undefined || authToken == null ?
         <AppStack/>   : <TabNavigation />
       }
                                                   
-    </NavigationContainer>
+    </>
   )
 }
 

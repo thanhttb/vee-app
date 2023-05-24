@@ -32,7 +32,6 @@ const VerticalPostCard = ({ item }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState(item.comments);
 
-
   useEffect(() => {
     const isLiked = item.reactions.some((item) => item.parent_id == user.id);
     setIsLike(isLiked);
@@ -54,10 +53,10 @@ const VerticalPostCard = ({ item }) => {
         }
       )
       .then((response) => {
-        if(isLike) {
-          setLike(like-1)
-        }else {
-          setLike(like+1)
+        if (isLike) {
+          setLike(like - 1);
+        } else {
+          setLike(like + 1);
         }
         setIsLike(!isLike);
       })
@@ -121,6 +120,18 @@ const VerticalPostCard = ({ item }) => {
                   <Text style={styles.type}>Thông báo</Text>
                 </View>
               )}
+
+              {item.type == 2 && (
+                <View
+                  style={{
+                    backgroundColor: COLORS.blue,
+                    borderRadius: SIZES.radius,
+                    marginLeft: SIZES.base,
+                  }}
+                >
+                  <Text style={styles.type}>Học phụ đạo</Text>
+                </View>
+              )}
             </View>
 
             <Text style={styles.date}>{date}</Text>
@@ -132,11 +143,7 @@ const VerticalPostCard = ({ item }) => {
           <Text style={styles.title}>{item.content}</Text>
           <HTMLView value={item?.description} />
         </View>
-        {
-          item.file &&
-          <Image source={{ uri: item.file }} style={styles.file} />
-        }
-       
+        {item.file && <Image source={{ uri: item.file }} style={styles.file} />}
 
         {/* Actions  */}
         <View>
@@ -177,9 +184,7 @@ const VerticalPostCard = ({ item }) => {
 
         {/* Comments  */}
         {isComment && (
-          <View
-            style={styles.comments}
-          >
+          <View style={styles.comments}>
             <View
               style={{
                 flexDirection: "row",
@@ -194,7 +199,7 @@ const VerticalPostCard = ({ item }) => {
                 {item.avatar && (
                   <Image
                     source={{
-                      uri: 'http://center.vietelite.edu.vn/public/images/avatar_ph.png',
+                      uri: "http://center.vietelite.edu.vn/public/images/avatar_ph.png",
                     }}
                     style={{
                       width: 40,
@@ -293,8 +298,8 @@ const styles = StyleSheet.create({
   },
   file: {
     // marginTop: 4,
-    height: (SIZES.width - (SIZES.padding *2)) * 9 / 16,
-    width: SIZES.width - (SIZES.padding *2),
+    height: ((SIZES.width - SIZES.padding * 2) * 9) / 16,
+    width: SIZES.width - SIZES.padding * 2,
     resizeMode: "cover",
   },
   interact: {
@@ -303,7 +308,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: SIZES.padding,
   },
-  comments : {
+  comments: {
     color: "white",
     paddingVertical: 10,
     paddingHorizontal: 12,
