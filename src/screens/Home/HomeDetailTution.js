@@ -10,14 +10,14 @@ import {
 import { COLORS, SIZES } from "../../utils/theme";
 
 const HomeDetailSituation = ({ route, navigation }) => {
-  const { id,item } = route.params;
-  const [checkPayment, setCheckPayment] = useState(0);
+  const {item } = route.params;
   const config = {
     style: "currency",
     currency: "VND",
     maximumFractionDigits: 9,
   };
-  const formated = new Intl.NumberFormat("vi-VN", config).format(4500000);
+
+  const formated = new Intl.NumberFormat("vi-VN", config).format(item.amount);
 
   return (
     <View
@@ -49,7 +49,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 <Text style={{ color: COLORS.gray, fontSize:12 }}>Ngày thực hiện</Text>
               </View>
               <View>
-                <Text style={{fontSize: 12}}>12/04/2023</Text>
+                <Text style={{fontSize: 12}}>{item.date}</Text>
               </View>
             </View>
           </View>
@@ -74,13 +74,13 @@ const HomeDetailSituation = ({ route, navigation }) => {
               </View>
               <View style={{ width: "55%" }}>
                 <Text numberOfLines={2} style={{ textAlign: "right", fontSize: 12 }}>
-                  Trần Văn A học phí lớp TC9.1 tháng 4
+                 {item.description}
                 </Text>
               </View>
             </View>
           </View>
 
-          {item.type == 0 ? (
+          {item.mount < 0 ? (
             <>
               {/* Đơn giá  */}
               <View
@@ -152,7 +152,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                     <Text style={{ color: COLORS.gray, fontSize:12 }}>Phiếu thu</Text>
                   </View>
                   <View>
-                    <Text style={{fontSize: 12}}>DQ0149204</Text>
+                    <Text style={{fontSize: 12}}>{item.number}</Text>
                   </View>
                 </View>
               </View>
@@ -204,7 +204,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 <Text style={{ color: COLORS.gray, fontSize:12 }}>Học sinh</Text>
               </View>
               <View>
-                <Text style={{fontSize: 12}}>Trần Văn A</Text>
+                <Text style={{fontSize: 12}}>{item.name}</Text>
               </View>
             </View>
           </View>

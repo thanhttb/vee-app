@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   Text,
@@ -17,6 +17,9 @@ import * as Clipboard from "expo-clipboard";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import Toast, { DURATION } from "react-native-easy-toast";
+//redux
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { userReceipt } from "../../redux/actions/userActions";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
 const data = [
@@ -25,51 +28,82 @@ const data = [
     title: "Nguyễn Văn A lớp TC9.1 học phí thu học phí môn Toán",
     time: "04/05/2023",
     money: 4500000,
-    type: 1
+    type: 1,
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: -2500000,
-    type: 0
+    type: 0,
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: 2500000,
-    type: 1
+    type: 1,
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: 2500000,
-    type: 1
+    type: 1,
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: 2500000,
-    type: 1
+    type: 1,
   },
   {
     id: 2,
     title: "Nguyễn Văn B lớp TC9.1 học phí thu",
     time: "04/05/2023",
     money: 2500000,
-    type: 1
+    type: 1,
   },
 ];
+
+const options = [
+  {
+    type: 1,
+    text: 'Đã đóng'
+  },
+  {
+    type: 2,
+    text: 'Chưa đóng'
+  },
+  {
+    type: 0,
+    text: 'Tất cả'
+  }
+]
 const HomeTuition = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { receipt } = useSelector((state) => state.userReducer);
+  const { user, authToken } = useSelector((state) => state.authReducer);
+  const [sumReceipt, setSumReceipt] = useState();
+
+  
+  useEffect(() => {
+    dispatch(userReceipt(user?.id));
+  }, [dispatch]);
+
+  useEffect(() => {
+    let sum = 0;
+    receipt.forEach((item)=>  sum += item.amount)
+    setSumReceipt(sum)
+  },[receipt])
+
   const copyToClipboard = async (data) => {
     await Clipboard.setStringAsync(data);
   };
 
-  const money = 123456789;
+  const money = sumReceipt;
   const config = {
     style: "currency",
     currency: "VND",
@@ -83,7 +117,7 @@ const HomeTuition = () => {
       currency: "VND",
       maximumFractionDigits: 9,
     };
-    const formated = new Intl.NumberFormat("vi-VN", config).format(item.money);
+    const formated = new Intl.NumberFormat("vi-VN", config).format(item.amount);
     return (
       <View
         style={{
@@ -95,8 +129,7 @@ const HomeTuition = () => {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate("Chi tiết học phí", {
-              id: 1,
-              item: item
+              item: item,
             })
           }
         >
@@ -108,11 +141,11 @@ const HomeTuition = () => {
             }}
           >
             <View style={{ width: "65%" }}>
-              <Text numberOfLines={1} ellipsizeMode="tail">
-                {item.title}
+              <Text numberOfLines={2} ellipsizeMode="tail">
+                {item.name} - {item.description}
               </Text>
               <Text style={{ fontSize: 12, color: COLORS.gray, paddingTop: 2 }}>
-                {item.time}
+                {item.date}
               </Text>
             </View>
             <View>
@@ -163,7 +196,8 @@ const HomeTuition = () => {
               }}
             >
               <Text style={styles.textPhone}>
-                024.730.65565 <Feather name="phone-call" size={10} color="white" />
+                024.730.65565{" "}
+                <Feather name="phone-call" size={10} color="white" />
               </Text>
             </TouchableOpacity>
           </Text>
@@ -205,11 +239,27 @@ const HomeTuition = () => {
         {/* Bảng thống kê chi tiết  */}
         <View style={[styles.containerInfo, { flex: 1 }]}>
           <Text style={styles.title}>Bảng thống kê chi tiết</Text>
-          <View style={[styles.viewComponentStatistical]}>
+          <View style={styles.viewComponentStatistical}>
             <FlatList
-              data={data}
+              data={receipt}
               renderItem={({ item }) => <VerticalStatistical item={item} />}
               keyExtractor={(item, index) => index.toString()}
+              ListHeaderComponent={() => {
+                return (
+                  <>
+                    <View style={styles.option}>
+                      <Text>Tất cả</Text>
+                      <TouchableOpacity>
+                        <Ionicons
+                          name="options-outline"
+                          size={24}
+                          color="black"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                );
+              }}
             />
           </View>
         </View>
@@ -270,8 +320,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 600,
   },
-  textInfoRight: {
-    // marginLeft: 10
+  option: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: SIZES.padding,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EDEFF1",
   },
   viewComponent: {
     backgroundColor: COLORS.white,

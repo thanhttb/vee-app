@@ -76,7 +76,7 @@ const Notifications = () => {
 
     item.type == 3 &&  navigation.navigate("Học phí", {
       // screen: "Trang chính",
-      // initial: false,
+      initial: false,
       params: {
         dataSituation: item,
       },

@@ -46,3 +46,43 @@ export const userList = (id) => {
     }
   };
 };
+
+export const userReceipt = (id) => {
+  return async (dispatch) => {
+    const access_token = await AsyncStorage.getItem("tokenUser");
+    try {
+      const response = await axios.post(
+        BASE_URL + "receipt",
+        {
+          parent_id: id,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + access_token,
+          },
+        }
+      );
+
+      if (response.status == 200) {
+        const { data } = response;
+        dispatch({
+          type: type.SET_RECEIPT_SUCCESS,
+          payload: {
+            receipt: data,
+            error: false,
+          },
+        });
+      }
+    } catch (e) {
+      console.log("RECEIPT_ failed", e);
+      dispatch({
+        type: type.SET_RECEIPT_FAIL,
+        payload: {
+          receipt: [],
+          error: true,
+        },
+      });
+    }
+  };
+};
