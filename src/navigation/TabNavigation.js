@@ -288,7 +288,7 @@ const NotiStack = () => {
 
 const TabNavigation = () => {
   return (
-    <NavigationContainer>
+   
       <Tab.Navigator>
         <Tab.Screen
           name="Trang chủ"
@@ -407,7 +407,6 @@ const TabNavigation = () => {
           })}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 

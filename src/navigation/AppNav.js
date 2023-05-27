@@ -1,16 +1,15 @@
-import React, {useState, useEffect,useRef} from 'react'
-import {NavigationContainer} from '@react-navigation/native';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import AppStack from './AppStack';
-import TabNavigation from './TabNavigation';
-import {initialize} from '../redux/actions/authActions'
-import { View,ActivityIndicator,StatusBar } from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import AppStack from "./AppStack";
+import TabNavigation from "./TabNavigation";
+import { initialize } from "../redux/actions/authActions";
+import { View, ActivityIndicator, StatusBar } from "react-native";
 
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
-import { BASE_URL } from '../../config';
-import axios from 'axios';
-
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+import { BASE_URL } from "../../config";
+import axios from "axios";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -21,37 +20,36 @@ Notifications.setNotificationHandler({
 });
 
 const AppNav = () => {
-  const {authToken, user} = useSelector(state => state.authReducer);
+  const { authToken, user } = useSelector((state) => state.authReducer);
   const [loading, setLoading] = useState(true);
-  const dispath = useDispatch()
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const dispath = useDispatch();
+  const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   useEffect(() => {
     // dang ky thong bao
-    registerForPushNotificationsAsync().then(tokenRes => {
+    registerForPushNotificationsAsync().then((tokenRes) => {
       setExpoPushToken(tokenRes);
     });
 
     // them noti listen
     notificationListener.current =
-      Notifications.addNotificationReceivedListener(notification => {
+      Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
       });
     // phan hoi listen
     responseListener.current =
-      Notifications.addNotificationResponseReceivedListener(response => {
-      });
+      Notifications.addNotificationResponseReceivedListener((response) => {});
 
     responseListener.current = Notifications.setBadgeCountAsync(
-      notification?.length,
+      notification?.length
     );
 
     return () => {
       Notifications.removeNotificationSubscription(
-        notificationListener.current,
+        notificationListener.current
       );
       Notifications.removeNotificationSubscription(responseListener.current);
       Notifications.dismissAllNotificationsAsync();
@@ -59,34 +57,33 @@ const AppNav = () => {
   }, [lastNotificationResponse]);
 
   useEffect(() => {
-    
     const dataRes = async () => {
       await axios
         .post(
-         BASE_URL+ 'device-token',
+          BASE_URL + "device-token",
           {
             device_token: expoPushToken,
           },
           {
             headers: {
-              Authorization: 'Bearer ' + authToken,
+              Authorization: "Bearer " + authToken,
             },
-          },
+          }
         )
-        .then((response)=> console.log('device-token successfully'))
-        .catch((err)=> console.error('device-token failed', err));
+        .then((response) => console.log("device-token successfully"))
+        .catch((err) => console.error("device-token failed", err));
     };
     dataRes();
   }, [authToken]);
 
   const init = async () => {
     await dispath(initialize());
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    init()
-  }, [])
+    init();
+  }, []);
 
   // useEffect(() => {
   //   setTimeout(() => SplashScreen.hideAsync(), 1000);
@@ -94,45 +91,47 @@ const AppNav = () => {
 
   if (loading) {
     return (
-      <View style={{flex: 1, justifyContent: 'center'}}>
+      <View style={{ flex: 1, justifyContent: "center" }}>
         <ActivityIndicator size="small" />
       </View>
-    )
+    );
   }
   return (
     <>
-      <StatusBar backgroundColor='black' barStyle="light-content" />
-      {
-        authToken == undefined || authToken == null ?
-        <AppStack/>   : <TabNavigation />
-      }
-                                                  
+      <NavigationContainer>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
+        {authToken == undefined || authToken == null ? (
+          <AppStack />
+        ) : (
+          <TabNavigation />
+        )}
+      </NavigationContainer>
     </>
-  )
-}
+  );
+};
 
-export default AppNav
+export default AppNav;
 
 async function registerForPushNotificationsAsync() {
   let tokenRes;
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("default", {
+      name: "default",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
+      lightColor: "#FF231F7C",
     });
   }
 
   if (Device.isDevice) {
-    const {status: existingStatus} =
+    const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const {status} = await Notifications.requestPermissionsAsync();
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
-    if (finalStatus !== 'granted') {
+    if (finalStatus !== "granted") {
       // alert('Failed to get push token for push notification!');
       // return;
     }
