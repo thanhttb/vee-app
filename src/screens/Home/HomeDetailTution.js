@@ -49,7 +49,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 <Text style={{ color: COLORS.gray, fontSize:12 }}>Ngày thực hiện</Text>
               </View>
               <View>
-                <Text style={{fontSize: 12}}>{item.date}</Text>
+                <Text style={{fontSize: 12}}>{item.time}</Text>
               </View>
             </View>
           </View>
@@ -74,13 +74,13 @@ const HomeDetailSituation = ({ route, navigation }) => {
               </View>
               <View style={{ width: "55%" }}>
                 <Text numberOfLines={2} style={{ textAlign: "right", fontSize: 12 }}>
-                 {item.description}
+                 {item.content}
                 </Text>
               </View>
             </View>
           </View>
 
-          {item.mount < 0 ? (
+          {item.amount >= 0 ? (
             <>
               {/* Đơn giá  */}
               <View
@@ -103,7 +103,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                     </Text>
                   </View>
                    <View>
-                    <Text style={{fontSize: 12}}>{formated}</Text>
+                    <Text style={{fontSize: 12}}>{item.detail_amount} đ</Text>
                   </View>
                 </View>
               </View>
@@ -126,7 +126,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                     <Text style={{ color: COLORS.gray, fontSize:12 }}>Số ca học</Text>
                   </View>
                   <View>
-                    <Text style={{fontSize: 12}}>12</Text>
+                    <Text style={{fontSize: 12}}>{item.detail_count}</Text>
                   </View>
                 </View>
               </View>
@@ -152,7 +152,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                     <Text style={{ color: COLORS.gray, fontSize:12 }}>Phiếu thu</Text>
                   </View>
                   <View>
-                    <Text style={{fontSize: 12}}>{item.number}</Text>
+                    <Text style={{fontSize: 12}}>{item.receipt_number}</Text>
                   </View>
                 </View>
               </View>
@@ -204,7 +204,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 <Text style={{ color: COLORS.gray, fontSize:12 }}>Học sinh</Text>
               </View>
               <View>
-                <Text style={{fontSize: 12}}>{item.name}</Text>
+                <Text style={{fontSize: 12}}>{item.student_name}</Text>
               </View>
             </View>
           </View>

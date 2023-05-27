@@ -63,6 +63,8 @@ const ProfileChildren = () => {
       .catch((err) => {});
   }, []);
 
+  console.log('s', students);
+
   function onStudentChange(e, key, name) {
     let s = [...students];
     if (e) {

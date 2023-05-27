@@ -52,9 +52,10 @@ export const userReceipt = (id) => {
     const access_token = await AsyncStorage.getItem("tokenUser");
     try {
       const response = await axios.post(
-        BASE_URL + "receipt",
+        BASE_URL + "fee",
         {
-          parent_id: id,
+          students: [id],
+          show_all: true
         },
         {
           headers: {
@@ -65,11 +66,15 @@ export const userReceipt = (id) => {
       );
 
       if (response.status == 200) {
-        const { data } = response;
+        // const { data } = response.original.detail;
+        const data =response.data.original;
+        const amount_total =response.data.original.amount_total;
+        // console.log('original',response.data.original.detail)
         dispatch({
           type: type.SET_RECEIPT_SUCCESS,
           payload: {
             receipt: data,
+            amount_total: amount_total,
             error: false,
           },
         });
@@ -80,6 +85,7 @@ export const userReceipt = (id) => {
         type: type.SET_RECEIPT_FAIL,
         payload: {
           receipt: [],
+          amount_total: 0,
           error: true,
         },
       });
