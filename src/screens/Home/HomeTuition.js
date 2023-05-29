@@ -309,11 +309,11 @@ const HomeTuition = () => {
                     width: 70,
                     height: 70,
                     position: "absolute",
-                    right: 30,
+                    right: 0,
                   }}
-                  source={{
-                    uri: imageUrl,
-                  }}
+                  source={
+                    imageUrl ? {uri: imageUrl} : nul
+                  }
                 />
               </View>
             </View>
@@ -333,7 +333,7 @@ const HomeTuition = () => {
                 return (
                   <>
                     <View style={styles.option}>
-                      <Text>{radioButtons}</Text>
+                      <Text style={{fontWeight: 500, fontSize: 16}}>{radioButtons}</Text>
                       <TouchableOpacity
                         onPress={hanldeModal}
                         style={{ position: "relative" }}
@@ -368,7 +368,7 @@ const HomeTuition = () => {
                   radioButtons={radioButtonsData} //pass in our array
                   onPress={(value) => setValue(value)}
                   containerStyle={{
-                    alignItems: 'flex-start' ,
+                    alignItems: 'flex-start',
                     paddingHorizontal: 8,
                   }}
                 />
@@ -427,6 +427,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 15,
     paddingTop: 2,
+    justifyContent: 'center'
   },
   textPhone: {
     fontSize: 12,
