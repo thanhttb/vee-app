@@ -2,6 +2,7 @@ import * as type from "../types";
 const initialState = {
   users: [],
   data: [],
+  bank: null,
   amount_total: 0,
   receipt: null,
   parent: [],
@@ -16,7 +17,6 @@ export const userReducer = (state = initialState, action) => {
         users: action.payload.users,
         data: action.payload.data,
         parent: action.payload.parent,
-        amount_total: action.payload.amount_total,
         error: false,
       };
     case type.SET_USER_FAIL:
@@ -25,7 +25,6 @@ export const userReducer = (state = initialState, action) => {
         users: [],
         parent: [],
         data: [],
-        amount_total: 0,
         error: true,
       };
 
@@ -33,12 +32,16 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         receipt: null,
+        amount_total: null,
+        bank: null,
         error: true,
       };
     case type.SET_RECEIPT_SUCCESS:
       return {
         ...state,
         receipt: action.payload.receipt,
+        amount_total: action.payload.amount_total,
+        bank: action.payload.bank,
         error: false,
       };
     default:

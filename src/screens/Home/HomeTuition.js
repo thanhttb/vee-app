@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   SafeAreaView,
   Text,
@@ -11,6 +11,7 @@ import {
   Image,
   Button,
   Linking,
+  Animated,
 } from "react-native";
 import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
@@ -18,22 +19,40 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import Toast, { DURATION } from "react-native-easy-toast";
 import SelectDropdown from "react-native-select-dropdown";
+import RadioGroup from "react-native-radio-buttons-group";
 //redux
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { userReceipt } from "../../redux/actions/userActions";
 import { userList } from "../../redux/actions/userActions";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
-import axios from "axios";
-import { BASE_URL } from "../../../config";
 
+const radioButtonsData = [
+  {
+    id: "1", // acts as primary key, should be unique and non-empty string
+    label: "Tất cả",
+    value: "all",
+  },
+  {
+    id: "2",
+    label: "Học phí thu",
+    value: "minus",
+  },
+  {
+    id: "3",
+    label: "Chưa thanh toán",
+    value: "plus",
+  },
+];
 
 const HomeTuition = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { receipt, users } = useSelector((state) => state.userReducer);
+  const { receipt, users, amount_total, bank } = useSelector(
+    (state) => state.userReducer
+  );
   const { user, authToken } = useSelector((state) => state.authReducer);
-  const [sumReceipt, setSumReceipt] = useState();
+  const [sumReceipt, setSumReceipt] = useState(0);
   const [data, setData] = useState();
   const [selectedItem, setSelectItem] = useState(
     users?.length > 0 ? users[0].id : 0
@@ -41,27 +60,60 @@ const HomeTuition = () => {
   const [defaultValue, setDefaultValue] = useState(
     users?.length > 0 ? users[0] : null
   );
+  const [isModal, setIsModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(1);
+  const [radioButtons, setRadioButtons] = useState(radioButtonsData[0].label);
+  const [filterData, setFilterData] = useState();
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     dispatch(userReceipt(selectedItem));
   }, [dispatch, selectedItem]);
 
   useEffect(() => {
-    setData(receipt)
-  }, [receipt])
-
-  useEffect(() =>{
-    setSelectItem(users?.length > 0 ? users[0].id : 0)
-    setDefaultValue(users?.length > 0 ? users[0] : null)
-  }, [users])
-
-  useEffect(() =>{
-    dispatch(userList(user.id))
-  }, [dispatch])
+    const startImage = bank?.qr.indexOf("https://");
+    const endImage = bank?.qr.indexOf("?");
+    if (startImage !== -1 && endImage !== -1) {
+      const imageUrl = bank?.qr.slice(startImage, endImage);
+      setImageUrl(imageUrl);
+    }
+  }, [bank]);
+  useEffect(() => {
+    setData(receipt);
+    setFilterData(receipt);
+  }, [receipt]);
 
   useEffect(() => {
-    setSumReceipt(data?.amount_total);
-  }, [receipt]);
+    setSelectItem(users?.length > 0 ? users[0].id : 0);
+    setDefaultValue(users?.length > 0 ? users[0] : null);
+  }, [users]);
+
+  useEffect(() => {
+    dispatch(userList(user.id));
+  }, [dispatch]);
+
+  useEffect(() => {
+    setSumReceipt(amount_total);
+  }, [amount_total]);
+
+  const hanldeModal = () => {
+    setIsModal(!isModal);
+  };
+
+  const setValue = (value) => {
+    var newArray = radioButtonsData.filter((item) => item.id == value); //get the items that are selected
+    setRadioButtons(newArray[0].label); //set the selected value in this Hook
+    setSelectedId(newArray[0].id);
+    if (value == 1) {
+      setData(filterData);
+    } else if (value == 2) {
+      var newDataFilter = filterData.filter((item) => item.amount < 0);
+      setData(newDataFilter);
+    } else {
+      var newDataFilter = filterData.filter((item) => item.amount > 0);
+      setData(newDataFilter);
+    }
+  };
 
   const copyToClipboard = async (data) => {
     await Clipboard.setStringAsync(data);
@@ -204,62 +256,88 @@ const HomeTuition = () => {
           <Text style={styles.title}>Thông tin chuyển khoản</Text>
           <View style={styles.viewComponent}>
             <View style={styles.viewInfoLeft}>
-              <View style={{ flexDirection: "column", gap: 8, marginTop: 4, width: '35%' }}>
+              <View
+                style={{
+                  flexDirection: "column",
+                  gap: 8,
+                  marginTop: 4,
+                  width: "30%",
+                }}
+              >
                 <Text style={styles.textInfoLeft}>Ngân hàng</Text>
                 <Text style={styles.textInfoLeft}>Số tài khoản</Text>
                 <Text style={styles.textInfoLeft}>Chủ tài khoản</Text>
-                <Text style={styles.textInfoLeft}>Nội dung chuyển khoản</Text>
+                <Text style={styles.textInfoLeft}>Nội dung</Text>
               </View>
-              <View style={{ flexDirection: "column", gap: 8, marginTop: 4, width: '65%' }}>
-                <Text style={styles.textInfoRight}>{data?.bank_code}</Text>
+              <View
+                style={{
+                  flexDirection: "column",
+                  gap: 8,
+                  marginTop: 4,
+                  width: "70%",
+                }}
+              >
+                <Text style={styles.textInfoRight}>{bank?.code}</Text>
                 <TouchableOpacity
                   onPress={() => {
-                    copyToClipboard(`${data?.bank_number}`),
+                    copyToClipboard(`${bank?.number}`),
                       this.toast.show("Copy thành công", 1500);
                   }}
                   on
                 >
                   <Text style={styles.textInfoRight}>
-                    {data?.bank_number}{" "}
+                    {bank?.number}{" "}
                     <Feather name="copy" size={12} color="black" />
                   </Text>
                 </TouchableOpacity>
-                <Text style={styles.textInfoRight}>{data?.bank_owner}</Text>
+                <Text style={styles.textInfoRight}>{bank?.owner}</Text>
                 <TouchableOpacity
                   onPress={() => {
-                    copyToClipboard(`${data?.total_content}`),
+                    copyToClipboard(`${bank?.content}`),
                       this.toast.show("Copy thành công", 1500);
                   }}
                   on
                 >
                   <Text style={styles.textInfoRight}>
-                    {data?.total_content}{" "}
+                    {bank?.content}{" "}
                     <Feather name="copy" size={12} color="black" />
                   </Text>
                 </TouchableOpacity>
+
+                <Image
+                  style={{
+                    width: 70,
+                    height: 70,
+                    position: "absolute",
+                    right: 30,
+                  }}
+                  source={{
+                    uri: imageUrl,
+                  }}
+                />
               </View>
             </View>
-
-            {/* <View style={styles.viewInfoRight}>
-              <Image source={{ uri: data?.bank_qr }} />
-            </View> */}
           </View>
         </View>
 
         {/* Bảng thống kê chi tiết  */}
         <View style={[styles.containerInfo, { flex: 1 }]}>
           <Text style={styles.title}>Bảng thống kê chi tiết</Text>
+
           <View style={styles.viewComponentStatistical}>
             <FlatList
-              data={data?.detail}
+              data={data}
               renderItem={({ item }) => <VerticalStatistical item={item} />}
               keyExtractor={(item, index) => index.toString()}
               ListHeaderComponent={() => {
                 return (
                   <>
                     <View style={styles.option}>
-                      <Text>Tất cả</Text>
-                      <TouchableOpacity>
+                      <Text>{radioButtons}</Text>
+                      <TouchableOpacity
+                        onPress={hanldeModal}
+                        style={{ position: "relative" }}
+                      >
                         <Ionicons
                           name="options-outline"
                           size={24}
@@ -271,6 +349,31 @@ const HomeTuition = () => {
                 );
               }}
             />
+            {isModal && (
+              <Animated.View style={styles.modal}>
+                <TouchableOpacity onPress={hanldeModal}>
+                  <Ionicons
+                    name="close-sharp"
+                    size={20}
+                    color="black"
+                    style={{
+                      textAlign: "right",
+                      paddingTop: 6,
+                      paddingRight: 10,
+                    }}
+                  />
+                </TouchableOpacity>
+                <RadioGroup
+                  selectedId={`${selectedId}`}
+                  radioButtons={radioButtonsData} //pass in our array
+                  onPress={(value) => setValue(value)}
+                  containerStyle={{
+                    alignItems: 'flex-start' ,
+                    paddingHorizontal: 8,
+                  }}
+                />
+              </Animated.View>
+            )}
           </View>
         </View>
       </View>
@@ -376,9 +479,25 @@ const styles = StyleSheet.create({
   viewInfoLeft: {
     flexDirection: "row",
     justifyContent: "space-around",
+    paddingHorizontal: 8,
   },
   textInfoLeft: {
     color: COLORS.gray,
-    // paddingRight: SIZES.padding
+  },
+
+  modal: {
+    backgroundColor: "white",
+    height: 140,
+    width: 180,
+    position: "absolute",
+    right: 50,
+    top: 20,
+    elevation: 4,
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    borderRadius: SIZES.radius,
+    flexDirection: "column",
   },
 });

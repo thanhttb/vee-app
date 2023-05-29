@@ -67,14 +67,16 @@ export const userReceipt = (id) => {
 
       if (response.status == 200) {
         // const { data } = response.original.detail;
-        const data =response.data.original;
+        const data =response.data.original.detail;
         const amount_total =response.data.original.amount_total;
+        const bank = response.data.original.bank;
         // console.log('original',response.data.original.detail)
         dispatch({
           type: type.SET_RECEIPT_SUCCESS,
           payload: {
             receipt: data,
             amount_total: amount_total,
+            bank: bank,
             error: false,
           },
         });
