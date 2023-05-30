@@ -32,7 +32,7 @@ const CustomComment = ({item}) => {
         )}
         <View style={{flex: 2, marginLeft: 10}}>
           <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text style={{fontSize: 16, color: 'black', fontWeight: '500'}}>
+            <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>
               {item?.name}
             </Text>
           
@@ -42,6 +42,7 @@ const CustomComment = ({item}) => {
             <Text
               style={{
                 color: '#919EAB',
+                fontSize: 14,
               }}>
               {moment(date).fromNow()}
             </Text>

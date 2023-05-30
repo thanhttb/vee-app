@@ -64,7 +64,7 @@ const Home = () => {
     setTimeout(() => {
       setRefreshing(false);
       setOnReached(false);
-    }, 500);
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -194,6 +194,7 @@ const Home = () => {
   const renderItem = ({ item, index }) => (
     <VerticalPostCard item={item} key={index} />
   );
+  console.log('renderItem',dataPost)
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
@@ -279,7 +280,7 @@ const Home = () => {
                     keyExtractor={(item, index) => index.toString()}
                     data={dataPost}
                     scrollEnabled={false}
-                    renderItem={renderItem}
+                    renderItem={(item)=> <VerticalPostCard item={item} />}
                   />
                 </View>
               )}

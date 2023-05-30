@@ -276,7 +276,7 @@ const HomeTuition = () => {
                 </Text>
               </View>
             </View>
-            <Text style={[styles.textSum, { fontSize: 10 }]}>
+            <Text style={[styles.textSum, { fontSize: 10}]}>
               Mọi thắc mắc vui lòng liên hệ theo số Hotline
               <TouchableOpacity
                 onPress={() => {
@@ -523,7 +523,6 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 15,
     paddingTop: 2,
-    justifyContent: "center",
   },
   textPhone: {
     fontSize: 12,

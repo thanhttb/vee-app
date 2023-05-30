@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Image
+  Image,
+  Alert
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import moment from "moment";
@@ -73,6 +74,49 @@ const ScheduleTutoring = ({ route, navigation }) => {
     setSelectedTime(moment(date).format("LT"));
     hideTimePicker();
   };
+
+  const handleChangeSubmit = () => {
+    axios.post(
+      BASE_URL+'feed/create', {
+        session_id: data.sid,
+        content: type,
+        parent_id: user.id,
+        class_id: data.class_id,
+        type: 1,
+        description: description
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + authToken,
+        },
+      }
+    )
+    .then(res => {
+      Alert.alert(
+        "VietElite",
+        "Gửi đơn xin học phụ đạo thành công",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        {
+          userInterfaceStyle: "light",
+        }
+      ),
+      setDescription(''),
+      setType(null)
+    })
+    .catch(err => {
+      Alert.alert(
+        "VietElite",
+        "Gửi đơn xin học phụ đạo thất bại",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        {
+          userInterfaceStyle: "light",
+        }
+      )
+    })
+  }
+
+
   return (
     <GestureHandlerRootView style={styles.container}>
       <KeyboardAvoidingView
@@ -222,7 +266,7 @@ const ScheduleTutoring = ({ route, navigation }) => {
               />
               <Spacer height={30} />
               <Button
-                // onPress={() => handleChangeSubmit(key)}
+                onPress={handleChangeSubmit}
                 label={"Gửi"}
                 color={COLORS.white}
                 background={COLORS.green}

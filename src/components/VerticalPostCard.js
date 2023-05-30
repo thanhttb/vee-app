@@ -24,16 +24,16 @@ import { BASE_URL } from "../../config";
 const VerticalPostCard = ({ item }) => {
   const { user, authToken } = useSelector((state) => state.authReducer);
 
-  const date = moment(item.time).fromNow();
+  const date = moment(item?.item.time).fromNow();
   const dateNow = new Date();
-  const [like, setLike] = useState(item.reactions.length);
+  const [like, setLike] = useState(item?.item?.reactions?.length);
   const [isLike, setIsLike] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(item.comments);
+  const [comments, setComments] = useState(item?.item.comments);
 
   useEffect(() => {
-    const isLiked = item.reactions.some((item) => item.parent_id == user.id);
+    const isLiked = item?.item?.reactions.some((item) => item?.parent_id == user.id);
     setIsLike(isLiked);
   }, [user]);
 
@@ -43,7 +43,7 @@ const VerticalPostCard = ({ item }) => {
         BASE_URL + "feed/reaction",
         {
           parent_id: user.id,
-          feed_id: item.id,
+          feed_id: item?.item.id,
         },
         {
           headers: {
@@ -69,7 +69,7 @@ const VerticalPostCard = ({ item }) => {
         BASE_URL + "feed/comment",
         {
           parent_id: user.id,
-          feed_id: item.id,
+          feed_id: item?.item.id,
           content: comment,
         },
         {
@@ -104,12 +104,12 @@ const VerticalPostCard = ({ item }) => {
       <View style={styles.content}>
         {/* Header  */}
         <View style={styles.header}>
-          <Image source={{ uri: item.avatar }} style={styles.imageHeader} />
+          <Image source={{ uri: item?.item.avatar }} style={styles.imageHeader} />
           <View style={styles.headerRight}>
             <View style={styles.headerRightTop}>
-              <Text style={{ fontWeight: 500, fontSize: 18 }}>{item.name}</Text>
+              <Text style={{ fontWeight: 500, fontSize: 18 }}>{item?.item.name}</Text>
 
-              {item.type == 1 && (
+              {item?.item.type == 1 && (
                 <View
                   style={{
                     backgroundColor: COLORS.green,
@@ -121,7 +121,7 @@ const VerticalPostCard = ({ item }) => {
                 </View>
               )}
 
-              {item.type == 2 && (
+              {item?.item.type == 2 && (
                 <View
                   style={{
                     backgroundColor: COLORS.blue,
@@ -140,16 +140,16 @@ const VerticalPostCard = ({ item }) => {
 
         {/* Content  */}
         <View style={{ padding: SIZES.padding }}>
-          <Text style={styles.title}>{item.content}</Text>
-          <HTMLView value={item?.description} />
+          <Text style={styles.title}>{item?.item.content}</Text>
+          <HTMLView value={item?.item.description} />
         </View>
-        {item.file && <Image source={{ uri: item.file }} style={styles.file} />}
+        {item?.item.file && <Image source={{ uri: item?.item.file }} style={styles.file} />}
 
         {/* Actions  */}
         <View>
           <View style={styles.interact}>
             <Text>{like} lượt thích</Text>
-            <Text>{comments.length} Bình luận</Text>
+            <Text>{item?.item.comments.length} Bình luận</Text>
           </View>
           <View style={styles.action}>
             <TouchableOpacity
@@ -158,12 +158,12 @@ const VerticalPostCard = ({ item }) => {
             >
               {isLike == false ? (
                 <>
-                  <AntDesign name="like2" size={24} color="black" />
+                  <AntDesign name="like2" size={20} color="black" />
                   <Text style={{ paddingLeft: 4 }}>Thích</Text>
                 </>
               ) : (
                 <>
-                  <AntDesign name="like1" size={24} color="#2078F4" />
+                  <AntDesign name="like1" size={20} color="#2078F4" />
                   <Text style={{ paddingLeft: 4, color: "#2078F4" }}>
                     Thích
                   </Text>
@@ -175,7 +175,7 @@ const VerticalPostCard = ({ item }) => {
               onPress={showComments}
               style={{ flexDirection: "row", alignItems: "center" }}
             >
-              <FontAwesome name="comment-o" size={24} color="black" />
+              <FontAwesome name="comment-o" size={20} color="black" />
               {/* <FontAwesome name="comment" size={24} color="#2078F4" /> */}
               <Text style={{ paddingLeft: 4 }}>Bình luận</Text>
             </TouchableOpacity>
@@ -196,19 +196,7 @@ const VerticalPostCard = ({ item }) => {
                   flexDirection: "row",
                 }}
               >
-                {item.avatar && (
-                  <Image
-                    source={{
-                      uri: "http://center.vietelite.edu.vn/public/images/avatar_ph.png",
-                    }}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 40,
-                    }}
-                  />
-                )}
-                <View style={{ flex: 2, marginLeft: 10 }}>
+                <View style={{ flex: 2 }}>
                   <TextInput
                     style={styles.InputField}
                     onChangeText={(text) => setComment(text)}
@@ -228,12 +216,8 @@ const VerticalPostCard = ({ item }) => {
                   style={styles.InputSend}
                   onPress={hanldeComment}
                 >
-                  <Ionicons
-                    name="send"
-                    size={24}
-                    justifyContent="center"
-                    color="#10C45C"
-                  />
+                 
+                  <Image style={{width: 28, height:28, marginHorizontal:6}} source={require("../../assets/send.png")} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -292,8 +276,8 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
   },
   title: {
-    fontWeight: "700",
-    fontSize: 18,
+    fontWeight: 600,
+    fontSize: 17,
     paddingBottom: 4,
   },
   file: {
@@ -323,20 +307,22 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   InputField: {
-    borderColor: "#eeeeee",
+    borderColor: COLORS.green,
     borderWidth: 1,
     paddingTop: 10,
     paddingLeft: 10,
     width: "98%",
-    borderRadius: 8,
+    borderRadius: 12,
     height: 40,
   },
   InputSend: {
-    backgroundColor: "#F6F7F8",
-    width: 50,
+    // backgroundColor: "#F6F7F8",
+    borderColor: COLORS.green,
+    borderWidth: 1,
+    // width: 50,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 8,
+    borderRadius: 12,
   },
   TextInput: {
     width: "100%",
