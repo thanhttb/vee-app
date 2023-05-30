@@ -12,6 +12,9 @@ import {
   Button,
   Linking,
   Animated,
+  Modal,
+  Alert,
+  Pressable,
 } from "react-native";
 import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
@@ -61,6 +64,7 @@ const HomeTuition = () => {
     users?.length > 0 ? users[0] : null
   );
   const [isModal, setIsModal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
   const [radioButtons, setRadioButtons] = useState(radioButtonsData[0].label);
   const [filterData, setFilterData] = useState();
@@ -118,6 +122,8 @@ const HomeTuition = () => {
   const copyToClipboard = async (data) => {
     await Clipboard.setStringAsync(data);
   };
+
+  const hanldeShowImage = () => {};
 
   const config = {
     style: "currency",
@@ -304,17 +310,25 @@ const HomeTuition = () => {
                   </Text>
                 </TouchableOpacity>
 
-                <Image
+                <TouchableOpacity
+                  onPress={() => setModalVisible(true)}
                   style={{
                     width: 70,
                     height: 70,
                     position: "absolute",
                     right: 0,
                   }}
-                  source={
-                    imageUrl ? {uri: imageUrl} : nul
-                  }
-                />
+                >
+                  <Image
+                    style={{
+                      width: 70,
+                      height: 70,
+                      position: "absolute",
+                      right: 0,
+                    }}
+                    source={imageUrl ? { uri: imageUrl } : null}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -333,7 +347,9 @@ const HomeTuition = () => {
                 return (
                   <>
                     <View style={styles.option}>
-                      <Text style={{fontWeight: 500, fontSize: 16}}>{radioButtons}</Text>
+                      <Text style={{ fontWeight: 500, fontSize: 16 }}>
+                        {radioButtons}
+                      </Text>
                       <TouchableOpacity
                         onPress={hanldeModal}
                         style={{ position: "relative" }}
@@ -368,7 +384,7 @@ const HomeTuition = () => {
                   radioButtons={radioButtonsData} //pass in our array
                   onPress={(value) => setValue(value)}
                   containerStyle={{
-                    alignItems: 'flex-start',
+                    alignItems: "flex-start",
                     paddingHorizontal: 8,
                   }}
                 />
@@ -388,6 +404,38 @@ const HomeTuition = () => {
         opacity={0.8}
         textStyle={{ color: "black" }}
       />
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+        style={{
+          backgroundColor: "red",
+          height: SIZES.height,
+          width: SIZES.width,
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity style={{width: 240, alignItems:'flex-end'}}
+             onPress={() => setModalVisible(!modalVisible)}>
+            <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+            <Image
+              style={{
+                width: 240,
+                height: 280,
+              }}
+              source={imageUrl ? { uri: imageUrl } : null}
+            />
+           
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -427,7 +475,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 15,
     paddingTop: 2,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   textPhone: {
     fontSize: 12,
@@ -501,4 +549,27 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.radius,
     flexDirection: "column",
   },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 10,
+    backgroundColor: "white",
+    borderRadius: SIZES.radius,
+    padding: SIZES.padding,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  
 });
