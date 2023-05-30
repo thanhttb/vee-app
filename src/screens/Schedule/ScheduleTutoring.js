@@ -17,6 +17,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 //redux
 import { userList } from "../../redux/actions/userActions";
+import { listClass } from "../../redux/actions/classActions";
 import { Provider, useDispatch, useSelector } from "react-redux";
 
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
@@ -33,10 +34,16 @@ const ScheduleTutoring = ({ route, navigation }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [selectedItem, setSelectItem] = useState();
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer);
   const { users } = useSelector((state) => state.userReducer);
+  const { classes } = useSelector((state) => state.classReducer);
+
+  useEffect(() => {
+    dispatch(listClass(user?.id));
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(userList(user.id));
@@ -168,16 +175,15 @@ const ScheduleTutoring = ({ route, navigation }) => {
               </View>
               <Spacer height={10} />
               <SelectDropdown
-                data={types}
+                data={classes}
                 buttonStyle={styles.select}
                 dropdownStyle={{
                   borderRadius: 8,
                 }}
                 defaultButtonText={"Chọn lớp học"}
                 buttonTextStyle={styles.customText}
-                // defaultValue={types[0]}
                 onSelect={(selectedItem, index) => {
-                  setType(index + 1);
+                  setSelectItem(selectedItem.id);
                 }}
                 renderDropdownIcon={(isOpened) => {
                   return (
@@ -191,17 +197,21 @@ const ScheduleTutoring = ({ route, navigation }) => {
                 }}
                 dropdownIconPosition={"right"}
                 buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
+                  const x = new Number(selectedItem.year);
+                  return `Lớp ${selectedItem.name} - Năm học ${
+                    selectedItem.year
+                  }-${x + 1}`;
                 }}
                 rowTextForSelection={(item, index) => {
-                  return item;
+                  const x = new Number(item.year);
+                  return `Lớp ${item.name} - Năm học ${item.year}-${x + 1}`;
                 }}
               />
 
               <Spacer height={10} />
               <TextInput
                 style={styles.TextInput}
-                placeholder={`Lý do xin học phụ đạo`}
+                placeholder={`Lý do xin học phụ đạo (*)`}
                 keyboardType={`default`}
                 focusable={false}
                 multiline={true}
