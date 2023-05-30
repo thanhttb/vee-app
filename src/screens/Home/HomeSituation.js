@@ -22,7 +22,7 @@ import { BASE_URL } from "../../../config";
 import VerticalHomeSituation from "../../components/VerticalHomeSituation";
 
 const HomeSituation = ({route, navigation}) => {
-  // const {  dataSituation } = route?.params
+  const {  classId } = route?.params
   const dispatch = useDispatch();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { classes } = useSelector((state) => state.classReducer);
@@ -33,9 +33,6 @@ const HomeSituation = ({route, navigation}) => {
     classes?.length > 0 ? classes[0] : null
   );
 
-  // console.log('dataSituation',dataSituation)
-
-  // const [dataSitua, setDataSitua] = useState(dataSituation)
   const [data, setData] = useState([]);
   const [dataFilter, setDataFilter] = useState([]);
 
@@ -80,14 +77,13 @@ const HomeSituation = ({route, navigation}) => {
   }, [selectedItem,defaultValue]);
 
 
-  // useEffect(()=> {
-  //  const index = classes.findIndex((item) => item.id === dataSituation.class_id);
-  //  if(index !== -1){
-  //   setSelectItem(dataSituation.class_id)
-  //  }
-  // }, [dataSituation])
-
-  // console.log('selectedItem',dataSitua)
+  useEffect(()=> {
+   const index = classes.findIndex((item) => item.id == classId);
+   if(index !== -1){
+    setSelectItem(classId)
+    setDefaultValue(classes[index])
+   }
+  }, [classId])
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>

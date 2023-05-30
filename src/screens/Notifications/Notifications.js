@@ -61,7 +61,7 @@ const Notifications = () => {
       screen: "Tình hình học tập",
       initial: false,
       params: {
-        dataSituation: item,
+        classId: item.class_id,
       },
     })
 

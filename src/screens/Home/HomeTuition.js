@@ -195,11 +195,10 @@ const HomeTuition = () => {
       <StatusBar barStyle="light-content" />
 
       <ScrollView
-      ref={listViewRef}
+        ref={listViewRef}
         style={styles.container}
         stickyHeaderIndices={[1]}
         scrollEventThrottle={16}
-        
         onScroll={(e) => {
           const offsetY = e.nativeEvent.contentOffset.y;
           scrollDireaction.current =
@@ -428,7 +427,7 @@ const HomeTuition = () => {
             )}
           </View>
         </View>
-        {/* </View> */}
+        
       </ScrollView>
 
       <Toast
@@ -476,10 +475,10 @@ const HomeTuition = () => {
       </Modal>
 
       <Animated.View style={[styles.upButtonStyle, { opacity: showArrowUp }]}>
-        <TouchableOpacity activeOpacity={0.5} onPress={upButtonHandler}>
+        <TouchableOpacity onPress={upButtonHandler}>
           <Entypo
             name="chevron-up"
-            size={40}
+            size={45}
             color={COLORS.green}
             style={styles.upButtonImageStyle}
           />
@@ -494,7 +493,7 @@ export default HomeTuition;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    margin: SIZES.padding,
+    padding: SIZES.padding,
     flex: 1,
     // flexDirection: "column",/
   },
@@ -627,7 +626,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    left: 20,
+    right: 20,
     bottom: 10,
     zIndex: 100,
   },

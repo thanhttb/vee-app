@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   Text,
   View,
@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-//npm
-import { Ionicons } from "@expo/vector-icons";
+// redux
 import { useNavigation } from "@react-navigation/native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { listClass } from "../redux/actions/classActions";
 //utils
 import { COLORS, SIZES } from "../utils/theme";
 const UPPER_HEADER_HEIGHT = 40;
@@ -32,6 +32,14 @@ const HeaderHome = ({
   headerHeight,
 }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { user, authToken } = useSelector((state) => state.authReducer);
+  const { classes } = useSelector((state) => state.classReducer);
+
+  useEffect(() => {
+    dispatch(listClass(user?.id));
+  }, [dispatch]);
+
   return (
     <View style={styles.header}>
       <Animated.View
@@ -39,12 +47,12 @@ const HeaderHome = ({
       ></Animated.View>
       <View style={styles.lowerHeader}>
         <Animated.View style={[styles.featureSmall, depositViewAnimation]}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("Bảng tin")} style={{height: 33}}>
+          {/* <TouchableOpacity onPressIn={() => navigation.navigate("Bảng tin")} style={{height: 33}}> */}
             <Animated.Image
               source={require("../../assets/icon-home/bang-tin.png")}
               style={[styles.bangtin]}
             />
-          </TouchableOpacity>
+          {/* </TouchableOpacity> */}
           <Animated.Text
             numberOfLines={2}
             style={[
@@ -57,7 +65,11 @@ const HeaderHome = ({
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.featureBig, withdrawViewAnimation]}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("Tình hình học tập")} style={{height: 33,paddingTop:9}}>
+          <TouchableOpacity onPressIn={() => navigation.navigate("Tình hình học tập", {
+             params: {
+              classId: classes[0].class_id,
+            },
+          })} style={{height: 33,paddingTop:9}}>
             <Animated.Image
               source={require("../../assets/icon-home/thht1.png")}
               style={[styles.thht]}
