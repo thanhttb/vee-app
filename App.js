@@ -8,8 +8,15 @@ import { store } from "./src/redux/store";
 import { LogBox } from "react-native";
 import moment from "moment";
 require('moment/locale/vi');
+import { YellowBox } from 'react-native';
+import { useEffect } from "react";
+
 
 export default function App() {
+  useEffect(() => {
+    YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
+}, [])
+
   return (
     <>
       <Provider store={store}>

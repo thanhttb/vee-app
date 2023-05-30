@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import {
   SafeAreaView,
   Text,
@@ -14,9 +14,8 @@ import {
   Animated,
   Modal,
   Alert,
-  Pressable,
 } from "react-native";
-import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
+import { Ionicons, Feather, FontAwesome, Entypo } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
@@ -70,6 +69,15 @@ const HomeTuition = () => {
   const [filterData, setFilterData] = useState();
   const [imageUrl, setImageUrl] = useState("");
 
+  const listViewRef = useRef(null);
+  const lastOffsetY = useRef(0);
+  const scrollDireaction = useRef(0);
+  const showArrowUp = useRef(new Animated.Value(0)).current;
+
+  const upButtonHandler = () => {
+    listViewRef.current?.scrollTo({ offset: 0, animated: true });
+  };
+
   useEffect(() => {
     dispatch(userReceipt(selectedItem));
   }, [dispatch, selectedItem]);
@@ -122,8 +130,6 @@ const HomeTuition = () => {
   const copyToClipboard = async (data) => {
     await Clipboard.setStringAsync(data);
   };
-
-  const hanldeShowImage = () => {};
 
   const config = {
     style: "currency",
@@ -188,7 +194,33 @@ const HomeTuition = () => {
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
 
-      <View style={styles.container}>
+      <ScrollView
+      ref={listViewRef}
+        style={styles.container}
+        stickyHeaderIndices={[1]}
+        scrollEventThrottle={16}
+        
+        onScroll={(e) => {
+          const offsetY = e.nativeEvent.contentOffset.y;
+          scrollDireaction.current =
+            offsetY - lastOffsetY.current > 0 ? "down" : "up";
+          lastOffsetY.current = offsetY;
+          if (scrollDireaction.current == "down" && offsetY >= 200) {
+            Animated.timing(showArrowUp, {
+              toValue: 1,
+              duration: 40,
+              useNativeDriver: false,
+            }).start();
+          }
+          if (scrollDireaction.current == "up" && offsetY < 200) {
+            Animated.timing(showArrowUp, {
+              toValue: 0,
+              duration: 40,
+              useNativeDriver: false,
+            }).start();
+          }
+        }}
+      >
         <SelectDropdown
           data={users}
           buttonStyle={styles.select}
@@ -221,41 +253,45 @@ const HomeTuition = () => {
           }}
         />
         {/* Tổng tiền  */}
-        <LinearGradient
-          style={styles.containerSum}
-          colors={["rgba(116, 208, 104, 1)", "rgba(8, 225, 174, 0.5)"]}
-          start={{ x: 0.35, y: 0.2 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View style={styles.sumTop}>
-            <View style={styles.sumTopLeft}>
-              <Text style={styles.textSum}>Số tiền cần đóng</Text>
-              <Text style={[styles.textSum, { fontSize: 24, fontWeight: 500 }]}>
-                {formated}
-              </Text>
-            </View>
+        <View>
+          <LinearGradient
+            style={styles.containerSum}
+            colors={["rgba(116, 208, 104, 1)", "rgba(8, 225, 174, 0.5)"]}
+            start={{ x: 0.35, y: 0.2 }}
+            end={{ x: 1, y: 1 }}
+          >
+            <View style={styles.sumTop}>
+              <View style={styles.sumTopLeft}>
+                <Text style={styles.textSum}>Số tiền cần đóng</Text>
+                <Text
+                  style={[styles.textSum, { fontSize: 24, fontWeight: 500 }]}
+                >
+                  {formated}
+                </Text>
+              </View>
 
-            <View style={styles.sumTopRight}>
-              <Text style={styles.textSum}>Hạn thanh toán</Text>
-              <Text style={[styles.textSum, { textAlign: "right" }]}>
-                15/06/2023
-              </Text>
+              <View style={styles.sumTopRight}>
+                <Text style={styles.textSum}>Hạn thanh toán</Text>
+                <Text style={[styles.textSum, { textAlign: "right" }]}>
+                  15/06/2023
+                </Text>
+              </View>
             </View>
-          </View>
-          <Text style={[styles.textSum, { fontSize: 10 }]}>
-            Mọi thắc mắc vui lòng liên hệ theo số Hotline
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL("tel:02473065565");
-              }}
-            >
-              <Text style={styles.textPhone}>
-                024.730.65565{" "}
-                <Feather name="phone-call" size={10} color="white" />
-              </Text>
-            </TouchableOpacity>
-          </Text>
-        </LinearGradient>
+            <Text style={[styles.textSum, { fontSize: 10 }]}>
+              Mọi thắc mắc vui lòng liên hệ theo số Hotline
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL("tel:02473065565");
+                }}
+              >
+                <Text style={styles.textPhone}>
+                  024.730.65565{" "}
+                  <Feather name="phone-call" size={10} color="white" />
+                </Text>
+              </TouchableOpacity>
+            </Text>
+          </LinearGradient>
+        </View>
 
         {/* Thông tin chuyển khoản  */}
         <View style={styles.containerInfo}>
@@ -392,7 +428,8 @@ const HomeTuition = () => {
             )}
           </View>
         </View>
-      </View>
+        {/* </View> */}
+      </ScrollView>
 
       <Toast
         ref={(toast) => (this.toast = toast)}
@@ -421,9 +458,11 @@ const HomeTuition = () => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <TouchableOpacity style={{width: 240, alignItems:'flex-end'}}
-             onPress={() => setModalVisible(!modalVisible)}>
-            <Ionicons name="close" size={24} color="black" />
+            <TouchableOpacity
+              style={{ width: 240, alignItems: "flex-end" }}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Ionicons name="close" size={24} color="black" />
             </TouchableOpacity>
             <Image
               style={{
@@ -432,10 +471,20 @@ const HomeTuition = () => {
               }}
               source={imageUrl ? { uri: imageUrl } : null}
             />
-           
           </View>
         </View>
       </Modal>
+
+      <Animated.View style={[styles.upButtonStyle, { opacity: showArrowUp }]}>
+        <TouchableOpacity activeOpacity={0.5} onPress={upButtonHandler}>
+          <Entypo
+            name="chevron-up"
+            size={40}
+            color={COLORS.green}
+            style={styles.upButtonImageStyle}
+          />
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 };
@@ -447,7 +496,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     margin: SIZES.padding,
     flex: 1,
-    flexDirection: "column",
+    // flexDirection: "column",/
   },
   select: {
     width: "100%",
@@ -571,5 +620,19 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  
+
+  upButtonStyle: {
+    position: "absolute",
+    width: 50,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    left: 20,
+    bottom: 10,
+    zIndex: 100,
+  },
+  upButtonImageStyle: {
+    width: 50,
+    height: 50,
+  },
 });
