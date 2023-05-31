@@ -54,7 +54,9 @@ const Home = () => {
   const [dataPost, setDataPost] = useState();
   const [arrClass, setArrClass] = useState();
 
+  let stopFetchMore = true;
   const [loading, setLoading] = useState(false);
+  const [page,setPage]=useState(0);
   const [onReached, setOnReached] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -64,7 +66,7 @@ const Home = () => {
     setTimeout(() => {
       setRefreshing(false);
       setOnReached(false);
-    }, 1000);
+    }, 100);
   }, []);
 
   useEffect(() => {
@@ -94,10 +96,26 @@ const Home = () => {
       )
       .then((response) => {
         setDataPost(response.data);
+        setLoading(false);
       })
-      .catch((err) => {});
-    setLoading(false);
+      .catch((err) => {
+        setLoading(false);
+      });
+    
   }, [arrClass, onReached]);
+
+  const fetchRecords=(page)=>{
+    const newRecords = []
+    for(var i = page * 5, il = i + 5; i < il && i < dataPost.length; i++){
+    newRecords.push(dataPost[i]);
+    }
+    setDataPost([...dataPost, ...newRecords])
+    }
+  
+   const onScrollHandler =()=>{
+   setPage(page+1);
+   fetchRecords(page)
+   }
 
   const featureNameAnimation = {
     transform: [
@@ -194,7 +212,19 @@ const Home = () => {
   const renderItem = ({ item, index }) => (
     <VerticalPostCard item={item} key={index} />
   );
-  console.log('renderItem',dataPost)
+
+  const ListFooterComponent = () => (
+    <Text
+      style={{
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 5,
+      }}
+    >
+      Loading...
+    </Text>
+  );
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
@@ -281,6 +311,13 @@ const Home = () => {
                     data={dataPost}
                     scrollEnabled={false}
                     renderItem={(item)=> <VerticalPostCard item={item} />}
+                    maxToRenderPerBatch={5} //render only 5 items per scroll.
+                    onEndReached={onScrollHandler}
+                   onEndReachedThreshold={0.1}
+                   onScrollBeginDrag={() => {
+                    stopFetchMore = false;
+                  }}
+                  ListFooterComponent={() => loadingMore && <ListFooterComponent />}
                   />
                 </View>
               )}

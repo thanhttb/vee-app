@@ -90,6 +90,7 @@ const HomeTuition = () => {
       setImageUrl(imageUrl);
     }
   }, [bank]);
+
   useEffect(() => {
     setData(receipt);
     setFilterData(receipt);
