@@ -311,13 +311,13 @@ const Home = () => {
                     data={dataPost}
                     scrollEnabled={false}
                     renderItem={(item)=> <VerticalPostCard item={item} />}
-                    maxToRenderPerBatch={5} //render only 5 items per scroll.
-                    onEndReached={onScrollHandler}
-                   onEndReachedThreshold={0.1}
-                   onScrollBeginDrag={() => {
-                    stopFetchMore = false;
-                  }}
-                  ListFooterComponent={() => loadingMore && <ListFooterComponent />}
+                  //   maxToRenderPerBatch={5} //render only 5 items per scroll.
+                  //   onEndReached={onScrollHandler}
+                  //  onEndReachedThreshold={0.1}
+                  //  onScrollBeginDrag={() => {
+                  //   stopFetchMore = false;
+                  // }}
+                  // ListFooterComponent={() => loadingMore && <ListFooterComponent />}
                   />
                 </View>
               )}
