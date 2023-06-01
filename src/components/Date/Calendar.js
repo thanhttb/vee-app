@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import moment from "moment";
 import Date from "./Date";
-import { COLORS, SIZES } from "../utils/theme";
+import { COLORS, SIZES } from "../../utils/theme";
 
 const Calendar = ({ selectSessionDate, selected, dateWeek }) => {
   const [dates, setDates] = useState([]);

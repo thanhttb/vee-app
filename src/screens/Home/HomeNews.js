@@ -15,7 +15,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { listClass } from "../../redux/actions/classActions";
 import { BASE_URL } from "../../../config";
 //components
-import VerticalPostCard from "../../components/VerticalPostCard";
+import VerticalPostCard from "../../components/Vertical/VerticalPostCard";
 
 const renderItem = ({ item, index }) => (
   <VerticalPostCard item={item} key={index} />

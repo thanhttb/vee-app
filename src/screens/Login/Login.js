@@ -18,12 +18,11 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 //redux
 import { loginAction } from "../../redux/actions/authActions";
 //component
 import Spacer from "../../components/Spacer";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 //utils
 import { SIZES, COLORS } from "../../utils/theme";
 //iamges

@@ -9,7 +9,7 @@ import {
   Keyboard,
   ScrollView,
 } from "react-native";
-import { COLORS, SIZES } from "../utils/theme";
+import { COLORS, SIZES } from "../../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import HTMLView from "react-native-htmlview";
@@ -19,7 +19,7 @@ import CustomComment from "./CustomComment";
 
 import { Provider, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { BASE_URL } from "../../config";
+import { BASE_URL } from "../../../config";
 
 const VerticalPostCard = ({ item }) => {
   const { user, authToken } = useSelector((state) => state.authReducer);
@@ -217,7 +217,7 @@ const VerticalPostCard = ({ item }) => {
                   onPress={hanldeComment}
                 >
                  
-                  <Image style={{width: 28, height:28, marginHorizontal:6}} source={require("../../assets/send.png")} />
+                  <Image style={{width: 28, height:28, marginHorizontal:6}} source={require("../../../assets/send.png")} />
                 </TouchableOpacity>
               </View>
             </View>

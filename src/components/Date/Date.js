@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import moment from "moment";
-import { COLORS, SIZES } from "../utils/theme";
+import { COLORS, SIZES } from "../../utils/theme";
 import { useEffect, useState } from "react";
 
 const Date = ({ date, selectSessionDate, selected, dateWeek }) => {

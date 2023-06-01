@@ -23,7 +23,7 @@ import { Alert } from "react-native";
 //redux
 import { userList } from "../../redux/actions/userActions";
 //components
-import ButtonC from "../../components/Button";
+import ButtonC from "../../components/Button/Button";
 import Spacer from "../../components/Spacer";
 
 
@@ -62,8 +62,6 @@ const ProfileChildren = () => {
       })
       .catch((err) => {});
   }, []);
-
-  console.log('s', students);
 
   function onStudentChange(e, key, name) {
     let s = [...students];

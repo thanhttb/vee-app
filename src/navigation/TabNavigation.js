@@ -7,23 +7,21 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { COLORS } from "../utils/theme";
 import { Image } from "react-native";
-import Home from "../screens/Home/Home";
+
 import Notifications from "../screens/Notifications/Notifications";
-import HomeDetails from "../screens/Home/HomeDetails";
-import HomeWork from "../screens/Home/HomeWork";
-import HomeTuition from "../screens/Home/HomeTuition";
 
 import ProfileHome from "../screens/Profile/ProfileHome";
 import ProfileParent from "../screens/Profile/ProfileParent";
 import ProfileChildren from "../screens/Profile/ProfileChildren";
 import ProfileChange from "../screens/Profile/ProfileChange";
 
+import Home from "../screens/Home/Home";
 import HomeNews from "../screens/Home/HomeNews";
-
-import HomeWorkDetail from "../screens/Home/HomeWorkDetail";
 import HomeSituation from "../screens/Home/HomeSituation";
 import HomeDetailTution from "../screens/Home/HomeDetailTution";
 import HomeDetailSituation from "../screens/Home/HomeDetailSituation";
+import HomeWork from "../screens/Home/HomeWork";
+import HomeTuition from "../screens/Home/HomeTuition";
 
 import Schedule from "../screens/Schedule/Schedule";
 import ScheduleLeave from "../screens/Schedule/ScheduleLeave";
@@ -103,24 +101,7 @@ const HomeStack = () => {
         })}
       />
 
-      <Stack.Screen
-        name="Tư liệu buổi học chi tiết"
-        component={HomeWorkDetail}
-        options={({ route }) => ({
-          dataItem: {
-            id: route.params?.id,
-          },
-          unmountOnBlur: true,
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: COLORS.green,
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        })}
-      />
+      
       <Stack.Screen
         name="Học phí"
         component={HomeTuition}
@@ -268,7 +249,7 @@ const NotiStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Thông báo"
+        name="Thông tin"
         component={Notifications}
         options={{
           unmountOnBlur: true,
@@ -317,7 +298,7 @@ const TabNavigation = () => {
           })}
         />
         <Tab.Screen
-          name="Lịch học"
+          name="Thời khóa biểu"
           component={ScheduleStack}
           options={({ route }) => ({
             headerStyle: {
@@ -332,7 +313,7 @@ const TabNavigation = () => {
             },
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
-              if (route.name === "Lịch học") {
+              if (route.name === "Thời khóa biểu") {
                 iconName = !focused
                   ? require("../../assets/Icon-bottom/Lich_Hoc.png")
                   : require("../../assets/Icon-bottom/Lich_Hoc_Xanh.png");

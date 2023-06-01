@@ -19,7 +19,7 @@ import { listClass } from "../../redux/actions/classActions";
 import { COLORS, SIZES } from "../../utils/theme";
 import { BASE_URL } from "../../../config";
 //components
-import VerticalHomeSituation from "../../components/VerticalHomeSituation";
+import VerticalHomeSituation from "../../components/Vertical/VerticalHomeSituation";
 
 const HomeSituation = ({route, navigation}) => {
   const {  classId } = route?.params

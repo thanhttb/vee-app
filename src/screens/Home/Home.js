@@ -26,7 +26,7 @@ import { listClass } from "../../redux/actions/classActions";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
 import { getFeatureViewAnimation } from "../../utils/utils";
-import VerticalPostCard from "../../components/VerticalPostCard";
+import VerticalPostCard from "../../components/Vertical/VerticalPostCard";
 import { BASE_URL } from "../../../config";
 
 const UPPER_HEADER_HEIGHT = 36;

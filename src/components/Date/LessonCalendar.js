@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { COLORS, SIZES } from "../utils/theme";
+import { COLORS, SIZES } from "../../utils/theme";
 import { useNavigation } from "@react-navigation/native";
-import ButtonAction from "./ButtonAction";
+import ButtonAction from "../Button/ButtonAction";
 import moment from "moment";
 
 const LessonCalendar = ({ showDetailLesson, item, index }) => {

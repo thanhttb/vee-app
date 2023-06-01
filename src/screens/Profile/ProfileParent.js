@@ -12,14 +12,12 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { useHeaderHeight } from "@react-navigation/elements";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
 import { BASE_URL } from "../../../config";
 import axios from "axios";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import Spacer from "../../components/Spacer";
 import { Alert } from "react-native";
 //components

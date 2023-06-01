@@ -22,7 +22,7 @@ import { listClass } from "../../redux/actions/classActions";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
 //components
-import VerticalHomeWork from "../../components/VerticalHomeWork";
+import VerticalHomeWork from "../../components/Vertical/VerticalHomeWork";
 import { BASE_URL } from "../../../config";
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];

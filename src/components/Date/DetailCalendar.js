@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { COLORS, SIZES } from "../utils/theme";
+import { COLORS, SIZES } from "../../utils/theme";
 import Button from "./Button";
 
 import { useNavigation } from "@react-navigation/native";

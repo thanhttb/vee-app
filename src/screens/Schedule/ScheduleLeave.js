@@ -9,7 +9,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 //component
 import DetailClass from "../../components/DetailClass";
 import Spacer from "../../components/Spacer";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import { COLORS, SIZES } from "../../utils/theme";
 import axios from "axios";
 import { BASE_URL } from "../../../config";

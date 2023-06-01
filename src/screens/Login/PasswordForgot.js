@@ -20,7 +20,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 //component
 import Spacer from "../../components/Spacer";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import OTPInput from "../../components/OTPInput";
 //utils
 import { SIZES, COLORS } from "../../utils/theme";

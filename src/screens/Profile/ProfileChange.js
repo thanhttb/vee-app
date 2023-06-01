@@ -19,7 +19,7 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { COLORS, SIZES } from "../../utils/theme";
 import { BASE_URL } from "../../../config";
 import axios from "axios";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import Spacer from "../../components/Spacer";
 import { Alert } from "react-native";
 //components

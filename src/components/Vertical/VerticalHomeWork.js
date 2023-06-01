@@ -7,7 +7,7 @@ import {
   Image,
   useWindowDimensions,
 } from "react-native";
-import { COLORS, SIZES } from "../utils/theme";
+import { COLORS, SIZES } from "../../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";

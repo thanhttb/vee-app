@@ -1,8 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { COLORS, SIZES } from "../utils/theme";
+import { COLORS, SIZES } from "../../utils/theme";
 import { useNavigation } from "@react-navigation/native";
-import { FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
 import HTMLView from "react-native-htmlview";
 
@@ -64,7 +63,7 @@ const VerticalHomeSituation = ({ item }) => {
           }}
         >
           <Image
-            source={require("../../assets/logo.png")}
+            source={require("../../../assets/logo.png")}
             style={{ height: 40, width: 30 }}
           />
         </View>

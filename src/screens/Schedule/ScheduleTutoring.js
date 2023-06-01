@@ -23,7 +23,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import Spacer from "../../components/Spacer";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import { COLORS, SIZES } from "../../utils/theme";
 
 const types = ["Check In", "Thông báo", "Câu hỏi"];

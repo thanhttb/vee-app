@@ -15,7 +15,6 @@ import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import PDFReader from "rn-pdf-reader-js";
 import { Audio, Video as OriginalVideo, ResizeMode } from "expo-av";
-import * as OpenAnything from 'react-native-openanything'
 import * as Linking from 'expo-linking';
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];

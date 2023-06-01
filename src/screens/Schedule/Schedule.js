@@ -11,19 +11,13 @@ import {
 } from "react-native";
 //redux
 import { Provider, useDispatch, useSelector } from "react-redux";
+import { session_week } from "../../redux/actions/sessionActions";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
-import { BASE_URL } from "../../../config";
 //components
-import Calendar from "../../components/Calendar";
-import LessonCalendar from "../../components/LessonCalendar";
-import DetailCalendar from "../../components/DetailCalendar";
+import Calendar from "../../components/Date/Calendar";
+import LessonCalendar from "../../components/Date/LessonCalendar";
 import Spacer from "../../components/Spacer";
-import SimpleModal from "../../components/SimpleModal";
-import axios from "axios";
-
-//redux
-import { session_week } from "../../redux/actions/sessionActions";
 
 const Schedule = () => {
   const { user, authToken } = useSelector((state) => state.authReducer);
