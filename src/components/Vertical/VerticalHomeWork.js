@@ -18,15 +18,13 @@ const VerticalHomeWork = ({ item, handleShowModal, show }) => {
 
   return (
     <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("Tình hình học tập chi tiết", {
-        id: 1,
-        data: item.item,
-      })
-    }
-  >
-    <View style={styles.component}>
-     
+      onPress={() =>
+        navigation.navigate("Tình hình học tập chi tiết", {
+         data: item.item,
+        })
+      }
+    >
+      <View style={styles.component}>
         <View
           style={[
             styles.lesson,
@@ -54,8 +52,7 @@ const VerticalHomeWork = ({ item, handleShowModal, show }) => {
             <FontAwesome name="folder" size={28} color={`${COLORS.green}`} />
           </View>
         </View>
-     
-    </View>
+      </View>
     </TouchableOpacity>
   );
 };

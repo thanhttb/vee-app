@@ -48,14 +48,9 @@ const HomeWork = () => {
   const scrollViewRef = useRef();
   const lastOffsetY = useRef(0);
   const scrollDireaction = useRef(0);
-  const headerHeight = useRef(new Animated.Value(70)).current;
-  const spacingHeight = useRef(new Animated.Value(10)).current;
   const showArrowUp = useRef(new Animated.Value(0)).current;
 
-  const upButtonHandler = () => {
-    scrollViewRef.current.scrollToOffset({ offset: 0, animated: true });
-  };
-
+ 
   const handleShowModal = (value) => {
     if (typeof value == "string") {
       setShow(!show);
@@ -99,11 +94,8 @@ const HomeWork = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <Animated.View
-        style={[
-          styles.container,
-          { height: headerHeight, marginBottom: spacingHeight },
-        ]}
+      <View
+        style={styles.container}
       >
         <SelectDropdown
           data={classes}
@@ -136,7 +128,7 @@ const HomeWork = () => {
             return `Lớp ${item.name} - Năm học ${item.year}`;
           }}
         />
-      </Animated.View>
+      </View>
       <FlatList
         ref={scrollViewRef}
         onScroll={(e) => {
@@ -144,45 +136,22 @@ const HomeWork = () => {
           scrollDireaction.current =
             offsetY - lastOffsetY.current > 0 ? "down" : "up";
           lastOffsetY.current = offsetY;
-          if (scrollDireaction.current == "down" && offsetY >= 30) {
-            Animated.timing(headerHeight, {
-              toValue: 0,
-              duration: 40,
-              useNativeDriver: false,
-            }).start();
-
-            Animated.timing(spacingHeight, {
-              toValue: 0,
-              duration: 40,
-              useNativeDriver: false,
-            }).start();
-
+          if (scrollDireaction.current == "down" && offsetY >= 100) {
+           
             Animated.timing(showArrowUp, {
               toValue: 1,
               duration: 40,
               useNativeDriver: false,
             }).start();
           }
-          if (scrollDireaction.current == "up" && offsetY < 30) {
-            Animated.timing(headerHeight, {
-              toValue: 70,
-              duration: 40,
-              useNativeDriver: false,
-            }).start();
-
-            Animated.timing(spacingHeight, {
-              toValue: 10,
-              duration: 40,
-              useNativeDriver: false,
-            }).start();
-
+          if (scrollDireaction.current == "up" && offsetY < 100) {
+            
             Animated.timing(showArrowUp, {
               toValue: 0,
               duration: 40,
               useNativeDriver: false,
             }).start();
           }
-          // animatedValue.setValue(offsetY);
         }}
         style={{ backgroundColor: "white", zIndex: 10 }}
         data={data}
@@ -196,54 +165,6 @@ const HomeWork = () => {
         keyExtractor={(item, index) => index.toString()}
         scrollEventThrottle={16}
       />
-
-      <Modal
-        animationType={"slide"}
-        transparent={false}
-        visible={show}
-        onRequestClose={() => {
-          console.log("Modal has been closed.");
-        }}
-      >
-        <Video
-          ref={video}
-          style={styles.video}
-          source={{
-            uri: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-          }}
-          useNativeControls
-          resizeMode={ResizeMode.CONTAIN}
-          isLooping
-          onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-        />
-        <View style={styles.buttons}>
-          <Button
-            title={status.isPlaying ? "Pause" : "Play"}
-            onPress={() =>
-              status.isPlaying
-                ? video.current.pauseAsync()
-                : video.current.playAsync()
-            }
-          />
-        </View>
-      </Modal>
-
-      <Animated.View 
-       style={[styles.upButtonStyle, {opacity: showArrowUp }]}
-       >
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={upButtonHandler}
-         
-        >
-          <Entypo
-            name="chevron-up"
-            size={36}
-            color={COLORS.green}
-            style={styles.upButtonImageStyle}
-          />
-        </TouchableOpacity>
-      </Animated.View>
     </View>
   );
 };
