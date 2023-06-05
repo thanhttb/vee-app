@@ -15,9 +15,16 @@ import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import PDFReader from "rn-pdf-reader-js";
 import { Audio, Video as OriginalVideo, ResizeMode } from "expo-av";
-import * as Linking from 'expo-linking';
+import * as Linking from "expo-linking";
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
+const imagesPath = {
+  doc: require("../../../assets/folder/image_docx.png"),
+  mp3: require("../../../assets/folder/image_mp3.png"),
+  pdf: require("../../../assets/folder/image_pdf.png"),
+  png: require("../../../assets/folder/image_png.png"),
+  jpg: require("../../../assets/folder/image_png.png"),
+}
 const triggerAudio = async (ref) => {
   await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
   ref.current.playAsync();
@@ -30,6 +37,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
   const [type, setType] = useState("");
   const ref = useRef(null);
   const [status, setStatus] = useState({});
+  const [imageFolder, setImageFolder] = useState('')
 
   useEffect(() => {
     if (status.isPlaying) triggerAudio(ref);
@@ -50,33 +58,44 @@ const HomeDetailSituation = ({ route, navigation }) => {
     }
   };
 
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
         <View style={{ marginHorizontal: SIZES.padding }}>
           <Text style={styles.title}>Nội dung ca học</Text>
-          <Text style={{paddingVertical : 4}}>{data?.content}</Text>
+          <Text style={{ paddingVertical: 4 }}>{data?.content}</Text>
 
           <View style={styles.boxs}>
             {data?.documents?.map((item, index) => {
               let myArray = item.split("/");
+              const last3 = item.slice(-3);
+              const imagePath = imagesPath[last3];
+             
               return (
                 <TouchableOpacity
-                onPress={() => 
-                  Platform.OS === 'ios' ? handleShowModal(item) : Linking.openURL(item)
-                }
+                  onPress={() =>
+                    Platform.OS === "ios"
+                      ? handleShowModal(item)
+                      : Linking.openURL(item)
+                  }
                   key={index}
                 >
-                  <View 
-                  style={[
-                    styles.box,
-                    index === (data.documents.length - 1) ? styles.lastBox : null,
-                  ]}>
-                    <FontAwesome
-                      name="folder"
-                      size={28}
-                      color={`${COLORS.green}`}
-                    />
+                  <View
+                    style={[
+                      styles.box,
+                      index === data.documents.length - 1
+                        ? styles.lastBox
+                        : null,
+                    ]}
+                  >
+                    {last3 && (
+                        <Image
+                          style={styles.folder_icon}
+                          source={imagePath}
+                        />
+                      )}
+
                     <Text style={styles.textBox}>{myArray[8]}</Text>
                   </View>
                 </TouchableOpacity>
@@ -84,30 +103,36 @@ const HomeDetailSituation = ({ route, navigation }) => {
             })}
           </View>
 
-
           <Text style={styles.title}>Bài tập về nhà</Text>
-          <Text style={{paddingVertical : 4}}>{data?.btvn_content}</Text>
+          <Text style={{ paddingVertical: 4 }}>{data?.btvn_content}</Text>
           <View style={styles.boxs}>
             {data?.exercices?.map((item, index) => {
               let myArray = item.split("/");
+              const last3 = item.slice(-3);
+              const imagePath = imagesPath[last3];
               return (
                 <TouchableOpacity
-                  onPress={() => 
-                    Platform.OS === 'ios' ? handleShowModal(item) : Linking.openURL(item)
+                  onPress={() =>
+                    Platform.OS === "ios"
+                      ? handleShowModal(item)
+                      : Linking.openURL(item)
                   }
                   key={index}
                 >
                   <View
                     style={[
                       styles.box,
-                      index === (data.exercices.length - 1) ? styles.lastBox : null,
+                      index === data.exercices.length - 1
+                        ? styles.lastBox
+                        : null,
                     ]}
                   >
-                    <FontAwesome
-                      name="folder"
-                      size={28}
-                      color={`${COLORS.green}`}
-                    />
+                   {last3 && (
+                        <Image
+                          style={styles.folder_icon}
+                          source={imagePath}
+                        />
+                      )}
                     <Text style={styles.textBox}>{myArray[8]}</Text>
                   </View>
                 </TouchableOpacity>
@@ -147,9 +172,8 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 }}
                 style={{ flex: 1 }}
                 source={{
-                  uri: value
+                  uri: value,
                 }}
-               
               />
             )}
 
@@ -161,7 +185,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
                 }}
                 style={{ flex: 1 }}
                 source={{
-                  uri: value
+                  uri: value,
                 }}
               />
             )}
@@ -216,7 +240,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 600,
-    marginTop: SIZES.padding
+    marginTop: SIZES.padding,
   },
   desc: {
     paddingVertical: 10,
@@ -265,4 +289,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  folder_icon: { width: 24, height: 24, resizeMode: "contain" },
 });
