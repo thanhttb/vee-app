@@ -14,6 +14,7 @@ import {
   Animated,
   Modal,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons, Feather, FontAwesome, Entypo } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
@@ -50,6 +51,7 @@ const radioButtonsData = [
 const HomeTuition = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const date = new Date();
   const { receipt, users, amount_total, bank } = useSelector(
     (state) => state.userReducer
   );
@@ -64,10 +66,14 @@ const HomeTuition = () => {
   );
   const [isModal, setIsModal] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
   const [radioButtons, setRadioButtons] = useState(radioButtonsData[0].label);
   const [filterData, setFilterData] = useState();
   const [imageUrl, setImageUrl] = useState("");
+
+  const [isMonth, setIsMonth] = useState();
+  const [isYear, setIsYear] = useState();
 
   const listViewRef = useRef(null);
   const lastOffsetY = useRef(0);
@@ -106,8 +112,33 @@ const HomeTuition = () => {
   }, [dispatch]);
 
   useEffect(() => {
+   
     setSumReceipt(amount_total);
+    
   }, [amount_total]);
+
+  useEffect(() => {
+    if((date.getMonth() +1 ) / 2 == 1){
+      setIsMonth(date.getMonth())
+      setIsYear(date.getFullYear())
+    }
+    else if((date.getMonth() +1 ) == 1){
+      setIsMonth(12)
+      setIsYear(date.getFullYear() -1)
+    }else {
+      setIsMonth(date.getMonth() +1)
+      setIsYear(date.getFullYear())
+    }
+  }, [])
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer =  setTimeout(() => {
+      setIsLoading(false);
+    }, 200)
+
+    return () => clearTimeout(timer);
+  }, [])
 
   const hanldeModal = () => {
     setIsModal(!isModal);
@@ -191,6 +222,10 @@ const HomeTuition = () => {
     );
   };
 
+  
+
+  console.log('date',date, isMonth, isYear)
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
@@ -252,6 +287,7 @@ const HomeTuition = () => {
             return `Học sinh ${item.fullname}`;
           }}
         />
+
         {/* Tổng tiền  */}
         <View>
           <LinearGradient
@@ -273,11 +309,11 @@ const HomeTuition = () => {
               <View style={styles.sumTopRight}>
                 <Text style={styles.textSum}>Hạn thanh toán</Text>
                 <Text style={[styles.textSum, { textAlign: "right" }]}>
-                  15/06/2023
+                  {sumReceipt < 0 ? "" : `15/${isMonth}/${isYear}`}
                 </Text>
               </View>
             </View>
-            <Text style={[styles.textSum, { fontSize: 10}]}>
+            <Text style={[styles.textSum, { fontSize: 10 }]}>
               Mọi thắc mắc vui lòng liên hệ theo số Hotline
               <TouchableOpacity
                 onPress={() => {
@@ -292,143 +328,149 @@ const HomeTuition = () => {
             </Text>
           </LinearGradient>
         </View>
-
-        {/* Thông tin chuyển khoản  */}
-        <View style={styles.containerInfo}>
-          <Text style={styles.title}>Thông tin chuyển khoản</Text>
-          <View style={styles.viewComponent}>
-            <View style={styles.viewInfoLeft}>
-              <View
-                style={{
-                  flexDirection: "column",
-                  gap: 8,
-                  marginTop: 4,
-                  width: "30%",
-                }}
-              >
-                <Text style={styles.textInfoLeft}>Ngân hàng</Text>
-                <Text style={styles.textInfoLeft}>Số tài khoản</Text>
-                <Text style={styles.textInfoLeft}>Chủ tài khoản</Text>
-                <Text style={styles.textInfoLeft}>Nội dung</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "column",
-                  gap: 8,
-                  marginTop: 4,
-                  width: "70%",
-                }}
-              >
-                <Text style={styles.textInfoRight}>{bank?.code}</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    copyToClipboard(`${bank?.number}`),
-                      this.toast.show("Copy thành công", 1500);
-                  }}
-                  on
-                >
-                  <Text style={styles.textInfoRight}>
-                    {bank?.number}{" "}
-                    <Feather name="copy" size={12} color="black" />
-                  </Text>
-                </TouchableOpacity>
-                <Text style={styles.textInfoRight}>{bank?.owner}</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    copyToClipboard(`${bank?.content}`),
-                      this.toast.show("Copy thành công", 1500);
-                  }}
-                  on
-                >
-                  <Text style={styles.textInfoRight}>
-                    {bank?.content}{" "}
-                    <Feather name="copy" size={12} color="black" />
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => setModalVisible(true)}
-                  style={{
-                    width: 70,
-                    height: 70,
-                    position: "absolute",
-                    right: 0,
-                  }}
-                >
-                  <Image
+        {isLoading == true ? (
+          <View style={{ flex: 1 }}>
+            <ActivityIndicator size="large" color="#00ff00" style={{marginTop:200}}/>
+          </View>
+        ) : (
+          <>
+            {/* Thông tin chuyển khoản  */}
+            <View style={styles.containerInfo}>
+              <Text style={styles.title}>Thông tin chuyển khoản</Text>
+              <View style={styles.viewComponent}>
+                <View style={styles.viewInfoLeft}>
+                  <View
                     style={{
-                      width: 70,
-                      height: 70,
-                      position: "absolute",
-                      right: 0,
+                      flexDirection: "column",
+                      gap: 8,
+                      marginTop: 4,
+                      width: "30%",
                     }}
-                    source={imageUrl ? { uri: imageUrl } : null}
-                  />
-                </TouchableOpacity>
+                  >
+                    <Text style={styles.textInfoLeft}>Ngân hàng</Text>
+                    <Text style={styles.textInfoLeft}>Số tài khoản</Text>
+                    <Text style={styles.textInfoLeft}>Chủ tài khoản</Text>
+                    <Text style={styles.textInfoLeft}>Nội dung</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      gap: 8,
+                      marginTop: 4,
+                      width: "70%",
+                    }}
+                  >
+                    <Text style={styles.textInfoRight}>{bank?.code}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        copyToClipboard(`${bank?.number}`),
+                          this.toast.show("Copy thành công", 1500);
+                      }}
+                      on
+                    >
+                      <Text style={styles.textInfoRight}>
+                        {bank?.number}{" "}
+                        <Feather name="copy" size={12} color="black" />
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.textInfoRight}>{bank?.owner}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        copyToClipboard(`${bank?.content}`),
+                          this.toast.show("Copy thành công", 1500);
+                      }}
+                      on
+                    >
+                      <Text style={styles.textInfoRight}>
+                        {bank?.content}{" "}
+                        <Feather name="copy" size={12} color="black" />
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => setModalVisible(true)}
+                      style={{
+                        width: 70,
+                        height: 70,
+                        position: "absolute",
+                        right: 0,
+                      }}
+                    >
+                      <Image
+                        style={{
+                          width: 70,
+                          height: 70,
+                          position: "absolute",
+                          right: 0,
+                        }}
+                        source={imageUrl ? { uri: imageUrl } : null}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
-          </View>
-        </View>
 
-        {/* Bảng thống kê chi tiết  */}
-        <View style={[styles.containerInfo, { flex: 1 }]}>
-          <Text style={styles.title}>Bảng thống kê chi tiết</Text>
+            {/* Bảng thống kê chi tiết  */}
+            <View style={[styles.containerInfo, { flex: 1 }]}>
+              <Text style={styles.title}>Bảng thống kê chi tiết</Text>
 
-          <View style={styles.viewComponentStatistical}>
-            <FlatList
-              data={data}
-              renderItem={({ item }) => <VerticalStatistical item={item} />}
-              keyExtractor={(item, index) => index.toString()}
-              ListHeaderComponent={() => {
-                return (
-                  <>
-                    <View style={styles.option}>
-                      <Text style={{ fontWeight: 500, fontSize: 16 }}>
-                        {radioButtons}
-                      </Text>
-                      <TouchableOpacity
-                        onPress={hanldeModal}
-                        style={{ position: "relative" }}
-                      >
-                        <Ionicons
-                          name="options-outline"
-                          size={24}
-                          color="black"
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                );
-              }}
-            />
-            {isModal && (
-              <Animated.View style={styles.modal}>
-                <TouchableOpacity onPress={hanldeModal}>
-                  <Ionicons
-                    name="close-sharp"
-                    size={20}
-                    color="black"
-                    style={{
-                      textAlign: "right",
-                      paddingTop: 6,
-                      paddingRight: 10,
-                    }}
-                  />
-                </TouchableOpacity>
-                <RadioGroup
-                  selectedId={`${selectedId}`}
-                  radioButtons={radioButtonsData} //pass in our array
-                  onPress={(value) => setValue(value)}
-                  containerStyle={{
-                    alignItems: "flex-start",
-                    paddingHorizontal: 8,
+              <View style={styles.viewComponentStatistical}>
+                <FlatList
+                  data={data}
+                  renderItem={({ item }) => <VerticalStatistical item={item} />}
+                  keyExtractor={(item, index) => index.toString()}
+                  ListHeaderComponent={() => {
+                    return (
+                      <>
+                        <View style={styles.option}>
+                          <Text style={{ fontWeight: 500, fontSize: 16 }}>
+                            {radioButtons}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={hanldeModal}
+                            style={{ position: "relative" }}
+                          >
+                            <Ionicons
+                              name="options-outline"
+                              size={24}
+                              color="black"
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </>
+                    );
                   }}
                 />
-              </Animated.View>
-            )}
-          </View>
-        </View>
-        
+                {isModal && (
+                  <Animated.View style={styles.modal}>
+                    <TouchableOpacity onPress={hanldeModal}>
+                      <Ionicons
+                        name="close-sharp"
+                        size={20}
+                        color="black"
+                        style={{
+                          textAlign: "right",
+                          paddingTop: 6,
+                          paddingRight: 10,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <RadioGroup
+                      selectedId={`${selectedId}`}
+                      radioButtons={radioButtonsData} //pass in our array
+                      onPress={(value) => setValue(value)}
+                      containerStyle={{
+                        alignItems: "flex-start",
+                        paddingHorizontal: 8,
+                      }}
+                    />
+                  </Animated.View>
+                )}
+              </View>
+            </View>
+          </>
+        )}
       </ScrollView>
 
       <Toast

@@ -162,7 +162,7 @@ const ProfileChildren = () => {
                         outlineStyle={{ borderWidth: 1 }}
                         outlineColor={COLORS.input}
                         activeOutlineColor={COLORS.input}
-                        dense={true}
+                        dense={false}
                       />
                       <Spacer height={4} />
                       <View style={styles.date}>
@@ -173,7 +173,7 @@ const ProfileChildren = () => {
                           outlineStyle={{ borderWidth: 1 }}
                           outlineColor={COLORS.input}
                           activeOutlineColor={COLORS.input}
-                          dense={true}
+                          dense={false}
                           value={moment(s?.dob).format("L")}
                           onPressIn={()=>showDatePicker(index)}
                         />
