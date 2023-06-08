@@ -279,7 +279,7 @@ const Home = () => {
                     useNativeDriver: false,
                   }).start();
                   Animated.timing(headerHeight, {
-                    toValue: 80,
+                    toValue: 70,
                     duration: 40,
                     useNativeDriver: false,
                   }).start();
