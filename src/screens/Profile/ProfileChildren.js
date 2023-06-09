@@ -9,7 +9,10 @@ import {
   Keyboard,
   ScrollView,
   TouchableOpacity,
+  Image,
+  Button,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TextInput, RadioButton } from "react-native-paper";
@@ -26,7 +29,6 @@ import { userList } from "../../redux/actions/userActions";
 import ButtonC from "../../components/Button/Button";
 import Spacer from "../../components/Spacer";
 
-
 const ProfileChildren = () => {
   const navigation = useNavigation();
   const { user, authToken } = useSelector((state) => state.authReducer);
@@ -34,10 +36,10 @@ const ProfileChildren = () => {
   const [selected, setSelected] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(userList(user.id));
-}, [dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     axios
@@ -71,6 +73,7 @@ const ProfileChildren = () => {
     setStudents(s);
   }
 
+  function onHandleChangeImage(e, key, name) {}
   const onGenderChange = (value, key) => {
     let s = [...students];
     s[key].gender = value;
@@ -113,7 +116,6 @@ const ProfileChildren = () => {
       );
   };
 
-  
   const showDatePicker = (index) => {
     setDatePickerVisibility(true);
     setSelected(index);
@@ -127,7 +129,7 @@ const ProfileChildren = () => {
     if (date) {
       s[key][name] = date;
     }
-    setStudents(s); 
+    setStudents(s);
     hideDatePicker();
   };
 
@@ -140,115 +142,161 @@ const ProfileChildren = () => {
           behavior={Platform.OS === "ios" ? "padding" : null}
           keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 64}
         >
-         <View  style={{ flex: 1}}>
-         <ScrollView style={{ flexGrow: 1}} contentContainerStyle={{ flexGrow: 1 }}>
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-              <View style={{ backgroundColor: COLORS.white }}>
-                <StatusBar barStyle="light-content" />
-                {students.map((s, index) => {
-                  return (
-                    <View style={styles.container} key={index}>
-                      <Text style={styles.info}>
-                        Hồ sơ học sinh {s?.fullname}
-                      </Text>
-                      <TextInput
-                        style={styles.input}
-                        value={s?.fullname}
-                        onChangeText={(e) =>
-                          onStudentChange(e, index, "fullname")
-                        }
-                        label="Họ tên học sinh"
-                        mode="outlined"
-                        outlineStyle={{ borderWidth: 1 }}
-                        outlineColor={COLORS.input}
-                        activeOutlineColor={COLORS.input}
-                        dense={false}
-                      />
-                      <Spacer height={4} />
-                      <View style={styles.date}>
+          <View style={{ flex: 1 }}>
+            <ScrollView
+              style={{ flexGrow: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+            >
+              <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View style={{ backgroundColor: COLORS.white }}>
+                  <StatusBar barStyle="light-content" />
+                  {students.map((s, index) => {
+                    return (
+                      <View style={styles.container} key={index}>
+                        <Text style={styles.info}>
+                          Hồ sơ học sinh {s?.fullname}
+                        </Text>
+                        <View style={{ marginBottom: 10 }}>
+                          <Text>Ảnh đại diện</Text>
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Image
+                              style={styles.avatar}
+                              source={require("../../../assets/avatar_default.jpg")}
+                            />
+                            <TouchableOpacity
+                              onPress={(e) =>
+                                onHandleChangeImage(e, index, "avatar")
+                              }
+                            >
+                              <View
+                                style={{
+                                  marginTop: 10,
+                                  backgroundColor: "#eeeeee",
+                                  padding: 4,
+                                  borderRadius: 4,
+                                }}
+                              >
+                                <Text style={{fontSize: 12}}>Thay ảnh đại diện</Text>
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
                         <TextInput
                           style={styles.input}
-                          label="Ngày sinh"
+                          value={s?.fullname}
+                          onChangeText={(e) =>
+                            onStudentChange(e, index, "fullname")
+                          }
+                          label="Họ tên học sinh"
                           mode="outlined"
                           outlineStyle={{ borderWidth: 1 }}
                           outlineColor={COLORS.input}
                           activeOutlineColor={COLORS.input}
                           dense={false}
-                          value={moment(s?.dob).format("L")}
-                          onPressIn={()=>showDatePicker(index)}
                         />
-                        <DateTimePickerModal
-                          isVisible={isDatePickerVisible}
-                          isDarkModeEnabled={true}
-                          mode="date"
-                           onConfirm={(date) => {
-                            handleConfirm(date, selected, "dob");
-                          }}
-                          onCancel={hideDatePicker}
-                        />
-                      </View>
-
-
-                      <Spacer height={12} />
-                      <View>
-                        <Text>Giới tính</Text>
-                        <View style={styles.wrapper}>
-                          {["Nam", "Nữ"].map((feeling) => (
-                            <View key={feeling} style={styles.mood}>
-                              <Text style={styles.gender}>{feeling}</Text>
-                              <TouchableOpacity
-                                style={styles.outter}
-                                onPress={(e) => onGenderChange(feeling, index)}
-                              >
-                                {s.gender == feeling && (
-                                  <View style={styles.inner}></View>
+                        <Spacer height={4} />
+                        <View style={styles.date}>
+                          <TextInput
+                            style={styles.input}
+                            label="Ngày sinh"
+                            mode="outlined"
+                            outlineStyle={{ borderWidth: 1 }}
+                            outlineColor={COLORS.input}
+                            activeOutlineColor={COLORS.input}
+                            dense={false}
+                            value={moment(s?.dob).format("L")}
+                            onPressIn={() => showDatePicker(index)}
+                            right={
+                              <TextInput.Icon
+                                icon={() => (
+                                  <MaterialIcons
+                                    name="date-range"
+                                    size={24}
+                                    color="#5b5b5b"
+                                  />
                                 )}
-                              </TouchableOpacity>
-                            </View>
-                          ))}
+                              />
+                            }
+                          />
+                          <DateTimePickerModal
+                            isVisible={isDatePickerVisible}
+                            isDarkModeEnabled={true}
+                            mode="date"
+                            onConfirm={(date) => {
+                              handleConfirm(date, selected, "dob");
+                            }}
+                            onCancel={hideDatePicker}
+                            maximumDate={new Date()}
+                          />
                         </View>
+
+                        <Spacer height={12} />
+                        <View>
+                          <Text>Giới tính</Text>
+                          <View style={styles.wrapper}>
+                            {["Nam", "Nữ"].map((feeling) => (
+                              <View key={feeling} style={styles.mood}>
+                                <Text style={styles.gender}>{feeling}</Text>
+                                <TouchableOpacity
+                                  style={styles.outter}
+                                  onPress={(e) =>
+                                    onGenderChange(feeling, index)
+                                  }
+                                >
+                                  {s.gender == feeling && (
+                                    <View style={styles.inner}></View>
+                                  )}
+                                </TouchableOpacity>
+                              </View>
+                            ))}
+                          </View>
+                        </View>
+                        <Spacer height={12} />
+                        <TextInput
+                          style={styles.input}
+                          label="Trường học"
+                          value={s?.school}
+                          onChangeText={(e) =>
+                            onStudentChange(e, index, "school")
+                          }
+                          mode="outlined"
+                          outlineStyle={{ borderWidth: 1 }}
+                          outlineColor={COLORS.input}
+                          activeOutlineColor={COLORS.input}
+                        />
+                        <TextInput
+                          style={styles.input}
+                          label="Nguyện vọng"
+                          value={s?.aspiration}
+                          onChangeText={(e) =>
+                            onStudentChange(e, index, "aspiration")
+                          }
+                          mode="outlined"
+                          outlineStyle={{ borderWidth: 1 }}
+                          outlineColor={COLORS.input}
+                          activeOutlineColor={COLORS.input}
+                        />
+                        <Spacer />
+                        <ButtonC
+                          onPress={() => handleChangeSubmit(index)}
+                          label={"Lưu thông tin học sinh"}
+                          color={COLORS.white}
+                          background={COLORS.green}
+                        />
+                        <Spacer height={20} />
+                        <View style={styles.dotline}></View>
                       </View>
-                      <Spacer height={12} />
-                      <TextInput
-                        style={styles.input}
-                        label="Trường học"
-                        value={s?.school}
-                        onChangeText={(e) =>
-                          onStudentChange(e, index, "school")
-                        }
-                        mode="outlined"
-                        outlineStyle={{ borderWidth: 1 }}
-                        outlineColor={COLORS.input}
-                        activeOutlineColor={COLORS.input}
-                      />
-                      <TextInput
-                        style={styles.input}
-                        label="Nguyện vọng"
-                        value={s?.aspiration}
-                        onChangeText={(e) =>
-                          onStudentChange(e, index, "aspiration")
-                        }
-                        mode="outlined"
-                        outlineStyle={{ borderWidth: 1 }}
-                        outlineColor={COLORS.input}
-                        activeOutlineColor={COLORS.input}
-                      />
-                      <Spacer />
-                      <ButtonC
-                        onPress={() => handleChangeSubmit(index)}
-                        label={"Lưu thông tin học sinh"}
-                        color={COLORS.white}
-                        background={COLORS.green}
-                      />
-                      <Spacer height={20} />
-                      <View style={styles.dotline}></View>
-                    </View>
-                  );
-                })}
-              </View>
-            </TouchableWithoutFeedback>
-          </ScrollView>
-         </View>
+                    );
+                  })}
+                </View>
+              </TouchableWithoutFeedback>
+            </ScrollView>
+          </View>
         </KeyboardAvoidingView>
         {/* </KeyboardAwaareScrollView> */}
       </GestureHandlerRootView>
@@ -282,7 +330,7 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.spacing,
     fontSize: 14,
     width: "100%",
-    paddingHorizontal: 2
+    paddingHorizontal: 2,
   },
   text: {
     textAlign: "left",
@@ -329,5 +377,11 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 50,
     marginRight: 16,
+  },
+  avatar: {
+    height: 70,
+    width: 70,
+    borderRadius: 50,
+    resizeMode: "contain",
   },
 });

@@ -9,6 +9,7 @@ import {
   Keyboard,
   ScrollView,
 } from "react-native";
+import { MaterialIcons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput } from "react-native-paper";
@@ -22,6 +23,8 @@ import axios from "axios";
 import Button from "../../components/Button/Button";
 import Spacer from "../../components/Spacer";
 import { Alert } from "react-native";
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 //components
 
 const ProfileChange = () => {
@@ -89,7 +92,7 @@ const ProfileChange = () => {
             <View style={{ flex: 1, backgroundColor: COLORS.white }}>
               <StatusBar barStyle="light-content" />
               <View style={styles.container}>
-                <Text style={styles.info}>Thông tin bố/mẹ</Text>
+                {/* <Text style={styles.info}>Thông tin bố/mẹ</Text> */}
                 <TextInput
                   style={styles.input}
                   label="Mật khẩu cũ"
@@ -102,6 +105,7 @@ const ProfileChange = () => {
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                   secureTextEntry={true}
+                  right={<TextInput.Icon name="eye" />}
                 />
                 <TextInput
                   style={styles.input}
@@ -115,6 +119,7 @@ const ProfileChange = () => {
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                   secureTextEntry={true}
+                  right={<TextInput.Icon name="eye" />}
                 />
                 <TextInput
                   style={styles.input}
@@ -128,6 +133,7 @@ const ProfileChange = () => {
                   outlineColor={COLORS.input}
                   activeOutlineColor={COLORS.input}
                   secureTextEntry={true}
+                  
                 />
 
                 <Spacer />
