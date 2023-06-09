@@ -57,6 +57,9 @@ const HomeStack = () => {
         component={HomeSituation}
         lazy={false}
         options={({ route }) => ({
+          dataItem: {
+            data: route.params?.data,
+          },
           headerStyle: {
             backgroundColor: COLORS.green,
           },
@@ -72,9 +75,9 @@ const HomeStack = () => {
         name="Tình hình học tập chi tiết"
         component={HomeDetailSituation}
         options={({ route }) => ({
-          dataItem: {
-            data: route.params?.data,
-          },
+          // dataItem: {
+          //   classId: route.params?.classId,
+          // },
           headerShown: true,
           headerStyle: {
             backgroundColor: COLORS.green,

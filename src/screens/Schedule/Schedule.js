@@ -55,9 +55,8 @@ const Schedule = () => {
     setSelectedLesson(!selectedLesson);
   };
 
-
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: "white"}}>
       <StatusBar barStyle="light-content" />
       <View style={styles.header}></View>
       <View style={{ height: SIZES.header - SIZES.base }}></View>
@@ -73,23 +72,26 @@ const Schedule = () => {
 
       <View style={styles.container}>
         {sessionWeekFilter.length > 0 ? (
-          sessionWeekFilter.map((item, i) => {
-            return (
-              <LessonCalendar
-                key={i}
-                showDetailLesson={showDetailLesson}
-                item={item}
-                index={i}
-              />
-            );
-          })
+          <>
+            <ScrollView style={{ paddingBottom: SIZES.spacing,}}>
+              {sessionWeekFilter.map((item, i) => {
+                return (
+                  <LessonCalendar
+                    key={i}
+                    showDetailLesson={showDetailLesson}
+                    item={item}
+                    index={i}
+                  />
+                );
+              })}
+            </ScrollView>
+          </>
         ) : (
           <View>
             <Spacer />
             <Text>Không có lịch học ngày {selectedDate}</Text>
           </View>
         )}
-
       </View>
     </View>
   );
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     marginTop: SIZES.spacing * 3,
-    marginHorizontal: SIZES.padding,
+    flex: 1,
+    height: "100%",
   },
 });

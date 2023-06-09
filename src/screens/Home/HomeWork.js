@@ -9,6 +9,7 @@ import {
   Animated,
   TouchableOpacity,
   Image,
+  Text,
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
@@ -27,7 +28,8 @@ import { BASE_URL } from "../../../config";
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
 
-const HomeWork = () => {
+const HomeWork = ({ route, navigation }) => {
+  const { classId } = route?.params;
   const dispatch = useDispatch();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { classes } = useSelector((state) => state.classReducer);
@@ -38,9 +40,10 @@ const HomeWork = () => {
     classes?.length > 0 ? classes[0] : null
   );
 
+  const [isParam, setIsParam] = useState(true);
+
   const [data, setData] = useState([]);
   const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
   const [show, setShow] = useState(false);
   const [value, setValue] = useState("");
   const [type, setType] = useState("");
@@ -50,7 +53,6 @@ const HomeWork = () => {
   const scrollDireaction = useRef(0);
   const showArrowUp = useRef(new Animated.Value(0)).current;
 
- 
   const handleShowModal = (value) => {
     if (typeof value == "string") {
       setShow(!show);
@@ -91,80 +93,107 @@ const HomeWork = () => {
       .catch((err) => {});
   }, [defaultValue, selectedItem]);
 
+  useEffect(() => {
+    if (classId != -1) {
+      const index = classes.findIndex((item) => item.id == classId);
+      if (index !== -1) {
+        setSelectItem(classId);
+        setDefaultValue(classes[index]);
+      }
+      setIsParam(true);
+    } else {
+      setIsParam(false);
+    }
+  }, [classId]);
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      <View
-        style={styles.container}
-      >
-        <SelectDropdown
-          data={classes}
-          buttonStyle={styles.select}
-          dropdownStyle={{
-            borderRadius: 8,
-          }}
-          defaultButtonText={"Chọn lớp học"}
-          buttonTextStyle={styles.customText}
-          defaultValue={defaultValue}
-          // defaultValueByIndex={0}
-          onSelect={(selectedItem, index) => {
-            setSelectItem(selectedItem.id);
-          }}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <FontAwesome
-                name={isOpened ? "chevron-up" : "chevron-down"}
-                color={"#637381"}
-                size={14}
-                style={{ marginRight: 10 }}
+      {isParam == true ? (
+        <>
+          <View style={styles.container}>
+            <SelectDropdown
+              data={classes}
+              buttonStyle={styles.select}
+              dropdownStyle={{
+                borderRadius: 8,
+              }}
+              defaultButtonText={"Chọn lớp học"}
+              buttonTextStyle={styles.customText}
+              defaultValue={defaultValue}
+              // defaultValueByIndex={0}
+              onSelect={(selectedItem, index) => {
+                setSelectItem(selectedItem.id);
+              }}
+              renderDropdownIcon={(isOpened) => {
+                return (
+                  <FontAwesome
+                    name={isOpened ? "chevron-up" : "chevron-down"}
+                    color={"#637381"}
+                    size={14}
+                    style={{ marginRight: 10 }}
+                  />
+                );
+              }}
+              dropdownIconPosition={"right"}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return `Lớp ${selectedItem.name} - Năm học ${selectedItem.year}`;
+              }}
+              rowTextForSelection={(item, index) => {
+                return `Lớp ${item.name} - Năm học ${item.year}`;
+              }}
+            />
+          </View>
+          <FlatList
+            ref={scrollViewRef}
+            onScroll={(e) => {
+              const offsetY = e.nativeEvent.contentOffset.y;
+              scrollDireaction.current =
+                offsetY - lastOffsetY.current > 0 ? "down" : "up";
+              lastOffsetY.current = offsetY;
+              if (scrollDireaction.current == "down" && offsetY >= 100) {
+                Animated.timing(showArrowUp, {
+                  toValue: 1,
+                  duration: 40,
+                  useNativeDriver: false,
+                }).start();
+              }
+              if (scrollDireaction.current == "up" && offsetY < 100) {
+                Animated.timing(showArrowUp, {
+                  toValue: 0,
+                  duration: 40,
+                  useNativeDriver: false,
+                }).start();
+              }
+            }}
+            style={{ backgroundColor: "white", zIndex: 10 }}
+            data={data}
+            renderItem={(item) => (
+              <VerticalHomeWork
+                item={item}
+                handleShowModal={handleShowModal}
+                show={show}
               />
-            );
-          }}
-          dropdownIconPosition={"right"}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            return `Lớp ${selectedItem.name} - Năm học ${selectedItem.year}`;
-          }}
-          rowTextForSelection={(item, index) => {
-            return `Lớp ${item.name} - Năm học ${item.year}`;
-          }}
-        />
-      </View>
-      <FlatList
-        ref={scrollViewRef}
-        onScroll={(e) => {
-          const offsetY = e.nativeEvent.contentOffset.y;
-          scrollDireaction.current =
-            offsetY - lastOffsetY.current > 0 ? "down" : "up";
-          lastOffsetY.current = offsetY;
-          if (scrollDireaction.current == "down" && offsetY >= 100) {
-           
-            Animated.timing(showArrowUp, {
-              toValue: 1,
-              duration: 40,
-              useNativeDriver: false,
-            }).start();
-          }
-          if (scrollDireaction.current == "up" && offsetY < 100) {
-            
-            Animated.timing(showArrowUp, {
-              toValue: 0,
-              duration: 40,
-              useNativeDriver: false,
-            }).start();
-          }
-        }}
-        style={{ backgroundColor: "white", zIndex: 10 }}
-        data={data}
-        renderItem={(item) => (
-          <VerticalHomeWork
-            item={item}
-            handleShowModal={handleShowModal}
-            show={show}
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            scrollEventThrottle={16}
           />
-        )}
-        keyExtractor={(item, index) => index.toString()}
-        scrollEventThrottle={16}
-      />
+        </>
+      ) : (
+        <>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+              }}
+            >
+              Chưa có thông tin tư liệu học tập
+            </Text>
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -206,7 +235,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     right: 20,
-    bottom:10,
+    bottom: 10,
     zIndex: 100,
   },
   upButtonImageStyle: {

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
@@ -48,10 +48,10 @@ const HeaderHome = ({
       <View style={styles.lowerHeader}>
         <Animated.View style={[styles.featureSmall, depositViewAnimation]}>
           {/* <TouchableOpacity onPressIn={() => navigation.navigate("Bảng tin")} style={{height: 33}}> */}
-            <Animated.Image
-              source={require("../../assets/icon-home/bang-tin.png")}
-              style={[styles.bangtin]}
-            />
+          <Animated.Image
+            source={require("../../assets/icon-home/bang-tin.png")}
+            style={[styles.bangtin]}
+          />
           {/* </TouchableOpacity> */}
           <Animated.Text
             numberOfLines={2}
@@ -65,11 +65,14 @@ const HeaderHome = ({
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.featureBig, withdrawViewAnimation]}>
-          <TouchableOpacity onPressIn={() => navigation.navigate("Tình hình học tập", {
-             params: {
-              classId: classes[0].class_id,
-            },
-          })} style={{height: 33,paddingTop:9}}>
+          <TouchableOpacity
+            onPressIn={() =>
+              navigation.navigate("Tình hình học tập", {
+                classId: classes?  classes[0]?.id : -1,
+              })
+            }
+            style={{ height: 33, paddingTop: 9 }}
+          >
             <Animated.Image
               source={require("../../assets/icon-home/thht1.png")}
               style={[styles.thht]}
@@ -89,8 +92,12 @@ const HeaderHome = ({
 
         <Animated.View style={[styles.featureBig, scanViewAnimation]}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Tư liệu buổi học")}
-            style={{height: 33,paddingTop:5}}
+             onPressIn={() =>
+              navigation.navigate("Tư liệu buổi học", {
+                classId: classes?  classes[0]?.id : -1,
+              })
+            }
+            style={{ height: 33, paddingTop: 5 }}
           >
             <Animated.Image
               source={require("../../assets/icon-home/tlbh.png")}
@@ -110,11 +117,10 @@ const HeaderHome = ({
           </Animated.Text>
         </Animated.View>
         <Animated.View style={[styles.featureSmall, qrViewAnimation]}>
-          <TouchableOpacity 
+          <TouchableOpacity
             onPressIn={() => navigation.navigate("Học phí")}
-            style={{height: 33,paddingTop:10}}
+            style={{ height: 33, paddingTop: 10 }}
           >
-            
             <Animated.Image
               source={require("../../assets/icon-home/hoc-phi.png")}
               style={[styles.hocphi]}
@@ -171,21 +177,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "30%",
   },
-  thht:{
+  thht: {
     height: 20,
     width: 30,
   },
-  tlbh:{
+  tlbh: {
     width: 27,
     height: 27,
   },
-  bangtin:{
+  bangtin: {
     width: 24,
     height: 33,
   },
-  hocphi:{
+  hocphi: {
     width: 27,
-    height: 20
+    height: 20,
   },
   bellIco: {
     width: 36,

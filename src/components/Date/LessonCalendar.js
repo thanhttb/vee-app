@@ -19,7 +19,8 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
 
   const formattedDate = moment(item.formated_date, "DD/MM/YYYY").format("DD-MM-YYYY");
   return (
-    <View style={styles.component} key={index}>
+    <View style={[styles.component ,
+      index == 0 && { marginTop: SIZES.padding },]} key={index}>
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.className}>Lớp - {item?.class}</Text>
@@ -75,6 +76,8 @@ const styles = StyleSheet.create({
   component: {
     flexDirection: "row",
     alignItems: "center",
+    marginHorizontal: SIZES.padding,
+    paddingBottom: SIZES.padding
   },
   lesson: {
     width: "15%",
@@ -91,7 +94,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.radius,
-    marginTop: SIZES.padding,
     width: "100%",
     elevation: 5,
     shadowColor: "gray",

@@ -135,7 +135,7 @@ const HomeTuition = () => {
     setIsLoading(true);
     const timer =  setTimeout(() => {
       setIsLoading(false);
-    }, 200)
+    }, 500)
 
     return () => clearTimeout(timer);
   }, [])
@@ -223,8 +223,6 @@ const HomeTuition = () => {
   };
 
   
-
-  console.log('date',date, isMonth, isYear)
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
