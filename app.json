@@ -8,7 +8,7 @@
     "icon": "./assets/fav.png",
     "splash": {
       "resizeMode": "contain",
-      "image": "./assets/splash.png",
+      "image": "./assets/splash_v2.png",
       "backgroundColor": "#64b445"
     },
     "assetBundlePatterns": [

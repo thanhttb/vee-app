@@ -12,6 +12,7 @@ import {
   Image,
   Button,
 } from "react-native";
+import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons } from "@expo/vector-icons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -31,11 +32,15 @@ import Spacer from "../../components/Spacer";
 
 const ProfileChildren = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const { user, authToken } = useSelector((state) => state.authReducer);
+
+  const [image, setImage] = useState(null);
   const [students, setStudents] = useState([]);
   const [selected, setSelected] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const dispatch = useDispatch();
+  
 
   useEffect(() => {
     dispatch(userList(user.id));
@@ -71,9 +76,24 @@ const ProfileChildren = () => {
       s[key][name] = e;
     }
     setStudents(s);
+    
   }
 
-  function onHandleChangeImage(e, key, name) {}
+  const onHandleChangeImage = async (e, key, name) => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [4 , 3],
+      quality: 1,
+      selectionLimit: 1,
+    })
+
+    // if(!result.canceled){
+    //   let s = [...students];
+    //   s[key][name] = result.assets[0];
+    //   setStudents(s);
+    // }
+console.log('result.assets[0]', result.assets[0]);
+  }
   const onGenderChange = (value, key) => {
     let s = [...students];
     s[key].gender = value;
