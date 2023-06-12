@@ -110,33 +110,44 @@ const Home = () => {
       });
   }, [arrClass, onReached]);
 
-  useEffect(() => {
-    let isCheck = users.every((item) => item.avatar == null);
-  
-    if (isCheck && !isAlertShown) {
-      Alert.alert(
-        "VietElite",
-        "Chưa hoàn thành ảnh đại diện học sinh",
-        [
-          { text: "Để sau", onPress: () => console.log("OK Pressed") },
-          {
-            text: "Cập nhật ngay",
-            onPress: () => {
-              navigation.navigate("Cá nhân", {
-                screen: "Thông tin học sinh",
-                initial: false,
-              });
-             
-            }
-          }
-        ],
+  const showAlert = () => {
+    Alert.alert(
+      "VietElite",
+      "Chưa hoàn thành ảnh đại diện học sinh",
+      [
+        { text: "Để sau", onPress: () => console.log("OK Pressed") },
         {
-          userInterfaceStyle: "light",
-        }
-        
-      );
-      setIsAlertShown(true);
-    }
+          text: "Cập nhật ngay",
+          onPress: () => {
+            navigation.navigate("Cá nhân", {
+              screen: "Thông tin học sinh",
+              initial: false,
+            });
+          },
+        },
+      ],
+      {
+        userInterfaceStyle: "light",
+      }
+    );
+  };
+
+  useEffect(() => {
+    let timeout;
+  
+    const checkAvatars = () => {
+      const isCheck = users.every((item) => item.avatar != null);
+      if (!isCheck && !isAlertShown) {
+        showAlert();
+        setIsAlertShown(true);
+      }
+    };
+  
+    timeout = setTimeout(checkAvatars, 1000);
+  
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [users, isAlertShown]);
 
   const fetchRecords = (page) => {

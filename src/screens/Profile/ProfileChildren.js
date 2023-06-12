@@ -36,7 +36,8 @@ const ProfileChildren = () => {
 
   const { user, authToken } = useSelector((state) => state.authReducer);
 
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
+  const [showkey, setShowKey] = useState();
   const [showImage, setShowImage] = React.useState(false);
 
   const [students, setStudents] = useState([]);
@@ -87,11 +88,13 @@ const ProfileChildren = () => {
       selectionLimit: 1,
     });
 
-    if(!result.canceled){
-      setShowImage(true)
+    if (!result.canceled) {
+      setShowImage(true);
+      setShowKey(key)
       setImage(result.assets[0]);
     }
   };
+
   const onGenderChange = (value, key) => {
     let s = [...students];
     s[key].gender = value;
@@ -100,68 +103,64 @@ const ProfileChildren = () => {
 
   const handleChangeSubmit = async (key) => {
     let student = students[key];
-   console.log('image', image)
-    // if(image){
+    if (image) {
       let formData = new FormData();
       let file;
-      showImage== true && (
-        file = {
+      showImage == true &&
+        (file = {
           uri:
-            Platform.OS === 'android'
+            Platform.OS === "android"
               ? image?.uri
-              : image?.uri?.replace('file://', ''),
+              : image?.uri?.replace("file://", ""),
           name:
             image?.fileName ||
-            Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
-          type: image?.type || 'image/jpeg',
-        }
-      )
-      
-      formData.append('id', user?.id);
-      formData.append('student', student);
-      // showImage == true && formData.append('avatar',file);
-      // let avatarStudent = formData;
-      console.log('formData', formData)
-      if(formData){
+            Math.floor(Math.random() * Math.floor(999999999)) + ".jpg",
+          type: image?.type || "image/jpeg",
+        });
+
+      formData.append("id", user?.id);
+      formData.append("student", JSON.stringify(student));
+      showImage == true && formData.append("avatar", file);
+      if (formData) {
         axios
-        .post(
-          BASE_URL + "profile/student",
-          formData,
-          {
+          .post(BASE_URL + "profile/student", formData, {
             headers: {
-              'Content-Type': 'multipart/form-data',
+              "Content-Type": "multipart/form-data",
               Authorization: "Bearer " + authToken,
             },
-          }
-        )
-        .then((res) => console.log("res", res.config.data._parts))
-        .then((res) =>
-          Alert.alert(
-            "VietElite",
-            "Cập nhập thông tin thành công",
-            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-            {
-              userInterfaceStyle: "light",
-            }
+          })
+          .then((res) => console.log("res", res))
+          .then((res) =>
+            Alert.alert(
+              "VietElite",
+              "Cập nhập thông tin thành công",
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+              {
+                userInterfaceStyle: "light",
+              }
+            )
           )
-        )
-        .catch((err) =>
-          Alert.alert(
-            "VietElite",
-            "Cập nhập thông tin thất bại",
-            [{ text: "OK", onPress: () => console.log(err) }],
-            {
-              userInterfaceStyle: "light",
-            }
-          )
-        );
+          .catch((err) =>
+            Alert.alert(
+              "VietElite",
+              "Cập nhập thông tin thất bại",
+              [{ text: "OK", onPress: () => console.log(err) }],
+              {
+                userInterfaceStyle: "light",
+              }
+            )
+          );
       }
-      
-    // }else {
-    //   console.log('loi image')
-    // }
-
-   
+    } else {
+      Alert.alert(
+        "VietElite",
+        "Chưa chọn ảnh đại diện cho con",
+        [{ text: "OK", onPress: () => console.log(err) }],
+        {
+          userInterfaceStyle: "light",
+        }
+      );
+    }
   };
 
   const showDatePicker = (index) => {
@@ -200,7 +199,6 @@ const ProfileChildren = () => {
                   <StatusBar barStyle="light-content" />
                   {students.map((s, index) => {
                     return (
-
                       <View style={styles.container} key={index}>
                         <Text style={styles.info}>
                           Hồ sơ học sinh {s?.fullname}
@@ -213,10 +211,18 @@ const ProfileChildren = () => {
                               alignItems: "center",
                             }}
                           >
-                            <Image
-                              style={styles.avatar}
-                              source={require("../../../assets/avatar_default.jpg")}
-                            />
+                            {showImage == true && showkey == index ? (
+                              <Image
+                                style={styles.avatar}
+                                source={{ uri: `${image?.uri}` }}
+                              />
+                            ) : (
+                              <Image
+                                style={styles.avatar}
+                                source={{ uri: `${s?.avatar}` }}
+                              />
+                            )}
+
                             <TouchableOpacity
                               onPress={(e) =>
                                 onHandleChangeImage(e, index, "avatar")
