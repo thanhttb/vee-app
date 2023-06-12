@@ -12,7 +12,7 @@ import {
   Image,
   Button,
 } from "react-native";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -37,10 +37,11 @@ const ProfileChildren = () => {
   const { user, authToken } = useSelector((state) => state.authReducer);
 
   const [image, setImage] = useState(null);
+  const [showImage, setShowImage] = React.useState(false);
+
   const [students, setStudents] = useState([]);
   const [selected, setSelected] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  
 
   useEffect(() => {
     dispatch(userList(user.id));
@@ -76,24 +77,21 @@ const ProfileChildren = () => {
       s[key][name] = e;
     }
     setStudents(s);
-    
   }
 
   const onHandleChangeImage = async (e, key, name) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      aspect: [4 , 3],
+      aspect: [4, 3],
       quality: 1,
       selectionLimit: 1,
-    })
+    });
 
-    // if(!result.canceled){
-    //   let s = [...students];
-    //   s[key][name] = result.assets[0];
-    //   setStudents(s);
-    // }
-console.log('result.assets[0]', result.assets[0]);
-  }
+    if(!result.canceled){
+      setShowImage(true)
+      setImage(result.assets[0]);
+    }
+  };
   const onGenderChange = (value, key) => {
     let s = [...students];
     s[key].gender = value;
@@ -102,38 +100,68 @@ console.log('result.assets[0]', result.assets[0]);
 
   const handleChangeSubmit = async (key) => {
     let student = students[key];
-    axios
-      .post(
-        BASE_URL + "profile/student",
-        { id: user?.id, student: student },
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: "Bearer " + authToken,
-          },
+   console.log('image', image)
+    // if(image){
+      let formData = new FormData();
+      let file;
+      showImage== true && (
+        file = {
+          uri:
+            Platform.OS === 'android'
+              ? image?.uri
+              : image?.uri?.replace('file://', ''),
+          name:
+            image?.fileName ||
+            Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
+          type: image?.type || 'image/jpeg',
         }
       )
-      .then((res) => console.log("res"))
-      .then((res) =>
-        Alert.alert(
-          "VietElite",
-          "Cập nhập thông tin thành công",
-          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      
+      formData.append('id', user?.id);
+      formData.append('student', student);
+      // showImage == true && formData.append('avatar',file);
+      // let avatarStudent = formData;
+      console.log('formData', formData)
+      if(formData){
+        axios
+        .post(
+          BASE_URL + "profile/student",
+          formData,
           {
-            userInterfaceStyle: "light",
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: "Bearer " + authToken,
+            },
           }
         )
-      )
-      .catch((err) =>
-        Alert.alert(
-          "VietElite",
-          "Cập nhập thông tin thất bại",
-          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-          {
-            userInterfaceStyle: "light",
-          }
+        .then((res) => console.log("res", res.config.data._parts))
+        .then((res) =>
+          Alert.alert(
+            "VietElite",
+            "Cập nhập thông tin thành công",
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            {
+              userInterfaceStyle: "light",
+            }
+          )
         )
-      );
+        .catch((err) =>
+          Alert.alert(
+            "VietElite",
+            "Cập nhập thông tin thất bại",
+            [{ text: "OK", onPress: () => console.log(err) }],
+            {
+              userInterfaceStyle: "light",
+            }
+          )
+        );
+      }
+      
+    // }else {
+    //   console.log('loi image')
+    // }
+
+   
   };
 
   const showDatePicker = (index) => {
@@ -172,6 +200,7 @@ console.log('result.assets[0]', result.assets[0]);
                   <StatusBar barStyle="light-content" />
                   {students.map((s, index) => {
                     return (
+
                       <View style={styles.container} key={index}>
                         <Text style={styles.info}>
                           Hồ sơ học sinh {s?.fullname}
@@ -201,7 +230,9 @@ console.log('result.assets[0]', result.assets[0]);
                                   borderRadius: 4,
                                 }}
                               >
-                                <Text style={{fontSize: 12}}>Thay ảnh đại diện</Text>
+                                <Text style={{ fontSize: 12 }}>
+                                  Thay ảnh đại diện
+                                </Text>
                               </View>
                             </TouchableOpacity>
                           </View>
@@ -238,6 +269,7 @@ console.log('result.assets[0]', result.assets[0]);
                                     name="date-range"
                                     size={24}
                                     color="#5b5b5b"
+                                    onPress={() => showDatePicker(index)}
                                   />
                                 )}
                               />
@@ -245,7 +277,6 @@ console.log('result.assets[0]', result.assets[0]);
                           />
                           <DateTimePickerModal
                             isVisible={isDatePickerVisible}
-                            isDarkModeEnabled={true}
                             mode="date"
                             onConfirm={(date) => {
                               handleConfirm(date, selected, "dob");
@@ -343,18 +374,14 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
   },
   input: {
-    height: 50,
-    marginTop: 2,
     borderColor: COLORS.input,
     backgroundColor: "white",
     marginBottom: SIZES.spacing,
-    fontSize: 14,
     width: "100%",
-    paddingHorizontal: 2,
   },
   text: {
     textAlign: "left",
-    paddingBottom: SIZES.base,
+    // paddingBottom: SIZES.base,
   },
   datePickerStyle: {
     width: SIZES.width - 40,

@@ -120,11 +120,11 @@ const Home = () => {
         [
           { text: "Để sau", onPress: () => console.log("OK Pressed") },
           {
-            text: "Đi đến",
+            text: "Cập nhật ngay",
             onPress: () => {
               navigation.navigate("Cá nhân", {
                 screen: "Thông tin học sinh",
-                // initial: false,
+                initial: false,
               });
              
             }

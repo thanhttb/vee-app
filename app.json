@@ -43,7 +43,15 @@
     "owner": "tranthanhuet",
     "updates": {
       "url": "https://u.expo.dev/04b3d310-7a3e-493d-80ea-8917e541fd1e"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   },
   "displayName": "VietElite Students",
   "plugins": [
