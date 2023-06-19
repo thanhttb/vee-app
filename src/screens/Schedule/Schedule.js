@@ -20,6 +20,7 @@ import LessonCalendar from "../../components/Date/LessonCalendar";
 import Spacer from "../../components/Spacer";
 
 const Schedule = () => {
+  const date = new Date();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const [sessionWeek, setSessionWeek] = useState([]);
   const [sessionWeekFilter, setSessionWeekFilter] = useState([]);
@@ -89,7 +90,7 @@ const Schedule = () => {
         ) : (
           <View>
             <Spacer />
-            <Text>Không có lịch học ngày {selectedDate}</Text>
+            <Text style={{textAlign: 'center'}}>Không có lịch học ngày {selectedDate}</Text>
           </View>
         )}
       </View>

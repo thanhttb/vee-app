@@ -112,33 +112,30 @@ const HomeTuition = () => {
   }, [dispatch]);
 
   useEffect(() => {
-   
     setSumReceipt(amount_total);
-    
   }, [amount_total]);
 
   useEffect(() => {
-    if((date.getMonth() +1 ) / 2 == 1){
-      setIsMonth(date.getMonth())
-      setIsYear(date.getFullYear())
+    if ((date.getMonth() + 1) / 2 == 1) {
+      setIsMonth(date.getMonth());
+      setIsYear(date.getFullYear());
+    } else if (date.getMonth() + 1 == 1) {
+      setIsMonth(12);
+      setIsYear(date.getFullYear() - 1);
+    } else {
+      setIsMonth(date.getMonth() + 1);
+      setIsYear(date.getFullYear());
     }
-    else if((date.getMonth() +1 ) == 1){
-      setIsMonth(12)
-      setIsYear(date.getFullYear() -1)
-    }else {
-      setIsMonth(date.getMonth() +1)
-      setIsYear(date.getFullYear())
-    }
-  }, [])
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
-    const timer =  setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500)
+    }, 500);
 
     return () => clearTimeout(timer);
-  }, [])
+  }, []);
 
   const hanldeModal = () => {
     setIsModal(!isModal);
@@ -170,7 +167,8 @@ const HomeTuition = () => {
   };
   const formated = new Intl.NumberFormat("vi-VN", config).format(sumReceipt);
 
-  const VerticalStatistical = ({ item }) => {
+  const VerticalStatistical = ({ item, index, countLength }) => {
+
     const config = {
       style: "currency",
       currency: "VND",
@@ -179,11 +177,10 @@ const HomeTuition = () => {
     const formated = new Intl.NumberFormat("vi-VN", config).format(item.amount);
     return (
       <View
-        style={{
-          borderBottomWidth: 1,
-          borderBottomColor: "#EDEFF1",
-          width: "100%",
-        }}
+        style={[
+          { borderBottomWidth: 1, borderBottomColor: "#EDEFF1", width: "100%"},
+          index === countLength - 1 ? { borderBottomWidth: 0 } : null,
+        ]}
       >
         <TouchableOpacity
           onPress={() =>
@@ -221,8 +218,6 @@ const HomeTuition = () => {
       </View>
     );
   };
-
-  
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -326,9 +321,14 @@ const HomeTuition = () => {
             </Text>
           </LinearGradient>
         </View>
+
         {isLoading == true ? (
           <View style={{ flex: 1 }}>
-            <ActivityIndicator size="large" color="#00ff00" style={{marginTop:200}}/>
+            <ActivityIndicator
+              size="large"
+              color="#00ff00"
+              style={{ marginTop: 200 }}
+            />
           </View>
         ) : (
           <>
@@ -416,7 +416,13 @@ const HomeTuition = () => {
               <View style={styles.viewComponentStatistical}>
                 <FlatList
                   data={data}
-                  renderItem={({ item }) => <VerticalStatistical item={item} />}
+                  renderItem={({ item, index }) => (
+                    <VerticalStatistical
+                      item={item}
+                      index={index}
+                      countLength={data.length}
+                    />
+                  )}
                   keyExtractor={(item, index) => index.toString()}
                   ListHeaderComponent={() => {
                     return (
@@ -536,7 +542,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: SIZES.padding,
     flex: 1,
-    // flexDirection: "column",/
   },
   select: {
     width: "100%",

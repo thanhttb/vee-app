@@ -129,7 +129,6 @@ const ProfileChildren = () => {
               Authorization: "Bearer " + authToken,
             },
           })
-          .then((res) => console.log("res", res))
           .then((res) =>
             Alert.alert(
               "VietElite",
@@ -435,6 +434,5 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     borderRadius: 50,
-    resizeMode: "contain",
   },
 });
