@@ -103,9 +103,9 @@ const Login = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            {/* <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('PasswordForgot')}>
               <Text style={styles.forget}>Quên mật khẩu ?</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
           <Spacer />
           <View style={styles.inputs}>
@@ -216,8 +216,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   forget: {
-    padding: SIZES.spacing,
+    paddingVertical: SIZES.spacing,
     color: COLORS.gray,
     fontSize: SIZES.h3,
+    textAlign: 'right'
   },
 });

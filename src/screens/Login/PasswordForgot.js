@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -12,37 +12,86 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   StatusBar,
+  Alert
 } from "react-native";
 //npm
-import Recaptcha from 'react-native-recaptcha-that-works';
-import ReCAPTCHA from 'react-google-recaptcha';
+import Recaptcha from "react-native-recaptcha-that-works";
+import ReCAPTCHA from "react-google-recaptcha";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import { useNavigation } from "@react-navigation/native";
 //component
 import Spacer from "../../components/Spacer";
 import Button from "../../components/Button/Button";
 import OTPInput from "../../components/OTPInput";
 //utils
 import { SIZES, COLORS } from "../../utils/theme";
-//iamges
+//image
 const Logo_VEE = require("../../../assets/logo_vee.jpg");
+
+import axios from "axios";
+import {BASE_URL} from '../../../config'
 
 const PasswordForgot = () => {
   const recaptcha = useRef();
+  const now = new Date();
   const [otp, setOtp] = React.useState(false);
-  const [key, setKey] = React.useState();
+  const [phone, setPhone] = React.useState();
+  const [otpInput, setOtpInput] = useState("");
 
-  const onChangeCapcha = (value) => {
-    console.log("Captcha value:", value);
-    this.recaptcha?.current?.open();
+  const navigation = useNavigation();
+
+  const send = () => {
+    // this.recaptcha?.current.open();
+    axios.post('https://api.vietelite.edu.vn/api/user/verify-phone', {
+      phone: phone,
+      sent_at : now
+    })
+    .then((response)=> {
+      if(response){
+        setOtp(!otp)
+      }
+    }).catch((error) => {
+      Alert.alert(
+        "VietElite",
+        "Số điện thoại sai hoặc có lỗi xảy ra",
+        [
+          { text: "Đồng ý", onPress: () => console.log("OK Pressed") },
+         
+        ],
+        {
+          userInterfaceStyle: "light",
+        }
+      );
+    })
+    
   };
 
-  const send = React.useCallback(() => {
-    this.recaptcha?.current.open();
-  }, []);
+  const verifyOtp = () => {
+    axios
+      .post("https://api.vietelite.edu.vn/api/user/verify-otp", {
+        phone: phone,
+        otp: otpInput,
+      })
+      .then((response) => navigation.navigate("Trang chủ", {
+          screen: "Trang chính",
+          initial: false,
+        })
+      )
+      .catch((error) => {
+        Alert.alert(
+          "VietElite",
+          "Mã OTP sai hoặc có lỗi xảy ra",
+          [{ text: "Đồng ý", onPress: () => console.log("OK Pressed") }],
+          {
+            userInterfaceStyle: "light",
+          }
+        );
+      });
+  };
 
   const handleClosePress = React.useCallback(() => {
-    this.recaptcha?.current.close();
+    // this.recaptcha?.current.close();
   }, []);
 
   return (
@@ -72,40 +121,29 @@ const PasswordForgot = () => {
                     placeholderTextColor={COLORS.input}
                     keyboardType="number-pad"
                     autoCapitalize="none"
+                    value={phone}
+                    onChangeText={(text) => setPhone(text)}
                     style={{
                       width: "100%",
                     }}
                   />
                 </View>
               </View>
-              <View>
-                <Recaptcha
-                 ref={recaptcha}
-                 headerComponent={<Button title="Close" onPress={handleClosePress} />}
-          siteKey="6Le7-FciAAAAACnKxo3JECtz17LYl2VjJgC17ydG"
-          baseUrl="http://127.0.0.1"
-                  // onVerify={onChangeCapcha}
-                  size="normal"
-                  theme="light"
-          onLoad={() => console.log('onLoad event')}
-          onClose={() => console.log('onClose event')} 
-          onError={(err) => {
-            console.warn('error', err);
-          }}
-          onExpire={() => console.log('onExpire event')}
-          onVerify={(token) => {
-            setKey(token);
-          }}
-                />
-                
-              </View>
+             
               <Spacer />
               <View style={styles.inputs}>
                 <Button
                   onPress={send}
-                  label={"Tiếp tục"}
+                  label={"Gửi"}
                   color={COLORS.white}
                   background={COLORS.green}
+                />
+                <Spacer />
+                <Button
+                  onPress={() => navigation.navigate('Login')}
+                  label={"Quay lại"}
+                  color={COLORS.green}
+                  background={COLORS.white}
                 />
               </View>
             </>
@@ -118,11 +156,11 @@ const PasswordForgot = () => {
                   marginLeft: 30,
                 }}
               >
-                <OTPInput />
+                <OTPInput setOtpInput={setOtpInput} otpInput={otpInput}/>
               </View>
               <View style={styles.inputs}>
                 <Button
-                  onPress={() => setOtp(false)}
+                  onPress={verifyOtp}
                   label={"Xác Minh"}
                   color={COLORS.white}
                   background={COLORS.green}
@@ -135,7 +173,7 @@ const PasswordForgot = () => {
                 }}
               >
                 <Text style={styles.bottomTitle}>Không nhận được mã OTP ?</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('PasswordForgot')}>
                   <Text style={styles.returnOtp}>Gửi lại mã</Text>
                 </TouchableOpacity>
               </View>

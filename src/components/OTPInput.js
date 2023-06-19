@@ -3,19 +3,23 @@ import { View, StyleSheet } from "react-native";
 //npm
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { COLORS } from "../utils/theme";
-const OTPInput = () => {
-  const [otp, setOtp] = useState("");
+
+import axios from "axios";
+import { BASE_URL } from "../../config";
+
+const OTPInput = ({ otpInput, setOtpInput }) => {
+  // const [otp, setOtp] = useState("");
+ 
+
   return (
     <OTPInputView
       style={{ width: "80%", height: 200, alignItems: "center" }}
       pinCount={4}
-      onCodeChanged={(code) => setOtp(code)}
+      onCodeChanged={(code) => setOtpInput(code)}
       autoFocusOnLoad={false}
       codeInputFieldStyle={styles.underlineStyleBase}
       codeInputHighlightStyle={styles.underlineStyleHighLighted}
-      onCodeFilled={(code) => {
-        console.log(`Code is ${code}, you are good to go!`);
-      }}
+      // onCodeFilled={() => verifyOtp}
     />
   );
 };
