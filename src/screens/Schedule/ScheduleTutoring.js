@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Image,
-  Alert
+  Alert,
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import moment from "moment";
@@ -25,35 +25,45 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import Spacer from "../../components/Spacer";
 import Button from "../../components/Button/Button";
 import { COLORS, SIZES } from "../../utils/theme";
-
-const types = ["Check In", "Thông báo", "Câu hỏi"];
+import axios from "axios";
+import { BASE_URL } from "../../../config";
 
 const ScheduleTutoring = ({ route, navigation }) => {
-  const { id } = route.params;
-  const [type, setType] = useState(1);
+  const { data } = route.params;
+  const [description, setDescription] = useState("");
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState("");
-  const [selectedItem, setSelectItem] = useState();
+  const [selectedDate, setSelectedDate] = useState(data.formated_date);
+  const [selectedTime, setSelectedTime] = useState(formattedTime);
 
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.authReducer);
+  const { user, authToken } = useSelector((state) => state.authReducer);
   const { users } = useSelector((state) => state.userReducer);
-  const { classes } = useSelector((state) => state.classReducer);
 
-  useEffect(() => {
-    dispatch(listClass(user?.id));
-  }, [dispatch]);
+  const [selectedItem, setSelectItem] = useState(
+    users?.length > 0 ? users[0].id : -1
+  );
 
-  useEffect(() => {
-    dispatch(userList(user.id));
-  }, [dispatch]);
+  const formattedDate = moment(data.formated_date, "DD/MM/YYYY").format(
+    "DD-MM-YYYY"
+  );
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  const dataTime = data.time.split(" - ")[0];
+  var parts = dataTime.split(":");
+  var hours = parseInt(parts[0]);
+  var minutes = parseInt(parts[1]);
 
+  var date = new Date();
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  date.setMinutes(date.getMinutes() - 30);
+
+  var formattedTime =
+    ("0" + date.getHours()).slice(-2) +
+    ":" +
+    ("0" + date.getMinutes()).slice(-2);
+
+ 
   const showTimePicker = () => {
     setTimePickerVisibility(true);
   };
@@ -75,47 +85,71 @@ const ScheduleTutoring = ({ route, navigation }) => {
     hideTimePicker();
   };
 
-  const handleChangeSubmit = () => {
-    axios.post(
-      BASE_URL+'feed/create', {
-        session_id: data.sid,
-        content: type,
-        parent_id: user.id,
-        class_id: data.class_id,
-        type: 1,
-        description: description
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + authToken,
-        },
-      }
-    )
-    .then(res => {
-      Alert.alert(
-        "VietElite",
-        "Gửi đơn xin học phụ đạo thành công",
-        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-        {
-          userInterfaceStyle: "light",
-        }
-      ),
-      setDescription(''),
-      setType(null)
-    })
-    .catch(err => {
-      Alert.alert(
-        "VietElite",
-        "Gửi đơn xin học phụ đạo thất bại",
-        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-        {
-          userInterfaceStyle: "light",
-        }
-      )
-    })
-  }
+  useEffect(() => {
+    dispatch(listClass(user?.id));
+  }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(userList(user.id));
+  }, [dispatch]);
+
+  useEffect(() => {
+    setSelectedTime(formattedTime)
+  },[formattedTime])
+
+  const handleChangeSubmit = () => {
+    if (description == "") {
+      Alert.alert(
+        "VietElite",
+        "Chưa điền lý do xin học phụ đạo",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        {
+          userInterfaceStyle: "light",
+        }
+      );
+    } else {
+      axios
+        .post(
+          BASE_URL + "feed/create",
+          {
+            session_id: data.sid,
+            content: `Xin học phụ đạo tăng cường ${selectedTime} ${data.date}`,
+            parent_id: selectedItem,
+            class_id: data.class_id,
+            type: 3,
+            description: description,
+          },
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: "Bearer " + authToken,
+            },
+          }
+        )
+        .then((res) => {
+          Alert.alert(
+            "VietElite",
+            "Gửi đơn xin học phụ đạo thành công",
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            {
+              userInterfaceStyle: "light",
+            }
+          ),
+            setDescription(""),
+            setSelectedTime(dataTime)
+        })
+        .catch((err) => {
+          Alert.alert(
+            "VietElite",
+            "Gửi đơn xin học phụ đạo thất bại",
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            {
+              userInterfaceStyle: "light",
+            }
+          );
+        });
+    }
+  };
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -135,8 +169,9 @@ const ScheduleTutoring = ({ route, navigation }) => {
                 }}
                 buttonTextStyle={styles.customText}
                 defaultButtonText={"Chọn học sinh"}
+                defaultValue={users[0]}
                 onSelect={(selectedItem, index) => {
-                  setType(index + 1);
+                  setSelectItem(selectedItem.id);
                 }}
                 renderDropdownIcon={(isOpened) => {
                   return (
@@ -173,7 +208,7 @@ const ScheduleTutoring = ({ route, navigation }) => {
                       style={{ height: "100%", aspectRatio: 1 }}
                       onPress={showTimePicker}
                     >
-                       <Image
+                      <Image
                         source={require("../../../assets/icon-home/clock.jpg")}
                         style={styles.bellIcon}
                       />
@@ -184,7 +219,6 @@ const ScheduleTutoring = ({ route, navigation }) => {
                     mode="time"
                     onConfirm={handleTimeConfirm}
                     onCancel={hideTimePicker}
-                    // minuteInterval={30}
                   />
                 </View>
                 <View style={styles.date}>
@@ -192,17 +226,15 @@ const ScheduleTutoring = ({ route, navigation }) => {
                   <View style={[styles.input, styles.inputPassword]}>
                     <TextInput
                       style={{ width: "85%" }}
+                      editable={false}
+                      selectTextOnFocus={false}
                       placeholder={"Chọn ngày học"}
                       placeholderTextColor={COLORS.input}
-                      //   secureTextEntry={showPassword}
                       value={selectedDate}
-                      onPressIn={showDatePicker}
                     />
                     <TouchableOpacity
                       style={{ height: "100%", aspectRatio: 1 }}
-                      onPress={showDatePicker}
                     >
-                      {/* <Ionicons name={"calendar"} size={24} color={"red"} /> */}
                       <Image
                         source={require("../../../assets/icon-home/date.jpg")}
                         style={styles.bellIcon}
@@ -218,39 +250,13 @@ const ScheduleTutoring = ({ route, navigation }) => {
                 </View>
               </View>
               <Spacer height={10} />
-              <SelectDropdown
-                data={classes}
-                buttonStyle={styles.select}
-                dropdownStyle={{
-                  borderRadius: 8,
-                }}
-                defaultButtonText={"Chọn lớp học"}
-                buttonTextStyle={styles.customText}
-                onSelect={(selectedItem, index) => {
-                  setSelectItem(selectedItem.id);
-                }}
-                renderDropdownIcon={(isOpened) => {
-                  return (
-                    <FontAwesome
-                      name={isOpened ? "chevron-up" : "chevron-down"}
-                      color={"#637381"}
-                      size={14}
-                      style={{ marginRight: 10 }}
-                    />
-                  );
-                }}
-                dropdownIconPosition={"right"}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  const x = new Number(selectedItem.year);
-                  return `Lớp ${selectedItem.name} - Năm học ${
-                    selectedItem.year
-                  }-${x + 1}`;
-                }}
-                rowTextForSelection={(item, index) => {
-                  const x = new Number(item.year);
-                  return `Lớp ${item.name} - Năm học ${item.year}-${x + 1}`;
-                }}
-              />
+              <View style={styles.contentClass}>
+                <Text style={styles.className}>Lớp - {data?.class}</Text>
+                <Text style={styles.class}>
+                  Thời gian: {data?.time} | {formattedDate}
+                </Text>
+                <Text style={styles.class}>Giáo viên: {data?.teacher}</Text>
+              </View>
 
               <Spacer height={10} />
               <TextInput
@@ -260,8 +266,8 @@ const ScheduleTutoring = ({ route, navigation }) => {
                 focusable={false}
                 multiline={true}
                 numberOfLines={4}
-                // value={value}
-                // onChangeText={text => setValue(text)}
+                value={description}
+                onChangeText={(text) => setDescription(text)}
                 secureTextEntry={false}
               />
               <Spacer height={30} />
@@ -337,5 +343,28 @@ const styles = StyleSheet.create({
   },
   inputPassword: {
     justifyContent: "space-between",
+  },
+
+  contentClass: {
+    padding: SIZES.padding,
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.radius,
+    width: "100%",
+    elevation: 5,
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+  className: {
+    fontWeight: "bold",
+    fontSize: SIZES.h14,
+    paddingVertical: 2,
+  },
+  class: {
+    fontSize: SIZES.h14,
+    color: COLORS.gray,
+    paddingVertical: 2,
+    fontWeight: 500,
   },
 });

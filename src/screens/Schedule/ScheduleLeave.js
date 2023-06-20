@@ -34,7 +34,7 @@ const ScheduleLeave = ({ route, navigation }) => {
         content: type,
         parent_id: user.id,
         class_id: data.class_id,
-        type: 1,
+        type: 2,
         description: description
       },
       {
