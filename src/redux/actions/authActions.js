@@ -78,6 +78,46 @@ export const loginAction = (phone, password) => {
   };
 };
 
+export const loginOtpAction = (phone, password) => {
+  return async (dispatch) => {
+    try{
+     const response = await axios.post(
+       BASE_URL+ "user/verify-otp",
+       {
+         phone: phone,
+         otp: password,
+       }
+     );
+     
+     if (response.status == 200) {
+       const { access_token, user } = response.data;
+       await AsyncStorage.setItem("tokenUser", access_token);
+       dispatch({
+         type: type.SET_LOGIN_STATE,
+         payload: {
+           user: user,
+           classes: user.classes,
+           authToken: access_token,
+           isLoggedIn: true,
+           error: false,
+         }
+         
+       });
+     } 
+    }catch(e){
+     console.log("login failed",e)
+     dispatch({
+       type: type.SET_LOGIN_FAIL_STATE,
+       payload: {
+         error: true,
+         isLoggedIn: false
+       }
+       
+     });
+    }
+   };
+}
+
 export const logoutAction = () => {
     return async (dispatch) => {
         await AsyncStorage.clear();

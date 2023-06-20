@@ -14,9 +14,10 @@ import {
   StatusBar,
   Alert
 } from "react-native";
-//npm
-import Recaptcha from "react-native-recaptcha-that-works";
-import ReCAPTCHA from "react-google-recaptcha";
+//redux
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { loginOtpAction } from "../../redux/actions/authActions";
+
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useNavigation } from "@react-navigation/native";
@@ -33,11 +34,12 @@ import axios from "axios";
 import {BASE_URL} from '../../../config'
 
 const PasswordForgot = () => {
-  const recaptcha = useRef();
+  const dispatch = useDispatch();
   const now = new Date();
   const [otp, setOtp] = React.useState(false);
   const [phone, setPhone] = React.useState();
   const [otpInput, setOtpInput] = useState("");
+  const [loading, setLoading] = useState(false)
 
   const navigation = useNavigation();
 
@@ -67,32 +69,11 @@ const PasswordForgot = () => {
     
   };
 
-  const verifyOtp = () => {
-    axios
-      .post("https://api.vietelite.edu.vn/api/user/verify-otp", {
-        phone: phone,
-        otp: otpInput,
-      })
-      .then((response) => navigation.navigate("Trang chủ", {
-          screen: "Trang chính",
-          initial: false,
-        })
-      )
-      .catch((error) => {
-        Alert.alert(
-          "VietElite",
-          "Mã OTP sai hoặc có lỗi xảy ra",
-          [{ text: "Đồng ý", onPress: () => console.log("OK Pressed") }],
-          {
-            userInterfaceStyle: "light",
-          }
-        );
-      });
+  const verifyOtp = async () => {
+    setLoading(true)
+    dispatch(loginOtpAction(phone, otp));
+    setLoading(false)
   };
-
-  const handleClosePress = React.useCallback(() => {
-    // this.recaptcha?.current.close();
-  }, []);
 
   return (
     <GestureHandlerRootView style={styles.safeview}>

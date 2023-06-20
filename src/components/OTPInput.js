@@ -8,8 +8,6 @@ import axios from "axios";
 import { BASE_URL } from "../../config";
 
 const OTPInput = ({ otpInput, setOtpInput }) => {
-  // const [otp, setOtp] = useState("");
- 
 
   return (
     <OTPInputView
