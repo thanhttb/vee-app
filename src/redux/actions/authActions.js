@@ -78,17 +78,16 @@ export const loginAction = (phone, password) => {
   };
 };
 
-export const loginOtpAction = (phone, password) => {
+export const loginOtpAction = (phone, otp) => {
   return async (dispatch) => {
     try{
      const response = await axios.post(
        BASE_URL+ "user/verify-otp",
        {
          phone: phone,
-         otp: password,
+         otp: otp,
        }
      );
-     
      if (response.status == 200) {
        const { access_token, user } = response.data;
        await AsyncStorage.setItem("tokenUser", access_token);

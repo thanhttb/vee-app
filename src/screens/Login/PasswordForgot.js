@@ -38,14 +38,12 @@ const PasswordForgot = () => {
   const now = new Date();
   const [otp, setOtp] = React.useState(false);
   const [phone, setPhone] = React.useState();
-  const [otpInput, setOtpInput] = useState("");
+  const [otpInput, setOtpInput] = useState();
   const [loading, setLoading] = useState(false)
 
   const navigation = useNavigation();
-
   const send = () => {
-    // this.recaptcha?.current.open();
-    axios.post('https://api.vietelite.edu.vn/api/user/verify-phone', {
+    axios.post(BASE_URL+'user/verify-phone', {
       phone: phone,
       sent_at : now
     })
@@ -71,7 +69,7 @@ const PasswordForgot = () => {
 
   const verifyOtp = async () => {
     setLoading(true)
-    dispatch(loginOtpAction(phone, otp));
+    dispatch(loginOtpAction(phone, otpInput));
     setLoading(false)
   };
 
