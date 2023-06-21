@@ -29,7 +29,7 @@
       "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "backgroundColor": "#ffffff",
-        "foregroundColor": "./assets/fav.png"
+        "foregroundImage": "./assets/fav.png"
       },
       "runtimeVersion": {
         "policy": "sdkVersion"

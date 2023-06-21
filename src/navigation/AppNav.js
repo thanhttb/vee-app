@@ -85,10 +85,6 @@ const AppNav = () => {
     init();
   }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => SplashScreen.hideAsync(), 1000);
-  // }, []);
-
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
