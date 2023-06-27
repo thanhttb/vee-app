@@ -27,7 +27,7 @@ const HomeSituation = ({ route, navigation }) => {
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { classes } = useSelector((state) => state.classReducer);
   const [selectedItem, setSelectItem] = useState(
-    classes?.length > 0 ? classes[0].id : -1
+    classes?.length > 0 ? classes[0] : -1
   );
   const [defaultValue, setDefaultValue] = useState(
     classes?.length > 0 ? classes[0] : null
@@ -62,7 +62,8 @@ const HomeSituation = ({ route, navigation }) => {
         BASE_URL + "sessions",
         {
           parent_id: user.id,
-          class_id: selectedItem,
+          class_id: selectedItem.id,
+          student_id: selectedItem.student_id,
         },
         {
           headers: {
@@ -133,13 +134,15 @@ const HomeSituation = ({ route, navigation }) => {
                     buttonStyle={styles.select}
                     dropdownStyle={{
                       borderRadius: 8,
+                      maxHeight: 400,
                     }}
+                    rowStyle={{ height: 68, justifyContent: "center" }}
                     defaultButtonText={"Chọn lớp học"}
                     buttonTextStyle={styles.customText}
                     defaultValue={defaultValue}
                     // defaultValueByIndex={0}
                     onSelect={(selectedItem, index) => {
-                      setSelectItem(selectedItem.id);
+                      setSelectItem(selectedItem);
                     }}
                     renderDropdownIcon={(isOpened) => {
                       return (
@@ -153,14 +156,42 @@ const HomeSituation = ({ route, navigation }) => {
                     }}
                     dropdownIconPosition={"right"}
                     buttonTextAfterSelection={(selectedItem, index) => {
-                      const x = new Number(selectedItem.year);
-                      return `Lớp ${selectedItem.name} - Năm học ${
-                        selectedItem.year
-                      }-${x + 1}`;
+                      return (
+                        <View style={{ justifyContent: "center" }}>
+                          <Text>
+                            Lớp {selectedItem.name} - Năm học{" "}
+                            {selectedItem.year}
+                          </Text>
+                          <Text>Học sinh: {selectedItem.student_name}</Text>
+                        </View>
+                      );
                     }}
                     rowTextForSelection={(item, index) => {
                       const x = new Number(item.year);
-                      return `Lớp ${item.name} - Năm học ${item.year}-${x + 1}`;
+                      return (
+                        <View
+                          key={index}
+                          style={{ justifyContent: "center", paddingLeft: 10 }}
+                        >
+                          <Text>Lớp {item.name}</Text>
+                          <Text style={styles.customSelect}>
+                            Học sinh:{" "}
+                            <Text
+                              style={[styles.customSelect, { fontWeight: 400 }]}
+                            >
+                              {item.student_name}
+                            </Text>
+                          </Text>
+                          <Text style={styles.customSelect}>
+                            Năm học:{" "}
+                            <Text
+                              style={[styles.customSelect, { fontWeight: 400 }]}
+                            >
+                              {item.year} - {x + 1}
+                            </Text>
+                          </Text>
+                        </View>
+                      );
                     }}
                   />
 
@@ -218,10 +249,16 @@ const HomeSituation = ({ route, navigation }) => {
         </>
       ) : (
         <>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{
-              fontSize: 16
-            }}>Chưa có thông tin học tập</Text>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+              }}
+            >
+              Chưa có thông tin học tập
+            </Text>
           </View>
         </>
       )}
@@ -254,7 +291,7 @@ const styles = StyleSheet.create({
     marginTop: SIZES.padding,
     borderColor: COLORS.input,
     backgroundColor: "white",
-    borderWidth: 0.7,
+    borderWidth: 1,
     zIndex: 1,
   },
   customText: {
@@ -282,4 +319,5 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
+  customSelect: { fontSize: 13, fontWeight: 700, color: "#637381" },
 });

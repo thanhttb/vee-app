@@ -34,7 +34,7 @@ const HomeWork = ({ route, navigation }) => {
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { classes } = useSelector((state) => state.classReducer);
   const [selectedItem, setSelectItem] = useState(
-    classes?.length > 0 ? classes[0].id : -1
+    classes?.length > 0 ? classes[0] : -1
   );
   const [defaultValue, setDefaultValue] = useState(
     classes?.length > 0 ? classes[0] : null
@@ -78,7 +78,8 @@ const HomeWork = ({ route, navigation }) => {
         BASE_URL + "sessions",
         {
           parent_id: user.id,
-          class_id: selectedItem,
+          class_id: selectedItem.id,
+          student_id: selectedItem.student_id,
         },
         {
           headers: {
@@ -117,13 +118,15 @@ const HomeWork = ({ route, navigation }) => {
               buttonStyle={styles.select}
               dropdownStyle={{
                 borderRadius: 8,
+                maxHeight: 400,
               }}
+              rowStyle={{ height: 68, justifyContent: "center" }}
               defaultButtonText={"Chọn lớp học"}
               buttonTextStyle={styles.customText}
               defaultValue={defaultValue}
               // defaultValueByIndex={0}
               onSelect={(selectedItem, index) => {
-                setSelectItem(selectedItem.id);
+                setSelectItem(selectedItem);
               }}
               renderDropdownIcon={(isOpened) => {
                 return (
@@ -137,10 +140,34 @@ const HomeWork = ({ route, navigation }) => {
               }}
               dropdownIconPosition={"right"}
               buttonTextAfterSelection={(selectedItem, index) => {
-                return `Lớp ${selectedItem.name} - Năm học ${selectedItem.year}`;
+                return (
+                  <View style={{ justifyContent: "center" }}>
+                    <Text>
+                      Lớp {selectedItem.name} - Năm học {selectedItem.year}
+                    </Text>
+                    <Text>Học sinh: {selectedItem.student_name}</Text>
+                  </View>
+                );
               }}
               rowTextForSelection={(item, index) => {
-                return `Lớp ${item.name} - Năm học ${item.year}`;
+                const x = new Number(item.year);
+                return (
+                  <View style={{ justifyContent: "center", paddingLeft: 10 }} key={index}>
+                    <Text>Lớp {item.name}</Text>
+                    <Text style={styles.customSelect}>
+                      Học sinh:{" "}
+                      <Text style={[styles.customSelect, { fontWeight: 400 }]}>
+                        {item.student_name}
+                      </Text>
+                    </Text>
+                    <Text style={styles.customSelect}>
+                      Năm học:{" "}
+                      <Text style={[styles.customSelect, { fontWeight: 400 }]}>
+                        {item.year} - {x + 1}
+                      </Text>
+                    </Text>
+                  </View>
+                );
               }}
             />
           </View>
@@ -214,7 +241,7 @@ const styles = StyleSheet.create({
     marginTop: SIZES.padding,
     borderColor: COLORS.input,
     backgroundColor: "white",
-    borderWidth: 0.7,
+    borderWidth: 1,
     zIndex: 1,
     // marginHorizontal: SIZES.padding,
   },
@@ -242,4 +269,5 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  customSelect: { fontSize: 13, fontWeight: 700, color: "#637381" },
 });
