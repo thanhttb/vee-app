@@ -17,31 +17,34 @@ const VerticalHomeSituation = ({ item }) => {
             <Text style={styles.className}>Ca học ngày {date}</Text>
             {item.item.type == "exam" ? (
               <View
-                style={{
-                  backgroundColor: COLORS.red,
-                  borderRadius: SIZES.radius,
-                  marginLeft: SIZES.base,
-                }}
+                style={[
+                  styles.typeTag,
+                  {
+                    backgroundColor: COLORS.red,
+                  },
+                ]}
               >
                 <Text style={styles.note}>Kiểm tra định kỳ</Text>
               </View>
             ) : item.item.type == "main" ? (
               <View
-                style={{
-                  backgroundColor: COLORS.green,
-                  borderRadius: SIZES.radius,
-                  marginLeft: SIZES.base,
-                }}
+                style={[
+                  styles.typeTag,
+                  {
+                    backgroundColor: COLORS.green,
+                  },
+                ]}
               >
                 <Text style={styles.note}>Chính khóa</Text>
               </View>
             ) : (
               <View
-                style={{
-                  backgroundColor: COLORS.blue,
-                  borderRadius: SIZES.radius,
-                  marginLeft: SIZES.base,
-                }}
+                style={[
+                  styles.typeTag,
+                  {
+                    backgroundColor: COLORS.blue,
+                  },
+                ]}
               >
                 <Text style={styles.note}>Phụ đạo</Text>
               </View>
@@ -90,9 +93,7 @@ const VerticalHomeSituation = ({ item }) => {
           </Text>
         )}
 
-        {item.item?.comment != null && (
-          <HTMLView value={item.item?.comment} />
-        )}
+        {item.item?.comment != null && <HTMLView value={item.item?.comment} />}
       </View>
 
       <TouchableOpacity
@@ -127,6 +128,10 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.spacing,
   },
 
+  typeTag: {
+    borderRadius: SIZES.radius,
+    marginLeft: SIZES.base,
+  },
   lessonText: {
     color: COLORS.gray,
     fontSize: SIZES.h3,
