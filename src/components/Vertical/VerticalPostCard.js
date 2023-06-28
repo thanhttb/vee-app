@@ -33,7 +33,9 @@ const VerticalPostCard = ({ item }) => {
   const [comments, setComments] = useState(item?.item.comments);
 
   useEffect(() => {
-    const isLiked = item?.item?.reactions.some((item) => item?.parent_id == user.id);
+    const isLiked = item?.item?.reactions.some(
+      (item) => item?.parent_id == user.id
+    );
     setIsLike(isLiked);
   }, [user]);
 
@@ -104,32 +106,43 @@ const VerticalPostCard = ({ item }) => {
       <View style={styles.content}>
         {/* Header  */}
         <View style={styles.header}>
-          <Image source={{ uri: item?.item.avatar }} style={styles.imageHeader} />
+          <Image
+            source={{ uri: item?.item.avatar }}
+            style={styles.imageHeader}
+          />
           <View style={styles.headerRight}>
             <View style={styles.headerRightTop}>
-              <Text style={{ fontWeight: 500, fontSize: 18 }}>{item?.item.name}</Text>
+              <Text style={{ fontWeight: 500, fontSize: 18 }}>
+                {item?.item.name}
+              </Text>
 
               {item?.item.type == 1 && (
                 <View
-                  style={{
-                    backgroundColor: COLORS.green,
-                    borderRadius: SIZES.radius,
-                    marginLeft: SIZES.base,
-                  }}
+                  style={[styles.typeTag, {
+                    backgroundColor: COLORS.green
+                  }]}
                 >
                   <Text style={styles.type}>Thông báo</Text>
                 </View>
               )}
 
-              {item?.item.type == 2 && (
+              {item?.item.type == 3 && (
                 <View
-                  style={{
-                    backgroundColor: COLORS.blue,
-                    borderRadius: SIZES.radius,
-                    marginLeft: SIZES.base,
-                  }}
+                style={[styles.typeTag, {
+                  backgroundColor: COLORS.blue
+                }]}
                 >
                   <Text style={styles.type}>Học phụ đạo</Text>
+                </View>
+              )}
+
+              {item?.item.type == 2 && (
+                <View
+                style={[styles.typeTag, {
+                  backgroundColor: COLORS.red
+                }]}
+                >
+                  <Text style={styles.type}>Xin nghỉ</Text>
                 </View>
               )}
             </View>
@@ -143,7 +156,9 @@ const VerticalPostCard = ({ item }) => {
           <Text style={styles.title}>{item?.item.content}</Text>
           <HTMLView value={item?.item.description} />
         </View>
-        {item?.item.file && <Image source={{ uri: item?.item.file }} style={styles.file} />}
+        {item?.item.file && (
+          <Image source={{ uri: item?.item.file }} style={styles.file} />
+        )}
 
         {/* Actions  */}
         <View>
@@ -216,8 +231,10 @@ const VerticalPostCard = ({ item }) => {
                   style={styles.InputSend}
                   onPress={hanldeComment}
                 >
-                 
-                  <Image style={{width: 28, height:28, marginHorizontal:6}} source={require("../../../assets/send.png")} />
+                  <Image
+                    style={{ width: 28, height: 28, marginHorizontal: 6 }}
+                    source={require("../../../assets/send.png")}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -248,7 +265,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
-  content: {},
+  typeTag: {
+    borderRadius: SIZES.radius,
+    marginLeft: SIZES.base,
+  },
   header: {
     flexDirection: "row",
     paddingHorizontal: SIZES.padding,
