@@ -90,7 +90,7 @@ const Schedule = () => {
         ) : (
           <View>
             <Spacer />
-            <Text style={{textAlign: 'center'}}>Không có lịch học ngày {selectedDate}</Text>
+            <Text style={{textAlign: 'center'}}>Không có lịch học trong ngày {selectedDate}</Text>
           </View>
         )}
       </View>
