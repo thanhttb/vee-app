@@ -8,7 +8,7 @@ import {
 // Replace this with your Firebase SDK config snippet
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDbtJM8-eC0iE4mLH6hPRl4G8_AijNq0Q8",
+    apiKey: process.env.API_KEY,
     authDomain: "reactnative-mess.firebaseapp.com",
     databaseURL: "https://reactnative-mess-default-rtdb.firebaseio.com",
     projectId: "reactnative-mess",

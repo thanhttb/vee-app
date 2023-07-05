@@ -26,6 +26,7 @@ import HomeTuition from "../screens/Home/HomeTuition";
 import Schedule from "../screens/Schedule/Schedule";
 import ScheduleLeave from "../screens/Schedule/ScheduleLeave";
 import ScheduleTutoring from "../screens/Schedule/ScheduleTutoring";
+import { ScheduleChats } from "../screens/Schedule/ScheduleChats";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -179,6 +180,23 @@ const ScheduleStack = () => {
       <Stack.Screen
         name="Đơn học phụ đạo"
         component={ScheduleTutoring}
+        options={({ route }) => ({
+          dataItem: {
+            id: route.params?.id,
+          },
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
+
+<Stack.Screen
+        name="Liên hệ giáo viên"
+        component={ScheduleChats}
         options={({ route }) => ({
           dataItem: {
             id: route.params?.id,

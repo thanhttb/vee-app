@@ -64,6 +64,19 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
               onPress={goToA2}
             />
           </View>
+
+          <View style={styles.button}>
+            <ButtonAction
+              label={"Liên hệ giáo viên"}
+              color={COLORS.green}
+              background={COLORS.white}
+              onPress={() => {
+                navigation.navigate("Liên hệ giáo viên", {
+                  data: item,
+                });
+              }}
+            />
+          </View>
         </View>
       </View>
     </View>
