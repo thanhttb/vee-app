@@ -1,9 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-
-import { Ionicons } from "@expo/vector-icons";
 
 import { COLORS } from "../utils/theme";
 import { Image } from "react-native";
@@ -22,11 +19,11 @@ import HomeDetailTution from "../screens/Home/HomeDetailTution";
 import HomeDetailSituation from "../screens/Home/HomeDetailSituation";
 import HomeWork from "../screens/Home/HomeWork";
 import HomeTuition from "../screens/Home/HomeTuition";
+import HomeChats from "../screens/Home/HomeChats";
 
 import Schedule from "../screens/Schedule/Schedule";
 import ScheduleLeave from "../screens/Schedule/ScheduleLeave";
 import ScheduleTutoring from "../screens/Schedule/ScheduleTutoring";
-import { ScheduleChats } from "../screens/Schedule/ScheduleChats";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -105,7 +102,6 @@ const HomeStack = () => {
         })}
       />
 
-      
       <Stack.Screen
         name="Học phí"
         component={HomeTuition}
@@ -128,6 +124,23 @@ const HomeStack = () => {
           dataItem: {
             id: route.params?.id,
             item: route.params.item,
+          },
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        })}
+      />
+
+      <Stack.Screen
+        name="Liên hệ giáo viên"
+        component={HomeChats}
+        options={({ route }) => ({
+          dataItem: {
+            id: route.params?.id,
           },
           headerStyle: {
             backgroundColor: COLORS.green,
@@ -180,23 +193,6 @@ const ScheduleStack = () => {
       <Stack.Screen
         name="Đơn học phụ đạo"
         component={ScheduleTutoring}
-        options={({ route }) => ({
-          dataItem: {
-            id: route.params?.id,
-          },
-          headerStyle: {
-            backgroundColor: COLORS.green,
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        })}
-      />
-
-<Stack.Screen
-        name="Liên hệ giáo viên"
-        component={ScheduleChats}
         options={({ route }) => ({
           dataItem: {
             id: route.params?.id,
@@ -290,125 +286,124 @@ const NotiStack = () => {
 
 const TabNavigation = () => {
   return (
-   
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Trang chủ"
-          lazy={true}
-          component={HomeStack}
-          options={({ route }) => ({
-            headerShown: false,
-            // unmountOnBlur: true,
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Trang chủ") {
-                iconName = !focused
-                  ? require("../../assets/Icon-bottom/Trang_Chu.png")
-                  : require("../../assets/Icon-bottom/Trang_Chu_Xanh.png");
-              }
-              return (
-                <Image
-                  source={iconName}
-                  style={{ width: 24, height: 24 }}
-                  resizeMode="stretch"
-                />
-              );
-            },
-            tabBarActiveTintColor: COLORS.green,
-            tabBarInactiveTintColor: COLORS.gray,
-          })}
-        />
-        <Tab.Screen
-          name="Thời khóa biểu"
-          component={ScheduleStack}
-          options={({ route }) => ({
-            headerStyle: {
-              backgroundColor: COLORS.green,
-            },
-            unmountOnBlur: true,
-            headerShown: false,
-            headerTintColor: "#fff",
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Trang chủ"
+        lazy={true}
+        component={HomeStack}
+        options={({ route }) => ({
+          headerShown: false,
+          // unmountOnBlur: true,
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === "Trang chủ") {
+              iconName = !focused
+                ? require("../../assets/Icon-bottom/Trang_Chu.png")
+                : require("../../assets/Icon-bottom/Trang_Chu_Xanh.png");
+            }
+            return (
+              <Image
+                source={iconName}
+                style={{ width: 24, height: 24 }}
+                resizeMode="stretch"
+              />
+            );
+          },
+          tabBarActiveTintColor: COLORS.green,
+          tabBarInactiveTintColor: COLORS.gray,
+        })}
+      />
+      <Tab.Screen
+        name="Thời khóa biểu"
+        component={ScheduleStack}
+        options={({ route }) => ({
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          unmountOnBlur: true,
+          headerShown: false,
+          headerTintColor: "#fff",
 
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Thời khóa biểu") {
-                iconName = !focused
-                  ? require("../../assets/Icon-bottom/Lich_Hoc.png")
-                  : require("../../assets/Icon-bottom/Lich_Hoc_Xanh.png");
-              }
-              return (
-                <Image
-                  source={iconName}
-                  style={{ width: 24, height: 24 }}
-                  resizeMode="stretch"
-                />
-              );
-            },
-            tabBarActiveTintColor: COLORS.green,
-            tabBarInactiveTintColor: COLORS.gray,
-          })}
-        />
-        <Tab.Screen
-          name="Thông báo"
-          component={NotiStack}
-          options={({ route }) => ({
-            headerShown: false,
-            unmountOnBlur: true,
-            headerStyle: {
-              backgroundColor: COLORS.green,
-            },
-            headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === "Thời khóa biểu") {
+              iconName = !focused
+                ? require("../../assets/Icon-bottom/Lich_Hoc.png")
+                : require("../../assets/Icon-bottom/Lich_Hoc_Xanh.png");
+            }
+            return (
+              <Image
+                source={iconName}
+                style={{ width: 24, height: 24 }}
+                resizeMode="stretch"
+              />
+            );
+          },
+          tabBarActiveTintColor: COLORS.green,
+          tabBarInactiveTintColor: COLORS.gray,
+        })}
+      />
+      <Tab.Screen
+        name="Thông báo"
+        component={NotiStack}
+        options={({ route }) => ({
+          headerShown: false,
+          unmountOnBlur: true,
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTintColor: "#fff",
 
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Thông báo") {
-                iconName = !focused
-                  ? require("../../assets/Icon-bottom/Thong_Bao.png")
-                  : require("../../assets/Icon-bottom/Thong_Bao(1).png");
-              }
-              return (
-                <Image
-                  source={iconName}
-                  style={{ width: 20, height: 24 }}
-                  resizeMode="stretch"
-                />
-              );
-            },
-            tabBarActiveTintColor: COLORS.green,
-            tabBarInactiveTintColor: COLORS.gray,
-          })}
-        />
-        <Tab.Screen
-          name="Cá nhân"
-          component={ProfileStack}
-          options={({ route }) => ({
-            headerShown: false,
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Cá nhân") {
-                iconName = !focused
-                  ? require("../../assets/Icon-bottom/Tai_Khoan.png")
-                  : require("../../assets/Icon-bottom/Tai_Khoan_Xanh.png");
-              }
-              return (
-                <Image
-                  source={iconName}
-                  style={{ width: 20, height: 24 }}
-                  resizeMode="stretch"
-                />
-              );
-            },
-            tabBarActiveTintColor: COLORS.green,
-            tabBarInactiveTintColor: COLORS.gray,
-          })}
-        />
-      </Tab.Navigator>
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === "Thông báo") {
+              iconName = !focused
+                ? require("../../assets/Icon-bottom/Thong_Bao.png")
+                : require("../../assets/Icon-bottom/Thong_Bao(1).png");
+            }
+            return (
+              <Image
+                source={iconName}
+                style={{ width: 20, height: 24 }}
+                resizeMode="stretch"
+              />
+            );
+          },
+          tabBarActiveTintColor: COLORS.green,
+          tabBarInactiveTintColor: COLORS.gray,
+        })}
+      />
+      <Tab.Screen
+        name="Cá nhân"
+        component={ProfileStack}
+        options={({ route }) => ({
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === "Cá nhân") {
+              iconName = !focused
+                ? require("../../assets/Icon-bottom/Tai_Khoan.png")
+                : require("../../assets/Icon-bottom/Tai_Khoan_Xanh.png");
+            }
+            return (
+              <Image
+                source={iconName}
+                style={{ width: 20, height: 24 }}
+                resizeMode="stretch"
+              />
+            );
+          },
+          tabBarActiveTintColor: COLORS.green,
+          tabBarInactiveTintColor: COLORS.gray,
+        })}
+      />
+    </Tab.Navigator>
   );
 };
 

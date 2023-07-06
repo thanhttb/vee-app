@@ -96,17 +96,40 @@ const VerticalHomeSituation = ({ item }) => {
         {item.item?.comment != null && <HTMLView value={item.item?.comment} />}
       </View>
 
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Tình hình học tập chi tiết", {
-            data: item.item,
-          })
-        }
-      >
-        <View style={styles.button}>
-          <Text style={styles.textButton}>Tài liệu buổi học</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.buttons}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Liên hệ giáo viên", {
+              data: item.item,
+            })
+          }
+        >
+          <View style={styles.button}>
+            <Text style={styles.textButton}>Liên hệ giáo viên</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Tình hình học tập chi tiết", {
+              data: item.item,
+            })
+          }
+        >
+          <View
+            style={[
+              styles.button,
+              {
+                backgroundColor: COLORS.green,
+              },
+            ]}
+          >
+            <Text style={[styles.textButton, { color: "white" }]}>
+              Tài liệu buổi học
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -176,13 +199,19 @@ const styles = StyleSheet.create({
     fontSize: 10,
     // marginLeft: 10
   },
+  buttons: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 20,
+    justifyContent: "center",
+    paddingVertical: 4,
+  },
   button: {
     backgroundColor: COLORS.white,
     borderRadius: 12,
     borderColor: COLORS.green,
     borderWidth: 1,
-    width: 160,
-    margin: 10,
+    width: "100%",
     alignSelf: "flex-end",
   },
   textButton: {

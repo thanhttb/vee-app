@@ -18,19 +18,23 @@ import { auth, database } from "../../../firebase";
 
 import { Ionicons } from '@expo/vector-icons';
 
-export const ScheduleChats = ({ route, navigation }) => {
+const HomeChats = () => {
   const [usersList, setUserList] = useState([]);
   
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity style={{ marginLeft: 20 }} onPress={navigation.dispatch(CommonActions.goBack())}>
-          <Ionicons name="chevron-back-outline" size={24} color="black" />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerLeft: () => (
+  //       <TouchableOpacity style={{ marginLeft: 20 }}>
+  //         <Ionicons name="chevron-back-outline" size={24} color="black" />
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [navigation]);
 
 
-  return <Text>ScheduleChats</Text>;
+  return <View>
+    <Text>HomeChats</Text>
+  </View>;
 };
+
+export default HomeChats;
