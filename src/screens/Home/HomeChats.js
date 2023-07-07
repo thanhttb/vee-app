@@ -32,8 +32,13 @@ const HomeChats = () => {
   // }, [navigation]);
 
 
-  return <View>
-    <Text>HomeChats</Text>
+  return <View style={{
+    display: 'flex',
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }}>
+    <Text>Đang update chức năng</Text>
   </View>;
 };
 

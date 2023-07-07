@@ -25,6 +25,8 @@ import { COLORS, SIZES } from "../../utils/theme";
 //components
 import VerticalHomeWork from "../../components/Vertical/VerticalHomeWork";
 import { BASE_URL } from "../../../config";
+import VerticalSelect from "../../components/Vertical/VerticalSelect";
+import VerticalDefault from "../../components/Vertical/VerticalDefault";
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
 
@@ -98,7 +100,7 @@ const HomeWork = ({ route, navigation }) => {
     if (classId != -1) {
       const index = classes.findIndex((item) => item.id == classId);
       if (index !== -1) {
-        setSelectItem(classId);
+        setSelectItem(classes[index]);
         setDefaultValue(classes[index]);
       }
       setIsParam(true);
@@ -120,11 +122,10 @@ const HomeWork = ({ route, navigation }) => {
                 borderRadius: 8,
                 maxHeight: 400,
               }}
-              rowStyle={{ height: 68, justifyContent: "center" }}
+              rowStyle={{ height: 70, justifyContent: "center" }}
               defaultButtonText={"Chọn lớp học"}
               buttonTextStyle={styles.customText}
               defaultValue={defaultValue}
-              // defaultValueByIndex={0}
               onSelect={(selectedItem, index) => {
                 setSelectItem(selectedItem);
               }}
@@ -141,7 +142,7 @@ const HomeWork = ({ route, navigation }) => {
               dropdownIconPosition={"right"}
               buttonTextAfterSelection={(selectedItem, index) => {
                 return (
-                  <View style={{ justifyContent: "center" }}>
+                  <View style={{ justifyContent: "center", paddingTop: 4 }}>
                     <Text>
                       Lớp {selectedItem.name} - Năm học {selectedItem.year}
                     </Text>
@@ -150,24 +151,7 @@ const HomeWork = ({ route, navigation }) => {
                 );
               }}
               rowTextForSelection={(item, index) => {
-                const x = new Number(item.year);
-                return (
-                  <View style={{ justifyContent: "center", paddingLeft: 10 }} key={index}>
-                    <Text>Lớp {item.name}</Text>
-                    <Text style={styles.customSelect}>
-                      Học sinh:{" "}
-                      <Text style={[styles.customSelect, { fontWeight: 400 }]}>
-                        {item.student_name}
-                      </Text>
-                    </Text>
-                    <Text style={styles.customSelect}>
-                      Năm học:{" "}
-                      <Text style={[styles.customSelect, { fontWeight: 400 }]}>
-                        {item.year} - {x + 1}
-                      </Text>
-                    </Text>
-                  </View>
-                );
+                return <VerticalSelect item={item} key={item.id} selectedItem={selectedItem}/>;
               }}
             />
           </View>
@@ -195,13 +179,14 @@ const HomeWork = ({ route, navigation }) => {
             }}
             style={{ backgroundColor: "white", zIndex: 10 }}
             data={data}
-            renderItem={(item) => (
-              <VerticalHomeWork
-                item={item}
-                handleShowModal={handleShowModal}
-                show={show}
-              />
-            )}
+            renderItem={(item) => {
+              if (!data && data.length <= 0) {
+                return <VerticalDefault/>;
+                } else {
+                return <VerticalHomeWork item={item} handleShowModal={handleShowModal} show={show} />;
+              
+              }
+            }}
             keyExtractor={(item, index) => index.toString()}
             scrollEventThrottle={16}
           />

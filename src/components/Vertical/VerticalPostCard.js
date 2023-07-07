@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
   typeTag: {
     borderRadius: SIZES.radius,
     marginLeft: SIZES.base,
+    marginBottom: 2
   },
   header: {
     flexDirection: "row",

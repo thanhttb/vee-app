@@ -10,11 +10,13 @@ import {
 import { COLORS, SIZES } from "../../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Audio } from "expo-av";
-import * as FileSystem from "expo-file-system";
+import moment from "moment";
 
 const VerticalHomeWork = ({ item, handleShowModal, show }) => {
   const navigation = useNavigation();
+
+
+  const date = moment(item.item?.date).format("DD-MM-YYYY");
 
   return (
     <TouchableOpacity
@@ -36,7 +38,7 @@ const VerticalHomeWork = ({ item, handleShowModal, show }) => {
 
         <View style={styles.container}>
           <View style={{ width: "75%" }}>
-            <Text style={styles.className}>{item.item.date}</Text>
+            <Text style={styles.className}>{date}</Text>
             <Text style={styles.class} ellipsizeMode="tail">
               {item.item.content}
             </Text>

@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   typeTag: {
     borderRadius: SIZES.radius,
     marginLeft: SIZES.base,
+    marginBottom: 2
   },
   lessonText: {
     color: COLORS.gray,
@@ -205,6 +206,7 @@ const styles = StyleSheet.create({
     gap: 20,
     justifyContent: "center",
     paddingVertical: 4,
+    marginTop: 10
   },
   button: {
     backgroundColor: COLORS.white,

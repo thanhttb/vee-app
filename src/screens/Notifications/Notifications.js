@@ -8,6 +8,7 @@ import {
   Image,
   FlatList,
   ScrollView,
+  ActivityIndicator
 } from "react-native";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
@@ -44,60 +45,60 @@ const Notifications = () => {
       )
       .then((response) => {
         setData(response.data);
+        setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
+        setLoading(false);
       });
-    setLoading(false);
+    
   }, [user]);
 
   const renderItem = ({ item, index }) => {
-    
     const date = moment(item.created_at).fromNow();
 
     const goToSitua = () => {
-     
-      item.type == 1 &&  navigation.navigate("Trang chủ", {
-      screen: "Tình hình học tập",
-      initial: false,
-      params: {
-        classId: item.class_id,
-      },
-    })
+      item.type == 1 &&
+        navigation.navigate("Trang chủ", {
+          screen: "Tình hình học tập",
+          initial: false,
+          params: {
+            classId: item.class_id,
+          },
+        });
 
-    item.type == 2 &&  navigation.navigate("Trang chủ", {
-      screen: "Trang chính",
-      initial: false,
-      params: {
-        dataSituation: item,
-      },
-    });
-    
+      item.type == 2 &&
+        navigation.navigate("Trang chủ", {
+          screen: "Trang chính",
+          initial: false,
+          params: {
+            dataSituation: item,
+          },
+        });
 
-    item.type == 3 &&  navigation.navigate("Học phí", {
-      // screen: "Trang chính",
-      initial: false,
-      params: {
-        dataSituation: item,
-      },
-    })
-
+      item.type == 3 &&
+        navigation.navigate("Học phí", {
+          // screen: "Trang chính",
+          initial: false,
+          params: {
+            dataSituation: item,
+          },
+        });
     };
     return (
       <TouchableOpacity onPress={goToSitua}>
-      <View style={styles.noti} key={index}>
-        <Image style={styles.avatar} source={{ uri: item.avatar }} />
-        <View
-          style={{
-            marginHorizontal: 10,
-          }}
-        >
-          <Text style={styles.name} ellipsizeMode="middle">
-            {item.content}
-          </Text>
-          <Text style={styles.time}>{date}</Text>
+        <View style={styles.noti} key={index}>
+          <Image style={styles.avatar} source={{ uri: item.avatar }} />
+          <View
+            style={{
+              marginHorizontal: 10,
+            }}
+          >
+            <Text style={styles.name} ellipsizeMode="middle">
+              {item.content}
+            </Text>
+            <Text style={styles.time}>{date}</Text>
+          </View>
         </View>
-      </View>
       </TouchableOpacity>
     );
   };
@@ -111,18 +112,29 @@ const Notifications = () => {
     >
       <StatusBar barStyle="light-content" />
 
-      <View style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <FlatList
-            data={data}
-            listKey={(item, index) => `_key${index.toString()}`}
-            keyExtractor={(item, index) => `_key${index.toString()}`}
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
-          />
-          
+      {loading == true ? (
+        <View
+          style={{
+            height: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ActivityIndicator size={"small"} />
         </View>
-      </View>
+      ) : (
+        <View style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <FlatList
+              data={data}
+              listKey={(item, index) => `_key${index.toString()}`}
+              keyExtractor={(item, index) => `_key${index.toString()}`}
+              showsHorizontalScrollIndicator={false}
+              renderItem={renderItem}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };

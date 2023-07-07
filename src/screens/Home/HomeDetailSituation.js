@@ -277,6 +277,7 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
     fontSize: 13,
     paddingLeft: SIZES.spacing,
+    paddingRight: 16,
   },
   video: {
     alignSelf: "center",
