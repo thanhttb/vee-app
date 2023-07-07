@@ -7,6 +7,7 @@ const initialState = {
   receipt: null,
   parent: [],
   error: false,
+  loading: false,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -43,6 +44,15 @@ export const userReducer = (state = initialState, action) => {
         amount_total: action.payload.amount_total,
         bank: action.payload.bank,
         error: false,
+      };
+    case type.SET_RECEIPT_LOADING:
+      return {
+        ...state,
+        receipt: null,
+        amount_total: null,
+        bank: null,
+        error: false,
+        loading: false,
       };
     default:
       return state;

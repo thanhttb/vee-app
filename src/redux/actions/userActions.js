@@ -5,8 +5,20 @@ import { BASE_URL } from "../../../config";
 
 export const userList = (id) => {
   return async (dispatch) => {
+    
     const access_token = await AsyncStorage.getItem("tokenUser");
     try {
+      // dispatch({
+      //   type: type.SET_RECEIPT_STATE,
+      //   payload: {
+      //     loading: true,
+      //     error: false,
+      //     users: [],
+      //     parent: [],
+      //     data: [],
+      //   }
+      // })
+
       const response = await axios.post(
         BASE_URL + "profile",
         {
@@ -29,6 +41,7 @@ export const userList = (id) => {
             parent: parent,
             data: data,
             error: false,
+            loading: false,
           },
         });
       }
@@ -41,6 +54,7 @@ export const userList = (id) => {
           parent: [],
           data: [],
           error: true,
+          loading: false
         },
       });
     }

@@ -52,7 +52,7 @@ const HomeTuition = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const date = new Date();
-  const { receipt, users, amount_total, bank } = useSelector(
+  const { receipt, users, amount_total, bank, loading } = useSelector(
     (state) => state.userReducer
   );
   const { user, authToken } = useSelector((state) => state.authReducer);
@@ -212,6 +212,7 @@ const HomeTuition = () => {
     );
   };
 
+  console.log('loading...', loading);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
@@ -315,7 +316,7 @@ const HomeTuition = () => {
           </LinearGradient>
         </View>
 
-        {isLoading == true ? (
+        {loading == true ? (
           <View style={{ flex: 1 }}>
             <ActivityIndicator
               size="large"
