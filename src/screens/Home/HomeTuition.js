@@ -59,7 +59,7 @@ const HomeTuition = () => {
   const [sumReceipt, setSumReceipt] = useState(0);
   const [data, setData] = useState();
   const [selectedItem, setSelectItem] = useState(
-    users?.length > 0 ? users[0].id : 0
+    users?.length > 0 ? users[0].id : null
   );
   const [defaultValue, setDefaultValue] = useState(
     users?.length > 0 ? users[0] : null
@@ -67,13 +67,14 @@ const HomeTuition = () => {
   const [isModal, setIsModal] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  // thống kê chi tiết select
   const [selectedId, setSelectedId] = useState(1);
   const [radioButtons, setRadioButtons] = useState(radioButtonsData[0].label);
-  const [filterData, setFilterData] = useState();
+  const [filterData, setFilterData] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
-  const [isMonth, setIsMonth] = useState();
-  const [isYear, setIsYear] = useState();
+  const [isMonth, setIsMonth] = useState(null);
+  const [isYear, setIsYear] = useState(null);
 
   const listViewRef = useRef(null);
   const lastOffsetY = useRef(0);
@@ -86,7 +87,7 @@ const HomeTuition = () => {
 
   useEffect(() => {
     dispatch(userReceipt(selectedItem));
-  }, [dispatch, selectedItem]);
+  }, [selectedItem]);
 
   useEffect(() => {
     const startImage = bank?.qr.indexOf("https://");
@@ -105,7 +106,7 @@ const HomeTuition = () => {
   useEffect(() => {
     setSelectItem(users?.length > 0 ? users[0].id : 0);
     setDefaultValue(users?.length > 0 ? users[0] : null);
-  }, [users]);
+  }, []);
 
   useEffect(() => {
     dispatch(userList(user.id));
@@ -128,19 +129,11 @@ const HomeTuition = () => {
     }
   }, []);
 
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const hanldeModal = () => {
     setIsModal(!isModal);
   };
 
+  // set Value thống kê chi tiết
   const setValue = (value) => {
     var newArray = radioButtonsData.filter((item) => item.id == value); //get the items that are selected
     setRadioButtons(newArray[0].label); //set the selected value in this Hook
