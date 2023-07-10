@@ -114,13 +114,10 @@ const Notifications = () => {
 
       {loading == true ? (
         <View
-          style={{
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+          style={styles.loading}
         >
           <ActivityIndicator size={"small"} />
+          <Text style={{textAlign: 'center'}}>  Loading...</Text>
         </View>
       ) : (
         <View style={{ flex: 1 }}>
@@ -172,4 +169,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.gray,
   },
+  loading :{
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: 'row'
+  }
 });

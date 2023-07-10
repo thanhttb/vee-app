@@ -68,11 +68,10 @@ const Home = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setOnReached(true);
+    getData();
     setTimeout(() => {
       setRefreshing(false);
-      setOnReached(false);
-    }, 100);
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -84,6 +83,32 @@ const Home = () => {
     const idArray = classes.map((item) => item.id);
     setArrClass(idArray);
   }, [classes]);
+
+  const getData =  () => {
+    setLoading(true);
+     axios
+    .post(
+        BASE_URL + "feed/get",
+        {
+          parent_id: user.id,
+          class_ids: arrClass,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + authToken,
+          },
+        }
+      )
+    .then((response) => {
+        setDataPost(response.data);
+        setLoading(false);
+      })
+    .catch((err) => {
+        console.error("Home loading get onReached", err)
+        setLoading(false);
+      });
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -106,9 +131,10 @@ const Home = () => {
         setLoading(false);
       })
       .catch((err) => {
+        console.error("Home err", err)
         setLoading(false);
       });
-  }, [arrClass, onReached]);
+  }, [arrClass]);
 
   const showAlert = () => {
     Alert.alert(
@@ -134,7 +160,7 @@ const Home = () => {
 
   useEffect(() => {
     let timeout;
-  
+
     const checkAvatars = () => {
       const isCheck = users.every((item) => item.avatar != null);
       if (!isCheck && !isAlertShown) {
@@ -142,9 +168,9 @@ const Home = () => {
         setIsAlertShown(true);
       }
     };
-  
+
     timeout = setTimeout(checkAvatars, 1000);
-  
+
     return () => {
       clearTimeout(timeout);
     };
@@ -255,22 +281,6 @@ const Home = () => {
     }),
   };
 
-  const renderItem = ({ item, index }) => (
-    <VerticalPostCard item={item} key={index} />
-  );
-
-  const ListFooterComponent = () => (
-    <Text
-      style={{
-        fontSize: 16,
-        fontWeight: "bold",
-        textAlign: "center",
-        padding: 5,
-      }}
-    >
-      Loading...
-    </Text>
-  );
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
@@ -348,7 +358,13 @@ const Home = () => {
           >
             <View style={styles.paddingForHeader}></View>
             <Animated.View style={styles.scrollViewContent}>
-              {dataPost && loading == false && dataPost?.length > 0 && (
+              {loading == true && dataPost?.length == 0 && (
+                <View style={styles.loading}>
+                  <ActivityIndicator size={"small"} />
+                  <Text style={{ textAlign: "center" }}> Loading...</Text>
+                </View>
+              )}
+              {loading == false && dataPost?.length > 0 && (
                 <View style={{ flex: 1 }}>
                   <FlatList
                     nestedScrollEnabled
@@ -367,25 +383,9 @@ const Home = () => {
                   />
                 </View>
               )}
-              {dataPost && loading == true && (
-                <View
-                  style={{
-                    height: SIZES.height * 0.7,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ActivityIndicator size={"small"} />
-                </View>
-              )}
-              {dataPost && loading == false && dataPost?.length == 0 && (
-                <View
-                  style={{
-                    height: SIZES.height * 0.7,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+
+              {loading == false && dataPost?.length == 0 && (
+                <View style={styles.loading}>
                   <Text>Chưa có bài viết</Text>
                 </View>
               )}
@@ -424,5 +424,13 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h2,
     paddingTop: SIZES.padding,
     paddingLeft: SIZES.padding,
+  },
+  loading: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    height: SIZES.height * 0.7,
   },
 });

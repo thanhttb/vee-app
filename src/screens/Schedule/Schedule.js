@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  ActivityIndicator
 } from "react-native";
 //redux
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -30,7 +31,7 @@ const Schedule = () => {
   const [selectedSession, setSelectedSession] = useState();
 
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.sessionReducer);
+  const { data, isLoading } = useSelector((state) => state.sessionReducer);
 
   useEffect(() => {
     dispatch(session_week(user?.id));
@@ -72,27 +73,41 @@ const Schedule = () => {
       </View>
 
       <View style={styles.container}>
-        {sessionWeekFilter.length > 0 ? (
+        {
+          isLoading == false ?
+          (
+            sessionWeekFilter.length > 0 ? (
+              <>
+                <ScrollView style={{ paddingBottom: SIZES.spacing,}}>
+                  {sessionWeekFilter.map((item, i) => {
+                    return (
+                      <LessonCalendar
+                        key={i}
+                        showDetailLesson={showDetailLesson}
+                        item={item}
+                        index={i}
+                      />
+                    );
+                  })}
+                </ScrollView>
+              </>
+            ) : (
+              <View>
+                <Spacer />
+                <Text style={{textAlign: 'center'}}>Không có lịch học trong ngày {selectedDate}</Text>
+              </View>
+            )
+          ) : 
           <>
-            <ScrollView style={{ paddingBottom: SIZES.spacing,}}>
-              {sessionWeekFilter.map((item, i) => {
-                return (
-                  <LessonCalendar
-                    key={i}
-                    showDetailLesson={showDetailLesson}
-                    item={item}
-                    index={i}
-                  />
-                );
-              })}
-            </ScrollView>
+
+        <Spacer />
+          <View style={styles.loading}>
+                <ActivityIndicator size={"small"} />
+                <Text style={{textAlign: 'center'}}>  Loading...</Text>
+              </View>
           </>
-        ) : (
-          <View>
-            <Spacer />
-            <Text style={{textAlign: 'center'}}>Không có lịch học trong ngày {selectedDate}</Text>
-          </View>
-        )}
+        }
+        
       </View>
     </View>
   );
@@ -146,4 +161,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
   },
+  loading :{
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent:'center',
+    alignItems: 'center',
+  }
 });

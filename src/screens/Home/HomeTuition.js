@@ -29,6 +29,7 @@ import { userReceipt } from "../../redux/actions/userActions";
 import { userList } from "../../redux/actions/userActions";
 //utils
 import { COLORS, SIZES } from "../../utils/theme";
+import VerticalStatistical from "../../components/Vertical/VerticalStatistical";
 
 const radioButtonsData = [
   {
@@ -49,12 +50,12 @@ const radioButtonsData = [
 ];
 
 const HomeTuition = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   const date = new Date();
   const { receipt, users, amount_total, bank, loading } = useSelector(
     (state) => state.userReducer
   );
+
   const { user, authToken } = useSelector((state) => state.authReducer);
   const [sumReceipt, setSumReceipt] = useState(0);
   const [data, setData] = useState();
@@ -64,9 +65,9 @@ const HomeTuition = () => {
   const [defaultValue, setDefaultValue] = useState(
     users?.length > 0 ? users[0] : null
   );
-  const [isModal, setIsModal] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isModalFilter, setIsModalFilter] = useState(false);
+  const [isModalImage, setIsModalImage] = useState(false);
+
   // thống kê chi tiết select
   const [selectedId, setSelectedId] = useState(1);
   const [radioButtons, setRadioButtons] = useState(radioButtonsData[0].label);
@@ -89,11 +90,12 @@ const HomeTuition = () => {
     dispatch(userReceipt(selectedItem));
   }, [selectedItem]);
 
+
   useEffect(() => {
-    const startImage = bank?.qr.indexOf("https://");
-    const endImage = bank?.qr.indexOf("?");
+    const startImage = bank?.qr?.indexOf("https://");
+    const endImage = bank?.qr?.indexOf("?");
     if (startImage !== -1 && endImage !== -1) {
-      const imageUrl = bank?.qr.slice(startImage, endImage);
+      const imageUrl = bank?.qr?.slice(startImage, endImage);
       setImageUrl(imageUrl);
     }
   }, [bank]);
@@ -129,9 +131,14 @@ const HomeTuition = () => {
     }
   }, []);
 
-  const hanldeModal = () => {
-    setIsModal(!isModal);
+  const hanldeModalFilter = () => {
+    setIsModalFilter(!isModalFilter);
   };
+
+  const hanldeModalImage = () => {
+    setIsModalImage(!isModalImage)
+    setIsModalFilter(false);
+  }
 
   // set Value thống kê chi tiết
   const setValue = (value) => {
@@ -160,59 +167,7 @@ const HomeTuition = () => {
   };
   const formated = new Intl.NumberFormat("vi-VN", config).format(sumReceipt);
 
-  const VerticalStatistical = ({ item, index, countLength }) => {
 
-    const config = {
-      style: "currency",
-      currency: "VND",
-      maximumFractionDigits: 9,
-    };
-    const formated = new Intl.NumberFormat("vi-VN", config).format(item.amount);
-    return (
-      <View
-        style={[
-          { borderBottomWidth: 1, borderBottomColor: "#EDEFF1", width: "100%"},
-          index === countLength - 1 ? { borderBottomWidth: 0 } : null,
-        ]}
-      >
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("Chi tiết học phí", {
-              item: item,
-            })
-          }
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              padding: SIZES.padding,
-            }}
-          >
-            <View style={{ width: "65%" }}>
-              <Text numberOfLines={2} ellipsizeMode="tail">
-                {item.student_name} - {item.content}
-              </Text>
-              <Text style={{ fontSize: 12, color: COLORS.gray, paddingTop: 2 }}>
-                {item.time}
-              </Text>
-            </View>
-            <View>
-              <Text
-                style={
-                  item.amount > 0 ? { color: "#005AA9" } : { color: "red" }
-                }
-              >
-                {formated}
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  console.log('loading...', loading);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
@@ -380,7 +335,7 @@ const HomeTuition = () => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                      onPress={() => setModalVisible(true)}
+                      onPress={hanldeModalImage}
                       style={{
                         width: 70,
                         height: 70,
@@ -426,7 +381,7 @@ const HomeTuition = () => {
                             {radioButtons}
                           </Text>
                           <TouchableOpacity
-                            onPress={hanldeModal}
+                            onPress={hanldeModalFilter}
                             style={{ position: "relative" }}
                           >
                             <Ionicons
@@ -440,16 +395,16 @@ const HomeTuition = () => {
                     );
                   }}
                 />
-                {isModal && (
+                {isModalFilter && (
                   <Animated.View style={styles.modal}>
-                    <TouchableOpacity onPress={hanldeModal}>
+                    <TouchableOpacity onPress={hanldeModalFilter}>
                       <Ionicons
                         name="close-sharp"
                         size={20}
                         color="black"
                         style={{
                           textAlign: "right",
-                          paddingTop: 6,
+                          paddingTop: 10,
                           paddingRight: 10,
                         }}
                       />
@@ -485,13 +440,12 @@ const HomeTuition = () => {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={isModalImage}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
+          hanldeModalImage
         }}
         style={{
-          backgroundColor: "red",
           height: SIZES.height,
           width: SIZES.width,
         }}
@@ -500,7 +454,7 @@ const HomeTuition = () => {
           <View style={styles.modalView}>
             <TouchableOpacity
               style={{ width: 240, alignItems: "flex-end" }}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={hanldeModalImage}
             >
               <Ionicons name="close" size={24} color="black" />
             </TouchableOpacity>

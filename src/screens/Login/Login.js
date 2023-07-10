@@ -32,16 +32,14 @@ const Login = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
-  const [loading, setLoading] = useState(false)
 
-  const { error } = useSelector((state) => state.authReducer);
+  const { error, isLoading } = useSelector((state) => state.authReducer);
 
   const dispatch = useDispatch();
   const submit = async () => {
-    setLoading(true)
     dispatch(loginAction(phone, password));
-    setLoading(false)
   };
+
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
@@ -111,7 +109,7 @@ const Login = ({ navigation }) => {
           <View style={styles.inputs}>
            
             <Button
-            loading={loading}
+            loading={isLoading}
               onPress={submit}
               label={"Đăng Nhập"}
               color={COLORS.white}
