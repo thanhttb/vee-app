@@ -109,6 +109,14 @@ const HomeWork = ({ route, navigation }) => {
     }
   }, [classId]);
 
+  const listEmptyData  = () => {
+    return (
+      <View style={styles.loading}>
+        <Text>Chưa có tư liệu buổi học</Text>
+      </View>
+    )
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
@@ -179,14 +187,8 @@ const HomeWork = ({ route, navigation }) => {
             }}
             style={{ backgroundColor: "white", zIndex: 10 }}
             data={data}
-            renderItem={(item) => {
-              if (!data && data.length <= 0) {
-                return <VerticalDefault/>;
-                } else {
-                return <VerticalHomeWork item={item} handleShowModal={handleShowModal} show={show} />;
-              
-              }
-            }}
+            ListEmptyComponent={listEmptyData}
+            renderItem={(item) =>  <VerticalHomeWork item={item} handleShowModal={handleShowModal} show={show} />}
             keyExtractor={(item, index) => index.toString()}
             scrollEventThrottle={16}
           />
@@ -255,4 +257,11 @@ const styles = StyleSheet.create({
     height: 30,
   },
   customSelect: { fontSize: 13, fontWeight: 700, color: "#637381" },
+  loading: {
+    flex: 1,
+    height: SIZES.height - 280,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });

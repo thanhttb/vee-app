@@ -40,6 +40,8 @@ const HomeSituation = ({ route, navigation }) => {
   const [data, setData] = useState([]);
   const [dataFilter, setDataFilter] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const listViewRef = useRef();
   const lastOffsetY = useRef(0);
   const scrollDireaction = useRef(0);
@@ -59,6 +61,7 @@ const HomeSituation = ({ route, navigation }) => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .post(
         BASE_URL + "sessions",
@@ -77,8 +80,9 @@ const HomeSituation = ({ route, navigation }) => {
       .then((response) => {
         setData(response.data.sessions);
         setDataFilter(response.data.sessions);
+        setIsLoading(false)
       })
-      .catch((err) => { });
+      .catch((err) => { setIsLoading(false)});
   }, [selectedItem, defaultValue]);
 
   useEffect(() => {
@@ -93,6 +97,14 @@ const HomeSituation = ({ route, navigation }) => {
       setIsParam(false);
     }
   }, [classId]);
+
+  const listEmptyData  = () => {
+    return (
+      <View style={styles.loading}>
+        <Text>Chưa có danh sách buổi học</Text>
+      </View>
+    )
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -126,6 +138,7 @@ const HomeSituation = ({ route, navigation }) => {
                   style={{ flex: 1, backgroundColor: "white", zIndex: 10 }}
                   data={data}
                   renderItem={(item) => <VerticalHomeSituation item={item} />}
+                  ListEmptyComponent={listEmptyData}
                   keyExtractor={(item, index) => index.toString()}
                   scrollEventThrottle={16}
                   removeClippedSubviews={true}
@@ -298,4 +311,11 @@ const styles = StyleSheet.create({
     height: 50,
   },
   customSelect: { fontSize: 13, fontWeight: 700, color: "#637381" },
+  loading: {
+    flex: 1,
+    height: SIZES.height - 280,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });
