@@ -2,7 +2,7 @@ import * as type from "../types";
 const initialState = {
   users: [],
   data: [],
-  bank: null,
+  bank: {},
   amount_total: 0,
   receipt: null,
   parent: [],
@@ -28,6 +28,15 @@ export const userReducer = (state = initialState, action) => {
         data: [],
         error: true,
       };
+      case type.SET_RECEIPT_STATE:
+        return {
+          ...state,
+          receipt: [],
+          amount_total : 0,
+          bank: {},
+          error: false,
+          loading: true,
+        }
 
     case type.SET_RECEIPT_FAIL:
       return {
@@ -36,6 +45,7 @@ export const userReducer = (state = initialState, action) => {
         amount_total: null,
         bank: null,
         error: true,
+        loading: false
       };
     case type.SET_RECEIPT_SUCCESS:
       return {
@@ -44,16 +54,9 @@ export const userReducer = (state = initialState, action) => {
         amount_total: action.payload.amount_total,
         bank: action.payload.bank,
         error: false,
+        loading: false
       };
-    case type.SET_RECEIPT_LOADING:
-      return {
-        ...state,
-        receipt: null,
-        amount_total: null,
-        bank: null,
-        error: false,
-        loading: false,
-      };
+    
     default:
       return state;
   }

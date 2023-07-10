@@ -5,6 +5,15 @@ import { BASE_URL } from "../../../config";
 
 export const session_week = (id) => {
   return async (dispatch) => {
+    dispatch({
+      type: type.SET_SESSION_STATE,
+      payload: {
+        data: [],
+        error: false,
+        isLoading:true
+      },
+    });
+
     const access_token = await AsyncStorage.getItem("tokenUser");
     try {
       const response = await axios.post(
@@ -27,6 +36,7 @@ export const session_week = (id) => {
           payload: {
             data: data,
             error: false,
+            isLoading: false
           },
         });
       }
@@ -36,6 +46,7 @@ export const session_week = (id) => {
         payload: {
           data: [],
           error: true,
+          isLoading: false
         },
       });
     }

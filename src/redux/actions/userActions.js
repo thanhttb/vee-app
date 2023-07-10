@@ -8,16 +8,7 @@ export const userList = (id) => {
     
     const access_token = await AsyncStorage.getItem("tokenUser");
     try {
-      // dispatch({
-      //   type: type.SET_RECEIPT_STATE,
-      //   payload: {
-      //     loading: true,
-      //     error: false,
-      //     users: [],
-      //     parent: [],
-      //     data: [],
-      //   }
-      // })
+      
 
       const response = await axios.post(
         BASE_URL + "profile",
@@ -63,6 +54,16 @@ export const userList = (id) => {
 
 export const userReceipt = (id) => {
   return async (dispatch) => {
+    dispatch({
+      type: type.SET_RECEIPT_STATE,
+      payload: {
+        loading: true,
+        error: false,
+        bank: {},
+        receipt: [],
+        amount_total: 0,
+      }
+    })
     const access_token = await AsyncStorage.getItem("tokenUser");
     try {
       const response = await axios.post(
@@ -92,6 +93,7 @@ export const userReceipt = (id) => {
             amount_total: amount_total,
             bank: bank,
             error: false,
+            loading: false
           },
         });
       }
@@ -102,7 +104,9 @@ export const userReceipt = (id) => {
         payload: {
           receipt: [],
           amount_total: 0,
+          bank: {},
           error: true,
+          loading: false
         },
       });
     }
