@@ -10,7 +10,6 @@ import {
   ScrollView,
 } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
-import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import HTMLView from "react-native-htmlview";
 
@@ -24,13 +23,16 @@ import { BASE_URL } from "../../../config";
 const VerticalPostCard = ({ item }) => {
   const { user, authToken } = useSelector((state) => state.authReducer);
 
+  
   const date = moment(item?.item.time).fromNow();
   const dateNow = new Date();
   const [like, setLike] = useState(item?.item?.reactions?.length);
+  const [cmtLength, setCmtLength] = useState(item?.item?.comments?.length)
   const [isLike, setIsLike] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState(item?.item.comments);
+
 
   useEffect(() => {
     const isLiked = item?.item?.reactions.some(
@@ -93,6 +95,7 @@ const VerticalPostCard = ({ item }) => {
           ...comments,
         ]);
         setComment("");
+        setCmtLength(cmtLength+1);
       })
       .catch((err) => {});
   };
@@ -164,7 +167,7 @@ const VerticalPostCard = ({ item }) => {
         <View>
           <View style={styles.interact}>
             <Text>{like} lượt thích</Text>
-            <Text>{item?.item.comments.length} Bình luận</Text>
+            <Text>{cmtLength} Bình luận</Text>
           </View>
           <View style={styles.action}>
             <TouchableOpacity
