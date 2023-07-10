@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Image,
   Text,
+  ActivityIndicator
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
@@ -26,7 +27,6 @@ import { COLORS, SIZES } from "../../utils/theme";
 import VerticalHomeWork from "../../components/Vertical/VerticalHomeWork";
 import { BASE_URL } from "../../../config";
 import VerticalSelect from "../../components/Vertical/VerticalSelect";
-import VerticalDefault from "../../components/Vertical/VerticalDefault";
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
 
@@ -49,6 +49,8 @@ const HomeWork = ({ route, navigation }) => {
   const [show, setShow] = useState(false);
   const [value, setValue] = useState("");
   const [type, setType] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const scrollViewRef = useRef();
   const lastOffsetY = useRef(0);
@@ -75,6 +77,7 @@ const HomeWork = ({ route, navigation }) => {
   }, [dispatch]);
 
   useEffect(() => {
+    setIsLoading(true)
     axios
       .post(
         BASE_URL + "sessions",
@@ -92,8 +95,9 @@ const HomeWork = ({ route, navigation }) => {
       )
       .then((response) => {
         setData(response.data.sessions);
+        setIsLoading(false)
       })
-      .catch((err) => {});
+      .catch((err) => {setIsLoading(false)});
   }, [defaultValue, selectedItem]);
 
   useEffect(() => {
@@ -120,7 +124,17 @@ const HomeWork = ({ route, navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
-      {isParam == true ? (
+      {
+        isLoading == true ? 
+        (
+          <View style={styles.loadingData}>
+            <ActivityIndicator size={"small"} />
+            <Text>  Loading....</Text>
+          </View>
+        ) :
+
+        <>
+          {isParam == true ? (
         <>
           <View style={styles.container}>
             <SelectDropdown
@@ -208,6 +222,10 @@ const HomeWork = ({ route, navigation }) => {
           </View>
         </>
       )}
+        </>
+
+      }
+      
     </View>
   );
 };
@@ -261,6 +279,13 @@ const styles = StyleSheet.create({
     flex: 1,
     height: SIZES.height - 280,
     display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingData: {
+    flex: 1,
+    display: "flex",
+    flexDirection: 'row',
     justifyContent: "center",
     alignItems: "center",
   }

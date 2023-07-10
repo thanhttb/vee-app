@@ -7,12 +7,12 @@ import {
   FlatList,
   TouchableOpacity,
   Animated,
+  ActivityIndicator
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
 import axios from "axios";
 // redux
-import { useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { listClass } from "../../redux/actions/classActions";
 //utils
@@ -21,7 +21,6 @@ import { BASE_URL } from "../../../config";
 //components
 import VerticalHomeSituation from "../../components/Vertical/VerticalHomeSituation";
 import VerticalSelect from "../../components/Vertical/VerticalSelect";
-import VerticalDefault from "../../components/Vertical/VerticalDefault";
 
 const HomeSituation = ({ route, navigation }) => {
   const { classId } = route?.params;
@@ -110,7 +109,16 @@ const HomeSituation = ({ route, navigation }) => {
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
 
-      {isParam == true ? (
+{
+  isLoading == true ? 
+  (
+    <View style={styles.loadingData}>
+      <ActivityIndicator size={"small"} />
+      <Text>  Loading....</Text>
+    </View>
+  ) :
+  <>
+  {isParam == true ? (
         <>
           <View style={styles.components}>
                 <FlatList
@@ -253,6 +261,9 @@ const HomeSituation = ({ route, navigation }) => {
           </View>
         </>
       )}
+  </>
+}
+      
 
       <Animated.View style={[styles.upButtonStyle, { opacity: showArrowUp }]}>
         <TouchableOpacity activeOpacity={0.5} onPress={upButtonHandler}>
@@ -315,6 +326,13 @@ const styles = StyleSheet.create({
     flex: 1,
     height: SIZES.height - 280,
     display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingData: {
+    flex: 1,
+    display: "flex",
+    flexDirection: 'row',
     justifyContent: "center",
     alignItems: "center",
   }
