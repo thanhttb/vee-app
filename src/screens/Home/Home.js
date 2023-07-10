@@ -54,21 +54,20 @@ const Home = () => {
   const dispatch = useDispatch();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { users } = useSelector((state) => state.userReducer);
-  const { classes } = useSelector((state) => state.classReducer);
+  const { classes, isLoadingClass } = useSelector((state) => state.classReducer);
 
-  const [dataPost, setDataPost] = useState();
-  const [arrClass, setArrClass] = useState();
+  const [dataPost, setDataPost] = useState([]);
+  const [arrClass, setArrClass] = useState([]);
 
   const [isAlertShown, setIsAlertShown] = useState(false);
-  let stopFetchMore = true;
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const [page, setPage] = useState(0);
-  const [onReached, setOnReached] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
     getData();
+    setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
@@ -79,40 +78,10 @@ const Home = () => {
     dispatch(userList(user?.id));
   }, [dispatch]);
 
-  useEffect(() => {
-    const idArray = classes.map((item) => item.id);
-    setArrClass(idArray);
-  }, [classes]);
-
-  const getData =  () => {
+  
+  const getData = async () => {
     setLoading(true);
-     axios
-    .post(
-        BASE_URL + "feed/get",
-        {
-          parent_id: user.id,
-          class_ids: arrClass,
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: "Bearer " + authToken,
-          },
-        }
-      )
-    .then((response) => {
-        setDataPost(response.data);
-        setLoading(false);
-      })
-    .catch((err) => {
-        console.error("Home loading get onReached", err)
-        setLoading(false);
-      });
-  }
-
-  useEffect(() => {
-    setLoading(true);
-    axios
+    await axios
       .post(
         BASE_URL + "feed/get",
         {
@@ -131,9 +100,43 @@ const Home = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Home err", err)
+        console.error("Home loading get onReached", err);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    const idArray = classes.map((item) => item.id);
+    setArrClass(idArray);
+  }, [classes]);
+
+
+  useEffect(() => {
+    setLoading(true);
+    if(isLoadingClass == false){
+      axios
+      .post(
+        BASE_URL + "feed/get",
+        {
+          parent_id: user.id,
+          class_ids: arrClass,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + authToken,
+          },
+        }
+      )
+      .then((response) => {
+        setDataPost(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Home err", err);
+        setLoading(false);
+      });
+    }
   }, [arrClass]);
 
   const showAlert = () => {
@@ -174,7 +177,7 @@ const Home = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [users, isAlertShown]);
+  }, [users]);
 
   const fetchRecords = (page) => {
     const newRecords = [];
@@ -282,6 +285,7 @@ const Home = () => {
   };
 
 
+  console.log('loading....', loading)
   return (
     <GestureHandlerRootView style={styles.safeview}>
       <KeyboardAvoidingView
@@ -358,36 +362,38 @@ const Home = () => {
           >
             <View style={styles.paddingForHeader}></View>
             <Animated.View style={styles.scrollViewContent}>
-              {loading == true && dataPost?.length == 0 && (
+              {loading == true || isLoadingClass == true  ? (
                 <View style={styles.loading}>
                   <ActivityIndicator size={"small"} />
                   <Text style={{ textAlign: "center" }}> Loading...</Text>
                 </View>
-              )}
-              {loading == false && dataPost?.length > 0 && (
-                <View style={{ flex: 1 }}>
-                  <FlatList
-                    nestedScrollEnabled
-                    style={{ flex: 1, paddingBottom: 20 }}
-                    keyExtractor={(item, index) => index.toString()}
-                    data={dataPost}
-                    scrollEnabled={false}
-                    renderItem={(item) => <VerticalPostCard item={item} />}
-                    //   maxToRenderPerBatch={5} //render only 5 items per scroll.
-                    //   onEndReached={onScrollHandler}
-                    //  onEndReachedThreshold={0.1}
-                    //  onScrollBeginDrag={() => {
-                    //   stopFetchMore = false;
-                    // }}
-                    // ListFooterComponent={() => loadingMore && <ListFooterComponent />}
-                  />
-                </View>
-              )}
-
-              {loading == false && dataPost?.length == 0 && (
-                <View style={styles.loading}>
-                  <Text>Chưa có bài viết</Text>
-                </View>
+              ) : (
+                <>
+                  {dataPost?.length > 0  ? (
+                    <View style={{ flex: 1 }}>
+                      <FlatList
+                        nestedScrollEnabled
+                        style={{ flex: 1, paddingBottom: 20 }}
+                        keyExtractor={(item, index) => index.toString()}
+                        extraData={dataPost}
+                        data={dataPost}
+                        scrollEnabled={false}
+                        renderItem={(item) => <VerticalPostCard item={item} />}
+                        //   maxToRenderPerBatch={5} //render only 5 items per scroll.
+                        //   onEndReached={onScrollHandler}
+                        //  onEndReachedThreshold={0.1}
+                        //  onScrollBeginDrag={() => {
+                        //   stopFetchMore = false;
+                        // }}
+                        // ListFooterComponent={() => loadingMore && <ListFooterComponent />}
+                      />
+                    </View>
+                  ) : (
+                    <View style={styles.loading}>
+                      <Text>Chưa có bài viết</Text>
+                    </View>
+                  )}
+                </>
               )}
             </Animated.View>
           </ScrollView>
