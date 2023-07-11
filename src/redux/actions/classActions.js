@@ -6,16 +6,6 @@ import { BASE_URL } from "../../../config";
 export const listClass = (id) => {
   return async (dispatch) => {
 
-    dispatch({
-      type: type.SET_CLASS_STATE,
-      payload: {
-        data: [],
-        error: false,
-        isLoadingClass: false
-      },
-    });
-
-
     const access_token = await AsyncStorage.getItem("tokenUser");
     try {
       const response = await axios.get(BASE_URL + "classes", {

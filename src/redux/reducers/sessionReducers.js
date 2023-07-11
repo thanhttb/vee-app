@@ -10,7 +10,6 @@ export const sessionReducer = (state = initialState, action) => {
         case type.SET_SESSION_STATE: 
             return {
                 ...state,
-                data: [],
                 error: false,
                 isLoading: true
             }

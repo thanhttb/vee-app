@@ -28,7 +28,7 @@ const HomeSituation = ({ route, navigation }) => {
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { classes } = useSelector((state) => state.classReducer);
   const [selectedItem, setSelectItem] = useState(
-    classes?.length > 0 ? classes[0] : -1
+    classes?.length > 0 ? classes[0] : null
   );
   const [defaultValue, setDefaultValue] = useState(
     classes?.length > 0 ? classes[0] : null
@@ -66,8 +66,8 @@ const HomeSituation = ({ route, navigation }) => {
         BASE_URL + "sessions",
         {
           parent_id: user.id,
-          class_id: selectedItem.id,
-          student_id: selectedItem.student_id,
+          class_id: selectedItem?.id,
+          student_id: selectedItem?.student_id,
         },
         {
           headers: {
@@ -84,11 +84,11 @@ const HomeSituation = ({ route, navigation }) => {
       .catch((err) => {
         setIsLoading(false);
       });
-  }, [selectedItem, defaultValue]);
+  }, [selectedItem, classId]);
 
   useEffect(() => {
-    if (classId != -1) {
-      const index = classes.findIndex((item) => item.id == classId);
+    if (classId !== -1) {
+      let index = classes.findIndex((item) => item.id == classId);
       if (index !== -1) {
         setSelectItem(classes[index]);
         setDefaultValue(classes[index]);
@@ -98,6 +98,20 @@ const HomeSituation = ({ route, navigation }) => {
       setIsParam(false);
     }
   }, [classId]);
+
+  useEffect(() => {
+    if (selectedItem !== null) {
+      let index = classes.findIndex((item) => item.id == selectedItem.id);
+      if (index !== -1) {
+        setSelectItem(classes[index]);
+        setDefaultValue(classes[index]);
+      }
+      setIsParam(true);
+    } else {
+      setIsParam(false);
+    }
+  }, [selectedItem]);
+
 
   const listEmptyData = () => {
     return (
@@ -178,22 +192,21 @@ const HomeSituation = ({ route, navigation }) => {
                         }}
                         dropdownIconPosition={"right"}
                         buttonTextAfterSelection={(selectedItem, index) => {
-                          return (
-                            <View
-                              style={{
-                                justifyContent: "center",
-                                paddingTop: 4,
-                              }}
-                            >
-                              <Text>
-                                Lớp: {selectedItem?.name} - Năm học:{" "}
-                                {selectedItem?.year}
-                              </Text>
-                              <Text>
-                                Học sinh: {selectedItem?.student_name}
-                              </Text>
-                            </View>
-                          );
+                          return (<View
+                            style={{
+                              justifyContent: "center",
+                              paddingTop: 4,
+                            }}
+                          >
+                            <Text>
+                              Lớp: {selectedItem?.name} - Năm học:{" "}
+                              {selectedItem?.year}
+                            </Text>
+                            <Text>
+                              Học sinh: {selectedItem?.student_name}
+                            </Text>
+                          </View>)
+                          
                         }}
                         rowTextForSelection={(item) => {
                           return (
