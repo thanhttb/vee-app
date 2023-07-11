@@ -71,7 +71,7 @@ const Home = () => {
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-  }, []);
+  }, [arrClass]);
 
   useEffect(() => {
     dispatch(listClass(user?.id));
@@ -106,7 +106,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const idArray = classes.map((item) => item.id);
+    let idArray = classes.map((item) => item.id);
     setArrClass(idArray);
   }, [classes]);
 
@@ -285,7 +285,6 @@ const Home = () => {
   };
 
 
-  console.log('loading....', loading)
   return (
     <GestureHandlerRootView style={styles.safeview}>
       <KeyboardAvoidingView

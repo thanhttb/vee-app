@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Animated,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
@@ -28,7 +28,7 @@ const HomeSituation = ({ route, navigation }) => {
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { classes } = useSelector((state) => state.classReducer);
   const [selectedItem, setSelectItem] = useState(
-    classes?.length > 0 ? classes[0] : null
+    classes?.length > 0 ? classes[0] : -1
   );
   const [defaultValue, setDefaultValue] = useState(
     classes?.length > 0 ? classes[0] : null
@@ -39,7 +39,7 @@ const HomeSituation = ({ route, navigation }) => {
   const [data, setData] = useState([]);
   const [dataFilter, setDataFilter] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const listViewRef = useRef();
   const lastOffsetY = useRef(0);
@@ -79,9 +79,11 @@ const HomeSituation = ({ route, navigation }) => {
       .then((response) => {
         setData(response.data.sessions);
         setDataFilter(response.data.sessions);
-        setIsLoading(false)
+        setIsLoading(false);
       })
-      .catch((err) => { setIsLoading(false)});
+      .catch((err) => {
+        setIsLoading(false);
+      });
   }, [selectedItem, defaultValue]);
 
   useEffect(() => {
@@ -97,30 +99,28 @@ const HomeSituation = ({ route, navigation }) => {
     }
   }, [classId]);
 
-  const listEmptyData  = () => {
+  const listEmptyData = () => {
     return (
       <View style={styles.loading}>
         <Text>Chưa có danh sách buổi học</Text>
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
 
-{
-  isLoading == true ? 
-  (
-    <View style={styles.loadingData}>
-      <ActivityIndicator size={"small"} />
-      <Text>  Loading....</Text>
-    </View>
-  ) :
-  <>
-  {isParam == true ? (
+      {isLoading == true ? (
+        <View style={styles.loadingData}>
+          <ActivityIndicator size={"small"} />
+          <Text> Loading....</Text>
+        </View>
+      ) : (
         <>
-          <View style={styles.components}>
+          {isParam == true ? (
+            <>
+              <View style={styles.components}>
                 <FlatList
                   ref={listViewRef}
                   onScroll={(e) => {
@@ -163,9 +163,8 @@ const HomeSituation = ({ route, navigation }) => {
                         defaultButtonText={"Chọn lớp học"}
                         buttonTextStyle={styles.customText}
                         defaultValue={defaultValue}
-                        // defaultValueByIndex={0}
                         onSelect={(selectedItem, index) => {
-                          setSelectItem(selectedItem);
+                          setSelectItem(selectedItem)
                         }}
                         renderDropdownIcon={(isOpened) => {
                           return (
@@ -180,17 +179,30 @@ const HomeSituation = ({ route, navigation }) => {
                         dropdownIconPosition={"right"}
                         buttonTextAfterSelection={(selectedItem, index) => {
                           return (
-                            <View style={{ justifyContent: "center", paddingTop: 4 }}>
+                            <View
+                              style={{
+                                justifyContent: "center",
+                                paddingTop: 4,
+                              }}
+                            >
                               <Text>
-                                Lớp: {selectedItem.name} - Năm học:{" "}
-                                {selectedItem.year}
+                                Lớp: {selectedItem?.name} - Năm học:{" "}
+                                {selectedItem?.year}
                               </Text>
-                              <Text>Học sinh: {selectedItem.student_name}</Text>
+                              <Text>
+                                Học sinh: {selectedItem?.student_name}
+                              </Text>
                             </View>
                           );
                         }}
-                        rowTextForSelection={item => {
-                          return <VerticalSelect item={item} key={item.id} selectedItem={selectedItem} />
+                        rowTextForSelection={(item) => {
+                          return (
+                            <VerticalSelect
+                              item={item}
+                              key={item.id}
+                              selectedItem={selectedItem}
+                            />
+                          );
                         }}
                       />
 
@@ -204,7 +216,10 @@ const HomeSituation = ({ route, navigation }) => {
                             }}
                           >
                             <Text
-                              style={[styles.textButton, { color: COLORS.green }]}
+                              style={[
+                                styles.textButton,
+                                { color: COLORS.green },
+                              ]}
                             >
                               Chính khóa
                             </Text>
@@ -219,7 +234,10 @@ const HomeSituation = ({ route, navigation }) => {
                             }}
                           >
                             <Text
-                              style={[styles.textButton, { color: COLORS.blue }]}
+                              style={[
+                                styles.textButton,
+                                { color: COLORS.blue },
+                              ]}
                             >
                               Phụ đạo
                             </Text>
@@ -244,26 +262,29 @@ const HomeSituation = ({ route, navigation }) => {
                     </View>
                   }
                 />
-          </View>
-        </>
-      ) : (
-        <>
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-              }}
-            >
-              Chưa có thông tin học tập
-            </Text>
-          </View>
+              </View>
+            </>
+          ) : (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                  }}
+                >
+                  Chưa có thông tin học tập
+                </Text>
+              </View>
+            </>
+          )}
         </>
       )}
-  </>
-}
-      
 
       <Animated.View style={[styles.upButtonStyle, { opacity: showArrowUp }]}>
         <TouchableOpacity activeOpacity={0.5} onPress={upButtonHandler}>
@@ -332,8 +353,8 @@ const styles = StyleSheet.create({
   loadingData: {
     flex: 1,
     display: "flex",
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-  }
+  },
 });
