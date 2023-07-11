@@ -8,7 +8,6 @@ export const session_week = (id) => {
     dispatch({
       type: type.SET_SESSION_STATE,
       payload: {
-        data: [],
         error: false,
         isLoading:true
       },

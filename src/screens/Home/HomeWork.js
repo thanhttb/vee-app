@@ -36,7 +36,7 @@ const HomeWork = ({ route, navigation }) => {
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { classes } = useSelector((state) => state.classReducer);
   const [selectedItem, setSelectItem] = useState(
-    classes?.length > 0 ? classes[0] : -1
+    classes?.length > 0 ? classes[0] : null
   );
   const [defaultValue, setDefaultValue] = useState(
     classes?.length > 0 ? classes[0] : null
@@ -98,11 +98,11 @@ const HomeWork = ({ route, navigation }) => {
         setIsLoading(false)
       })
       .catch((err) => {setIsLoading(false)});
-  }, [defaultValue, selectedItem]);
+  }, [selectedItem]);
 
   useEffect(() => {
-    if (classId != -1) {
-      const index = classes.findIndex((item) => item.id == classId);
+    if (selectedItem !== null) {
+      let index = classes.findIndex((item) => item.id == selectedItem.id);
       if (index !== -1) {
         setSelectItem(classes[index]);
         setDefaultValue(classes[index]);
@@ -111,7 +111,7 @@ const HomeWork = ({ route, navigation }) => {
     } else {
       setIsParam(false);
     }
-  }, [classId]);
+  }, [selectedItem]);
 
   const listEmptyData  = () => {
     return (
