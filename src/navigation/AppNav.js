@@ -78,11 +78,12 @@ const AppNav = () => {
 
   const init = async () => {
     await dispath(initialize());
-    setLoading(false);
+    
   };
 
   useEffect(() => {
     init();
+    setLoading(false);
   }, []);
 
   if (loading) {

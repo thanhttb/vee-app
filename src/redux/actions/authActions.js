@@ -31,90 +31,120 @@ export const initialize = () => {
   };
 };
 
-export const loginAction = (phone, password) => {
+export const loginAction = (phone, password, role) => {
   return async (dispatch) => {
-    try {
-      const response = await axios.post(
-        BASE_URL + "user/login",
-        {
-          phone,
-          password,
-        },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Headers": "content-type",
-            "Content-Type": "application/json;charset=utf-8",
-          },
-        }
-      );
-
-      if (response.status == 200) {
-        const { access_token, user } = response.data;
-        await AsyncStorage.setItem("tokenUser", access_token);
-        dispatch({
-          type: type.SET_LOGIN_SUCCESS,
-          payload: {
-            user: user,
-            classes: user.classes,
-            authToken: access_token,
-            isLoggedIn: true,
-            error: false,
-            isLoading: false,
-          },
-        });
+    dispatch({
+      type: type.SET_LOGIN_STATE,
+      payload : {
+        user: null,
+        classes: null,
+        authToken: null,
+        isLoggedIn: false,
+        error: false,
+        isLoading: true
       }
-    } catch (e) {
+    })
+   try{
+    const response = await axios.post(
+      BASE_URL+ "user/login",
+      {
+        phone,
+        password,
+      },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Headers": "content-type",
+          "Content-Type": "application/json;charset=utf-8"
+        }
+      }
+    );
+    
+    if (response.status == 200) {
+      const { access_token, user } = response.data;
+      await AsyncStorage.setItem("tokenUser", access_token);
       dispatch({
-        type: type.SET_LOGIN_FAIL_STATE,
+        type: type.SET_LOGIN_SUCCESS,
         payload: {
-          error: true,
-          isLoggedIn: false,
-          isLoading: false,
-          user: null,
-          authToken: null,
-          classes: null,
-        },
+          user: user,
+          classes: user.classes,
+          authToken: access_token,
+          isLoggedIn: true,
+          error: false,
+          isLoading: false
+        }
+        
       });
-    }
+    } 
+   }catch(e){
+    dispatch({
+      type: type.SET_LOGIN_FAIL_STATE,
+      payload: {
+        error: true,
+        isLoggedIn: false,
+        isLoading: false,
+        user: null,
+        authToken: null,
+        classes: null
+      }
+      
+    });
+   }
   };
 };
 
 export const loginOtpAction = (phone, otp) => {
   return async (dispatch) => {
-    try {
-      const response = await axios.post(BASE_URL + "user/verify-otp", {
-        phone: phone,
-        otp: otp,
-      });
-      if (response.status == 200) {
-        const { access_token, user } = response.data;
-        await AsyncStorage.setItem("tokenUser", access_token);
-        dispatch({
-          type: type.SET_LOGIN_SUCCESS,
-          payload: {
-            user: user,
-            classes: user.classes,
-            authToken: access_token,
-            isLoggedIn: true,
-            error: false,
-            isLoading: false,
-          },
-        });
+    dispatch({
+      type: type.SET_LOGIN_STATE,
+      payload : {
+        user: null,
+        classes: null,
+        authToken: null,
+        isLoggedIn: false,
+        error: false,
+        isLoading: true
       }
-    } catch (e) {
-      dispatch({
-        type: type.SET_LOGIN_FAIL_STATE,
-        payload: {
-          error: true,
-          isLoggedIn: false,
-          isLoading: false,
-          user: null,
-          authToken: null,
-          classes: null,
-        },
-      });
+    })
+
+    try{
+     const response = await axios.post(
+       BASE_URL+ "user/verify-otp",
+       {
+         phone: phone,
+         otp: otp,
+       }
+     );
+     if (response.status == 200) {
+       const { access_token, user } = response.data;
+       await AsyncStorage.setItem("tokenUser", access_token);
+       dispatch({
+         type: type.SET_LOGIN_SUCCESS,
+         payload: {
+           user: user,
+           classes: user.classes,
+           authToken: access_token,
+           isLoggedIn: true,
+           error: false,
+           isLoading: false
+         }
+         
+       });
+     } 
+    }catch(e){
+     dispatch({
+       type: type.SET_LOGIN_FAIL_STATE,
+       payload: {
+         error: true,
+         isLoggedIn: false,
+         isLoading: false,
+                  user: null,
+                  authToken: null,
+                  classes: null
+       }
+       
+     });
     }
   };
 };

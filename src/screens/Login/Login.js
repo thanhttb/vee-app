@@ -28,22 +28,39 @@ import { SIZES, COLORS } from "../../utils/theme";
 //iamges
 const Logo_VEE = require("../../../assets/logo_vee.jpg");
 
-const Login = ({ navigation }) => {
+const Login = ({ route,navigation }) => {
+  const {role} = route?.params;
+
+  const dispatch = useDispatch();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
 
   const { error, isLoading } = useSelector((state) => state.authReducer);
 
-  const dispatch = useDispatch();
   const submit = async () => {
-    dispatch(loginAction(phone, password));
+    if(phone == "" || password ==""){
+      Alert.alert("VietElite", "Tài khoản, mật khẩu không được để trống", [
+        {
+          text: "Đóng",
+          style: "cancel",
+        }
+      ])
+    }else if(!phone.match(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g)){
+      Alert.alert("VietElite", "Số điện thoại không đúng định dạng", [
+        {
+          text: "Đóng",
+          style: "cancel",
+        }
+      ])
+    }else {
+      dispatch(loginAction(phone, password, role));
+    }
   };
-
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" />
       {error == true &&
         Alert.alert("VietElite", "Tài khoản mật khẩu không chính xác", [
           {
@@ -61,12 +78,24 @@ const Login = ({ navigation }) => {
         >
           <Image source={Logo_VEE} style={styles.imageLogo} />
           {/* header  */}
-          <View style={styles.header}>
+          {
+            role == 1 ?
+
+            <View style={styles.header}>
             <Text style={styles.headerTop}>VietElite App Phụ Huynh</Text>
             <Text style={styles.headerTitle}>
               Hệ thống thông tin dành cho phụ huynh VietElite
             </Text>
           </View>
+
+          : 
+          <View style={styles.header}>
+            <Text style={styles.headerTop}>VietElite App Giáo Viên</Text>
+            <Text style={styles.headerTitle}>
+              Hệ thống thông tin dành cho giáo viên VietElite
+            </Text>
+          </View>
+          }
           {/* Inputs  */}
           <View style={styles.inputs}>
             <View style={styles.input}>
@@ -95,17 +124,23 @@ const Login = ({ navigation }) => {
                 onPress={() => setShowPassword(!showPassword)}
               >
                 <Ionicons
-                  name={showPassword == true ? "eye" : "eye-off"}
+                  name={showPassword == true ? "eye-off" : "eye"}
                   size={24}
                   color={COLORS.gray}
                 />
               </TouchableOpacity>
             </View>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent:'space-between'}}>
+            <TouchableOpacity onPress={() => navigation.navigate('LoginRules')}>
+              <Text style={[styles.forget, {textAlign: 'left'}]}>Quay lại</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('PasswordForgot')}>
               <Text style={styles.forget}>Quên mật khẩu ?</Text>
             </TouchableOpacity>
+            </View>
+            
           </View>
-          <Spacer />
+          <Spacer height={4}/>
           <View style={styles.inputs}>
            
             <Button
@@ -116,45 +151,7 @@ const Login = ({ navigation }) => {
               background={COLORS.green}
             />
             <Spacer />
-            {/* <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  height: 1,
-                  width: "45%",
-                  backgroundColor: COLORS.gray,
-                }}
-              ></View>
-              <Text
-                style={{
-                  fontSize: SIZES.h3,
-                  fontWeight: 600,
-                  color: COLORS.gray,
-                }}
-              >
-                {" "}
-                Hoặc{" "}
-              </Text>
-              <View
-                style={{
-                  height: 1,
-                  width: "45%",
-                  backgroundColor: COLORS.gray,
-                }}
-              ></View>
-            </View>
-            <Spacer />
-            <Button
-            onPress={() => navigation.navigate('PasswordForgot')}
-              label={"Đăng Nhập Bằng Zalo"}
-              color={COLORS.green}
-              background={COLORS.white}
-            /> */}
+            
           </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
@@ -184,7 +181,7 @@ const styles = StyleSheet.create({
     width: SIZES.spacing * 23,
   },
   header: {
-    paddingVertical: SIZES.spacing * 4,
+    paddingVertical: SIZES.spacing * 2,
   },
   headerTop: {
     textAlign: "center",
@@ -217,6 +214,6 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.spacing,
     color: COLORS.gray,
     fontSize: SIZES.h3,
-    textAlign: 'right'
+    textAlign: 'right',
   },
 });
