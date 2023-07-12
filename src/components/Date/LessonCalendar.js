@@ -23,7 +23,44 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
       index == 0 && { marginTop: SIZES.padding },]} key={index}>
       <View style={styles.container}>
         <View style={styles.content}>
+          <View style={{display: 'flex', flexDirection: 'row'}}>
           <Text style={styles.className}>Lớp - {item?.class}</Text>
+          {item.previous_session.type == "exam" ? (
+              <View
+                style={[
+                  styles.typeTag,
+                  {
+                    backgroundColor: COLORS.red,
+                  },
+                ]}
+              >
+                <Text style={styles.note}>Kiểm tra định kỳ</Text>
+              </View>
+            ) : item.previous_session.type == "main" ? (
+              <View
+                style={[
+                  styles.typeTag,
+                  {
+                    backgroundColor: COLORS.green,
+                  },
+                ]}
+              >
+                <Text style={styles.note}>Chính khóa</Text>
+              </View>
+            ) : (
+              <View
+                style={[
+                  styles.typeTag,
+                  {
+                    backgroundColor: COLORS.blue,
+                  },
+                ]}
+              >
+                <Text style={styles.note}>Phụ đạo</Text>
+              </View>
+            )}
+          </View>
+          
           <Text style={styles.class}>
             Thời gian: {item?.time} | {formattedDate}
           </Text>
@@ -125,5 +162,16 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "32%",
+  },
+  typeTag: {
+    borderRadius: SIZES.radius,
+    marginLeft: SIZES.base,
+    marginBottom: 2
+  },
+  note: {
+    color: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    fontSize: 10,
   },
 });
