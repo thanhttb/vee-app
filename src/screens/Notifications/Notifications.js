@@ -124,6 +124,7 @@ const Notifications = () => {
           <View style={styles.container}>
             <FlatList
               data={data}
+              inverted={true}
               listKey={(item, index) => `_key${index.toString()}`}
               keyExtractor={(item, index) => `_key${index.toString()}`}
               showsHorizontalScrollIndicator={false}

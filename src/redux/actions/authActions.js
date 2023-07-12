@@ -32,19 +32,9 @@ export const initialize = () => {
   };
 };
 
-export const loginAction = (phone, password) => {
+export const loginAction = (phone, password, role) => {
   return async (dispatch) => {
-    dispatch({
-      type: type.SET_LOGIN_STATE,
-      payload : {
-        user: null,
-        classes: null,
-        authToken: null,
-        isLoggedIn: false,
-        error: false,
-        isLoading: true
-      }
-    })
+    
    try{
     const response = await axios.post(
       BASE_URL+ "user/login",
@@ -97,17 +87,7 @@ export const loginAction = (phone, password) => {
 
 export const loginOtpAction = (phone, otp) => {
   return async (dispatch) => {
-    dispatch({
-      type: type.SET_LOGIN_STATE,
-      payload : {
-        user: null,
-        classes: null,
-        authToken: null,
-        isLoggedIn: false,
-        error: false,
-        isLoading: true
-      }
-    })
+    
 
     try{
      const response = await axios.post(
