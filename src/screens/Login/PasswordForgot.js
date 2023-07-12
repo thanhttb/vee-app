@@ -68,14 +68,12 @@ const PasswordForgot = () => {
   };
 
   const verifyOtp = async () => {
-    setLoading(true)
     dispatch(loginOtpAction(phone, otpInput));
-    setLoading(false)
   };
 
   return (
     <GestureHandlerRootView style={styles.safeview}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" />
       {/* <SafeAreaView > */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <KeyboardAvoidingView
@@ -119,7 +117,7 @@ const PasswordForgot = () => {
                 />
                 <Spacer />
                 <Button
-                  onPress={() => navigation.navigate('Login')}
+                  onPress={() => navigation.navigate('LoginRules')}
                   label={"Quay lại"}
                   color={COLORS.green}
                   background={COLORS.white}
