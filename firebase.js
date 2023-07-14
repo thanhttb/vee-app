@@ -5,25 +5,33 @@ import {
   getReactNativePersistence
 } from 'firebase/auth/react-native';
 
+import {getAuth} from 'firebase/auth';
+import {getFirestore} from "firebase/firestore";
+import Constants from "expo-constants";
+
+
+
 // Replace this with your Firebase SDK config snippet
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDbtJM8-eC0iE4mLH6hPRl4G8_AijNq0Q8",
-    authDomain: "reactnative-mess.firebaseapp.com",
-    databaseURL: "https://reactnative-mess-default-rtdb.firebaseio.com",
-    projectId: "reactnative-mess",
-    storageBucket: "reactnative-mess.appspot.com",
-    messagingSenderId: "110129240809",
-    appId: "1:110129240809:web:7b09c3731a79c54ef66e78",
-    measurementId: "G-LB50JG95TP"
+    apiKey: Constants.manifest.extra.apiKey,
+    authDomain: Constants.manifest.extra.authDomain,
+    projectId: Constants.manifest.extra.projectId,
+    storageBucket: Constants.manifest.extra.storageBucket,
+    messagingSenderId: Constants.manifest.extra.messagingSenderId,
+    appId: Constants.manifest.extra.appId,
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
 
-// Initialize Auth
-const auth = initializeAuth(app, {
-    persistence: getReactNativePersistence(AsyncStorage)
-});
+// // Initialize Auth
+// const auth = initializeAuth(app, {
+//     persistence: getReactNativePersistence(AsyncStorage)
+// });
 
-export {auth};
+// export {auth};
+
+initializeApp(firebaseConfig);
+export const auth = getAuth();
+export const database  = getFirestore();
