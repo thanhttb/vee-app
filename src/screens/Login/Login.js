@@ -28,8 +28,8 @@ import { SIZES, COLORS } from "../../utils/theme";
 //iamges
 const Logo_VEE = require("../../../assets/logo_vee.jpg");
 
-const Login = ({ route,navigation }) => {
-  const {role} = route?.params;
+const Login = ({ route, navigation }) => {
+  // const { role } = route?.params;
 
   const dispatch = useDispatch();
   const [phone, setPhone] = useState("");
@@ -39,22 +39,22 @@ const Login = ({ route,navigation }) => {
   const { error, isLoading } = useSelector((state) => state.authReducer);
 
   const submit = async () => {
-    if(phone == "" || password ==""){
+    if (phone == "" || password == "") {
       Alert.alert("VietElite", "Tài khoản, mật khẩu không được để trống", [
         {
           text: "Đóng",
           style: "cancel",
-        }
-      ])
-    }else if(!phone.match(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g)){
+        },
+      ]);
+    } else if (!phone.match(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g)) {
       Alert.alert("VietElite", "Số điện thoại không đúng định dạng", [
         {
           text: "Đóng",
           style: "cancel",
-        }
-      ])
-    }else {
-      dispatch(loginAction(phone, password, role));
+        },
+      ]);
+    } else {
+      dispatch(loginAction(phone, password));
     }
   };
 
@@ -65,10 +65,13 @@ const Login = ({ route,navigation }) => {
         Alert.alert("VietElite", "Tài khoản mật khẩu không chính xác", [
           {
             text: "Đóng",
-            onPress: () => dispatch({type: "SET_LOGIN_CLEAR_STATE"}),
+            onPress: () => dispatch({ type: "SET_LOGIN_CLEAR_STATE" }),
             style: "cancel",
           },
-          { text: "OK",  onPress: () => dispatch({type: "SET_LOGIN_CLEAR_STATE"}) },
+          {
+            text: "OK",
+            onPress: () => dispatch({ type: "SET_LOGIN_CLEAR_STATE" }),
+          },
         ])}
       {/* <SafeAreaView > */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -78,24 +81,13 @@ const Login = ({ route,navigation }) => {
         >
           <Image source={Logo_VEE} style={styles.imageLogo} />
           {/* header  */}
-          {
-            role == 1 ?
-
             <View style={styles.header}>
-            <Text style={styles.headerTop}>VietElite App Phụ Huynh</Text>
-            <Text style={styles.headerTitle}>
-              Hệ thống thông tin dành cho phụ huynh VietElite
-            </Text>
-          </View>
-
-          : 
-          <View style={styles.header}>
-            <Text style={styles.headerTop}>VietElite App Giáo Viên</Text>
-            <Text style={styles.headerTitle}>
-              Hệ thống thông tin dành cho giáo viên VietElite
-            </Text>
-          </View>
-          }
+              <Text style={styles.headerTop}>VietElite App {role == 1 ? "Phụ Huynh" : "Giáo Viên"}</Text>
+              <Text style={styles.headerTitle}>
+                Hệ thống thông tin dành cho {role == 1 ? "phụ huynh" : "giáo viên"} VietElite
+              </Text>
+            </View>
+          
           {/* Inputs  */}
           <View style={styles.inputs}>
             <View style={styles.input}>
@@ -130,28 +122,37 @@ const Login = ({ route,navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            <View style={{display: 'flex', flexDirection: 'row', justifyContent:'space-between'}}>
-            <TouchableOpacity onPress={() => navigation.navigate('LoginRules')}>
-              <Text style={[styles.forget, {textAlign: 'left'}]}>Quay lại</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('PasswordForgot')}>
-              <Text style={styles.forget}>Quên mật khẩu ?</Text>
-            </TouchableOpacity>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => navigation.navigate("LoginRules")}
+              >
+                <Text style={[styles.forget, { textAlign: "left" }]}>
+                  Quay lại
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("PasswordForgot")}
+              >
+                <Text style={styles.forget}>Quên mật khẩu ?</Text>
+              </TouchableOpacity>
             </View>
-            
           </View>
-          <Spacer height={4}/>
+          <Spacer height={4} />
           <View style={styles.inputs}>
-           
             <Button
-            loading={isLoading}
+              loading={isLoading}
               onPress={submit}
               label={"Đăng Nhập"}
               color={COLORS.white}
               background={COLORS.green}
             />
             <Spacer />
-            
           </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
@@ -214,6 +215,6 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.spacing,
     color: COLORS.gray,
     fontSize: SIZES.h3,
-    textAlign: 'right',
+    textAlign: "right",
   },
 });
