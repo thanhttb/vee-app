@@ -208,13 +208,14 @@ const HomeSituation = ({ route, navigation }) => {
                           </View>)
                           
                         }}
-                        rowTextForSelection={(item) => {
+
+                        renderCustomizedRowChild={(item, index) => {
                           return (
                             <VerticalSelect
-                              item={item}
-                              key={item.id}
-                              selectedItem={selectedItem}
-                            />
+                            item={item}
+                            key={item.id}
+                            selectedItem={selectedItem}
+                          />
                           );
                         }}
                       />
