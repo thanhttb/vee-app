@@ -1,66 +1,66 @@
 {
   "expo": {
-    "name": "VietElite Students",
-    "slug": "vietelite-parent-app",
-    "version": "1.0.3",
-    "orientation": "portrait",
-    "userInterfaceStyle": "automatic",
-    "icon": "./assets/fav.png",
-    "splash": {
-      "resizeMode": "contain",
-      "image": "./assets/splash_v2.png",
-      "backgroundColor": "#64b445"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "buildNumber": "4",
-      "bundleIdentifier": "com.veesoft.vietelitestudents",
-      "runtimeVersion": {
-        "policy": "sdkVersion"
-      }
-    },
-    "android": {
-      "package": "com.veesoft.vietelitestudents",
-      "versionCode": 4,
-      "googleServicesFile": "./google-services.json",
-      "useNextNotificationsApi": true,
-      "adaptiveIcon": {
-        "backgroundColor": "#ffffff",
-        "foregroundImage": "./assets/fav.png"
-      },
-      "runtimeVersion": {
-        "policy": "sdkVersion"
-      }
-    },
-    "extra": {
-      "eas": {
-        // "projectId": "04b3d310-7a3e-493d-80ea-8917e541fd1e"
-      }
-    },
-    "owner": "tranthanhuet",
-    "updates": {
-      "url": "https://u.expo.dev/04b3d310-7a3e-493d-80ea-8917e541fd1e"
-    },
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ]
-    ]
+  "name": "VietElite Students",
+  "slug": "vietelite-parent-app",
+  "version": "1.0.3",
+  "orientation": "portrait",
+  "userInterfaceStyle": "automatic",
+  "icon": "./assets/fav.png",
+  "splash": {
+    "resizeMode": "contain",
+    "image": "./assets/splash_v2.png",
+    "backgroundColor": "#64b445"
   },
-  "displayName": "VietElite Students",
+  "assetBundlePatterns": [
+    "**/*"
+  ],
+  "ios": {
+    "supportsTablet": true,
+    "buildNumber": "4",
+    "bundleIdentifier": "com.veesoft.vietelitestudents",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  },
+  "android": {
+    "package": "com.veesoft.vietelitestudents",
+    "versionCode": 4,
+    "googleServicesFile": "./google-services.json",
+    "useNextNotificationsApi": true,
+    "adaptiveIcon": {
+      "backgroundColor": "#ffffff",
+      "foregroundImage": "./assets/fav.png"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  },
+  "extra": {
+    "eas": {
+      // "projectId": "04b3d310-7a3e-493d-80ea-8917e541fd1e"
+    }
+  },
+  "owner": "tranthanhuet",
+  "updates": {
+    "url": "https://u.expo.dev/04b3d310-7a3e-493d-80ea-8917e541fd1e"
+  },
   "plugins": [
     [
-      "expo-notifications",
+      "expo-image-picker",
       {
-        "icon": "./assets/logo.png",
-        "color": "#ffffff"
+        "photosPermission": "The app accesses your photos to let you share them with your friends."
       }
     ]
   ]
+},
+"displayName": "VietElite Students",
+"plugins": [
+  [
+    "expo-notifications",
+    {
+      "icon": "./assets/logo.png",
+      "color": "#ffffff"
+    }
+  ]
+]
 }

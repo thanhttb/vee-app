@@ -82,10 +82,10 @@ const Login = ({ route, navigation }) => {
           <Image source={Logo_VEE} style={styles.imageLogo} />
           {/* header  */}
             <View style={styles.header}>
-              <Text style={styles.headerTop}>VietElite App {role == 1 ? "Phụ Huynh" : "Giáo Viên"}</Text>
+              {/* <Text style={styles.headerTop}>VietElite App {role == 1 ? "Phụ Huynh" : "Giáo Viên"}</Text>
               <Text style={styles.headerTitle}>
                 Hệ thống thông tin dành cho {role == 1 ? "phụ huynh" : "giáo viên"} VietElite
-              </Text>
+              </Text> */}
             </View>
           
           {/* Inputs  */}

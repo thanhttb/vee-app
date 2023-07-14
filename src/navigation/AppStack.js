@@ -10,6 +10,7 @@ const Stack = createNativeStackNavigator();
 const AppStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
+        {/* <Stack.Screen name="LoginRules" component={LoginRules}/> */}
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="PasswordForgot" component={PasswordForgot}/>
     </Stack.Navigator>

@@ -1,17 +1,16 @@
 import * as type from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import {BASE_URL} from '../../../config'
+import { BASE_URL } from "../../../config";
 
 export const initialize = () => {
   return async (dispatch) => {
-    
     let token = await AsyncStorage.getItem("tokenUser");
     if (token !== null) {
-      const response = await axios.get(BASE_URL + 'validate-token', {
+      const response = await axios.get(BASE_URL + "validate-token", {
         headers: {
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + token,
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
         },
       });
       const user = response.data;
@@ -23,10 +22,10 @@ export const initialize = () => {
           authToken: token,
           isLoggedIn: true,
           error: false,
-          isLoading: false
-        }
+          isLoading: false,
+        },
       });
-    }else {
+    } else {
       console.error("initialized error");
     }
   };
@@ -34,7 +33,7 @@ export const initialize = () => {
 
 export const loginAction = (phone, password) => {
   return async (dispatch) => {
-    
+   
    try{
     const response = await axios.post(
       BASE_URL+ "user/login",
@@ -88,7 +87,6 @@ export const loginAction = (phone, password) => {
 export const loginOtpAction = (phone, otp) => {
   return async (dispatch) => {
     
-
     try{
      const response = await axios.post(
        BASE_URL+ "user/verify-otp",
@@ -127,22 +125,22 @@ export const loginOtpAction = (phone, otp) => {
        
      });
     }
-   };
-}
+  };
+};
 
 export const logoutAction = () => {
-    return async (dispatch) => {
-        await AsyncStorage.clear();
-        dispatch({
-            type: type.SET_LOGOUT_STATE,
-            payload: {
-              user: null,
-              classes: null,
-              authToken: null,
-              isLoggedIn: false,
-              isLoading: false,
-              error: false
-            }
-        })
-    }
-}
+  return async (dispatch) => {
+    await AsyncStorage.clear();
+    dispatch({
+      type: type.SET_LOGOUT_STATE,
+      payload: {
+        user: null,
+        classes: null,
+        authToken: null,
+        isLoggedIn: false,
+        isLoading: false,
+        error: false,
+      },
+    });
+  };
+};
