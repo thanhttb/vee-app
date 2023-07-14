@@ -117,7 +117,7 @@ const PasswordForgot = () => {
                 />
                 <Spacer />
                 <Button
-                  onPress={() => navigation.navigate('LoginRules')}
+                  onPress={() => navigation.navigate('Login')}
                   label={"Quay lại"}
                   color={COLORS.green}
                   background={COLORS.white}

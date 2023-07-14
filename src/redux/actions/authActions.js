@@ -31,7 +31,7 @@ export const initialize = () => {
   };
 };
 
-export const loginAction = (phone, password, role) => {
+export const loginAction = (phone, password) => {
   return async (dispatch) => {
     dispatch({
       type: type.SET_LOGIN_STATE,
