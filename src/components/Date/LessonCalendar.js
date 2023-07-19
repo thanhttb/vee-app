@@ -29,7 +29,7 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
         <View style={styles.content}>
           <View style={{ display: "flex", flexDirection: "row" }}>
             <Text style={styles.className}>Lớp - {item?.class}</Text>
-            {item?.previous_session?.type == "exam" ? (
+            {item?.type == "exam" && (
               <View
                 style={[
                   styles.typeTag,
@@ -40,7 +40,8 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
               >
                 <Text style={styles.note}>Kiểm tra định kỳ</Text>
               </View>
-            ) : item?.previous_session?.type == "main" ? (
+            )}
+            {item?.type == "main" && (
               <View
                 style={[
                   styles.typeTag,
@@ -51,7 +52,8 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
               >
                 <Text style={styles.note}>Chính khóa</Text>
               </View>
-            ) : (
+            )}
+            {item?.type == "tutor" && (
               <View
                 style={[
                   styles.typeTag,
