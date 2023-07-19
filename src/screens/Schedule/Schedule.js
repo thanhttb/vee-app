@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 //redux
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -58,7 +58,7 @@ const Schedule = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white"}}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
       <View style={styles.header}></View>
       <View style={{ height: SIZES.header - SIZES.base }}></View>
@@ -73,41 +73,39 @@ const Schedule = () => {
       </View>
 
       <View style={styles.container}>
-        {
-          isLoading == false ?
-          (
-            sessionWeekFilter.length > 0 ? (
-              <>
-                <ScrollView style={{ paddingBottom: SIZES.spacing,}}>
-                  {sessionWeekFilter.map((item, i) => {
-                    return (
-                      <LessonCalendar
-                        key={i}
-                        showDetailLesson={showDetailLesson}
-                        item={item}
-                        index={i}
-                      />
-                    );
-                  })}
-                </ScrollView>
-              </>
-            ) : (
-              <View>
-                <Spacer />
-                <Text style={{textAlign: 'center'}}>Không có lịch học trong ngày {selectedDate}</Text>
-              </View>
-            )
-          ) : 
+        {isLoading == false ? (
+          sessionWeekFilter.length > 0 ? (
+            <>
+              <ScrollView style={{ paddingBottom: SIZES.spacing }}>
+                {sessionWeekFilter.map((item, i) => {
+                  return (
+                    <LessonCalendar
+                      key={i}
+                      showDetailLesson={showDetailLesson}
+                      item={item}
+                      index={i}
+                    />
+                  );
+                })}
+              </ScrollView>
+            </>
+          ) : (
+            <View>
+              <Spacer />
+              <Text style={{ textAlign: "center" }}>
+                Không có lịch học trong ngày {selectedDate}
+              </Text>
+            </View>
+          )
+        ) : (
           <>
-
-        <Spacer />
-          <View style={styles.loading}>
-                <ActivityIndicator size={"small"} />
-                <Text style={{textAlign: 'center'}}>  Loading...</Text>
-              </View>
+            <Spacer />
+            <View style={styles.loading}>
+              <ActivityIndicator size={"small"} />
+              <Text style={{ textAlign: "center" }}> Loading...</Text>
+            </View>
           </>
-        }
-        
+        )}
       </View>
     </View>
   );
@@ -161,10 +159,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
   },
-  loading :{
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent:'center',
-    alignItems: 'center',
-  }
+  loading: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

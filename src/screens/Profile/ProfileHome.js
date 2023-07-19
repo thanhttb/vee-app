@@ -24,7 +24,6 @@ const ProfileHome = () => {
   const { user } = useSelector((state) => state.authReducer);
   const { data } = useSelector((state) => state.userReducer);
   
-  console.log('pkg', pkg)
   useEffect(() => {
     dispatch(userList(user.id));
   }, [dispatch]);

@@ -129,13 +129,13 @@ const Login = ({ route, navigation }) => {
                 justifyContent: "space-between",
               }}
             >
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => navigation.navigate("LoginRules")}
-              >
+              > */}
                 <Text style={[styles.forget, { textAlign: "left" }]}>
-                  Quay lại
+                 
                 </Text>
-              </TouchableOpacity>
+              {/* </TouchableOpacity> */}
               <TouchableOpacity
                 onPress={() => navigation.navigate("PasswordForgot")}
               >
