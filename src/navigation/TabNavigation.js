@@ -19,7 +19,7 @@ import HomeDetailTution from "../screens/Home/HomeDetailTution";
 import HomeDetailSituation from "../screens/Home/HomeDetailSituation";
 import HomeWork from "../screens/Home/HomeWork";
 import HomeTuition from "../screens/Home/HomeTuition";
-// import HomeChats from "../screens/Home/HomeChats";
+import HomeChats from "../screens/Home/HomeChats";
 
 import Schedule from "../screens/Schedule/Schedule";
 import ScheduleLeave from "../screens/Schedule/ScheduleLeave";
@@ -135,13 +135,13 @@ const HomeStack = () => {
         })}
       />
 
-      {/* <Stack.Screen
-        name="Liên hệ giáo viên"
+      <Stack.Screen
+        name={`Liên hệ giáo viên`}
         component={HomeChats}
-        options={({ route }) => ({
-          dataItem: {
-            id: route.params?.id,
-          },
+        options={({ route , navigation}) => ({
+          // dataItem: {
+          //   id: route.params?.id,
+          // },
           headerStyle: {
             backgroundColor: COLORS.green,
           },
@@ -149,8 +149,10 @@ const HomeStack = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          headerTitle: (props) => {`Liên hệ giáo viên ${route?.params?.teacher}`},
+          // title: (props) => {`Liên hệ giáo viên ${route?.params?.teacher}`}
         })}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };
