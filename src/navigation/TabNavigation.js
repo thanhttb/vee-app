@@ -19,7 +19,7 @@ import HomeDetailTution from "../screens/Home/HomeDetailTution";
 import HomeDetailSituation from "../screens/Home/HomeDetailSituation";
 import HomeWork from "../screens/Home/HomeWork";
 import HomeTuition from "../screens/Home/HomeTuition";
-import HomeChats from "../screens/Home/HomeChats";
+// import HomeChats from "../screens/Home/HomeChats";
 
 import Schedule from "../screens/Schedule/Schedule";
 import ScheduleLeave from "../screens/Schedule/ScheduleLeave";
@@ -135,7 +135,7 @@ const HomeStack = () => {
         })}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Liên hệ giáo viên"
         component={HomeChats}
         options={({ route }) => ({
@@ -150,7 +150,7 @@ const HomeStack = () => {
             fontWeight: "bold",
           },
         })}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

@@ -172,8 +172,14 @@ const HomeWork = ({ route, navigation }) => {
                   </View>
                 );
               }}
-              rowTextForSelection={(item, index) => {
-                return <VerticalSelect item={item} key={item.id} selectedItem={selectedItem}/>;
+              renderCustomizedRowChild={(item, index) => {
+                return (
+                  <VerticalSelect
+                  item={item}
+                  key={item.id}
+                  selectedItem={selectedItem}
+                />
+                );
               }}
             />
           </View>

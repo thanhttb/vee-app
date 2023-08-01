@@ -16,6 +16,8 @@ import { logoutAction } from "../../redux/actions/authActions";
 //redux
 import { userList } from "../../redux/actions/userActions";
 
+var pkg = require('../../../app.json')
+
 const ProfileHome = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -40,6 +42,8 @@ const ProfileHome = () => {
             source={require("../../../assets/avatar_default.jpg")}
           />
           <Text style={styles.name}>{user?.fullname}</Text>
+
+          <Text style={styles.verion}>Phiên bản: {pkg.expo.version}</Text>
         </View>
 
         <View style={styles.data}>
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     alignItems: "center",
-    marginTop: SIZES.header,
+    marginTop: SIZES.header - 20,
   },
   avatar: {
     height: 60,
@@ -191,4 +195,9 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h14,
     paddingLeft: SIZES.spacing,
   },
+  verion: {
+    color: 'white',
+    fontSize: 13,
+    padding: 4
+  }
 });

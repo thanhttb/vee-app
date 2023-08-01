@@ -12,20 +12,24 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
       screen: "Tình hình học tập chi tiết",
       initial: false,
       params: {
-        data: item.previous_session,
+        data: item?.previous_session,
       },
     });
   };
 
-  const formattedDate = moment(item.formated_date, "DD/MM/YYYY").format("DD-MM-YYYY");
+  const formattedDate = moment(item?.formated_date, "DD/MM/YYYY").format(
+    "DD-MM-YYYY"
+  );
   return (
-    <View style={[styles.component ,
-      index == 0 && { marginTop: SIZES.padding },]} key={index}>
+    <View
+      style={[styles.component, index == 0 && { marginTop: SIZES.padding }]}
+      key={index}
+    >
       <View style={styles.container}>
         <View style={styles.content}>
-          <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={styles.className}>Lớp - {item?.class}</Text>
-          {item.previous_session.type == "exam" ? (
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <Text style={styles.className}>Lớp - {item?.class}</Text>
+            {item?.type == "exam" && (
               <View
                 style={[
                   styles.typeTag,
@@ -36,7 +40,8 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
               >
                 <Text style={styles.note}>Kiểm tra định kỳ</Text>
               </View>
-            ) : item.previous_session.type == "main" ? (
+            )}
+            {item?.type == "main" && (
               <View
                 style={[
                   styles.typeTag,
@@ -47,7 +52,8 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
               >
                 <Text style={styles.note}>Chính khóa</Text>
               </View>
-            ) : (
+            )}
+            {item?.type == "tutor" && (
               <View
                 style={[
                   styles.typeTag,
@@ -60,7 +66,7 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
               </View>
             )}
           </View>
-          
+
           <Text style={styles.class}>
             Thời gian: {item?.time} | {formattedDate}
           </Text>
@@ -101,7 +107,6 @@ const LessonCalendar = ({ showDetailLesson, item, index }) => {
               onPress={goToA2}
             />
           </View>
-
         </View>
       </View>
     </View>
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: SIZES.padding,
-    paddingBottom: SIZES.padding
+    paddingBottom: SIZES.padding,
   },
   lesson: {
     width: "15%",
@@ -166,7 +171,7 @@ const styles = StyleSheet.create({
   typeTag: {
     borderRadius: SIZES.radius,
     marginLeft: SIZES.base,
-    marginBottom: 2
+    marginBottom: 2,
   },
   note: {
     color: "white",
