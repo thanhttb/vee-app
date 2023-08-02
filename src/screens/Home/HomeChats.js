@@ -20,6 +20,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
 
+import firestore from "../../../firebase";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+
+const itemUser = {"email": "truong@gmail.com", "id": "2", "name": "Truong"}
+
 const HomeChats = ({ route, navigation }) => {
   const { data } = route?.params;
   const textInputRef = useRef(null);
@@ -32,59 +38,63 @@ const HomeChats = ({ route, navigation }) => {
   },[navigation])
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 2,
-        text: "Hello world",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyLRca22xZXGFdsnwnIplTqkgoaqZTCnZ5Bg&usqp=CAU",
-        },
-      },
-      {
-        _id: 3,
-        text: "How are you",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyLRca22xZXGFdsnwnIplTqkgoaqZTCnZ5Bg&usqp=CAU",
-        },
-      },
-      {
-        _id: 4,
-        text: "How are you",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyLRca22xZXGFdsnwnIplTqkgoaqZTCnZ5Bg&usqp=CAU",
-        },
-      },
-      {
-        _id: 5,
-        text: "Hello developer",
-        createdAt: new Date("2023-07-31T14:05:00"),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyLRca22xZXGFdsnwnIplTqkgoaqZTCnZ5Bg&usqp=CAU",
-        },
-      },
-    ]);
+    const chatId = getChatId();
+
+    const unsubscribe = firestore
+      .collection("messages")
+      .doc(chatId)
+      .onSnapshot((snapshot) => {
+        const chatData = snapshot.data();
+        if (chatData) {
+          // Sắp xếp messages theo createdAt
+          const sortedMessages = chatData.messages.sort(
+            (a, b) => b.createdAt - a.createdAt
+          );
+          setMessages(sortedMessages);
+        } else {
+          setMessages([]);
+        }
+      });
+
+    return () => unsubscribe();
   }, []);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
-    );
-  }, []);
+  const getChatId = () => {
+    const currentUserUid = itemUser.id; // Thay thế bằng ID của người dùng hiện tại
+    const otherUserUid = 1;
+    const chatId = [currentUserUid, otherUserUid].sort().join("-");
+    return chatId;
+  };
+
+  const onSend = (newMessages = []) => {
+    const chatId = getChatId();
+    const message = newMessages[0];
+
+    const chatRef = firestore.collection("messages").doc(chatId);
+
+    chatRef.get().then((snapshot) => {
+      if (snapshot.exists) {
+        chatRef.update({
+          messages: firebase.firestore.FieldValue.arrayUnion({
+            ...message,
+            createdAt: new Date().getTime(), // Thời gian gửi tin nhắn (timestamp)
+          }),
+        });
+      } else {
+        chatRef.set({
+          id: chatId,
+          participants: [1, itemUser.id], // Thay thế bằng ID của người dùng hiện tại
+          messages: [
+            {
+              ...message,
+              createdAt: new Date().getTime(),
+            },],
+        });
+      }
+    });
+  };
+
+  
 
   const renderSend = (props) => {
     return (
