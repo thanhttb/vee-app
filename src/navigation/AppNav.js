@@ -111,6 +111,7 @@ const AppNav = () => {
     init();
     setLoading(false);
   }, []);
+  console.log('ac', authToken)
 
   if (loading) {
     return (
