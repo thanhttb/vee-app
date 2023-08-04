@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import AppStack from "./AppStack";
 import TabNavigation from "./TabNavigation";
@@ -23,6 +23,7 @@ const AppNav = () => {
   const { authToken, user } = useSelector((state) => state.authReducer);
   const [loading, setLoading] = useState(true);
   const dispath = useDispatch();
+  const navigation = useNavigation();
   
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -76,10 +77,14 @@ const AppNav = () => {
     responseListener.current = Notifications.addNotificationResponseReceivedListener(
       (response) => {
           //notification is received OK
-          console.log("opened", response?.notification?.request);
+          console.log("opened", response?.notification?.request.content.data);
           
           //here I want to navigate to another screen using rootnavigation
-          // navigation.navigate("Account"); 
+          if (response?.notification?.request.content.data.teacher_id) {
+            navigation.navigate("Liên hệ giáo viên", {
+              teacher_id: response?.notification?.request.content.data?.teacher_id,
+            });
+          }
 
       }
   );
@@ -111,10 +116,7 @@ const AppNav = () => {
         .catch((err) => console.error("device-token failed", err));
     };
     dataRes();
-  }, [authToken]);
-  console.log('expoPushToken',
-    expoPushToken
-  )
+  }, [expoPushToken]);
 
   const init = async () => {
     await dispath(initialize());
@@ -134,14 +136,14 @@ const AppNav = () => {
   }
   return (
     <>
-      <NavigationContainer>
+      {/* <NavigationContainer> */}
         <StatusBar backgroundColor="black" barStyle="light-content" />
         {authToken == undefined || authToken == null ? (
           <AppStack />
         ) : (
           <TabNavigation />
         )}
-      </NavigationContainer>
+      {/* </NavigationContainer> */}
     </>
   );
 };

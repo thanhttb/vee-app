@@ -23,7 +23,7 @@ import { BASE_URL } from "../../../config";
 const itemUser = { email: "truong@gmail.com", id: "2", name: "Truong" };
 
 const HomeChats = ({ route, navigation }) => {
-  const { data } = route?.params;
+  const { teacher_id } = route?.params;
   const textInputRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [chat, setChat] = useState('')
@@ -31,7 +31,7 @@ const HomeChats = ({ route, navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: `Liên hệ giáo viên ${data?.teacher}`,
+      title: `Liên hệ giáo viên`,
     });
   }, [navigation]);
 
@@ -59,7 +59,7 @@ const HomeChats = ({ route, navigation }) => {
 
   const getChatId = () => {
     const currentUserUid = user.id; // Thay thế bằng ID của người dùng hiện tại
-    const otherUserUid = data.teacher_id;
+    const otherUserUid = teacher_id;
     const chatId = [currentUserUid, otherUserUid].sort().join("-");
     return chatId;
   };
@@ -81,7 +81,7 @@ const HomeChats = ({ route, navigation }) => {
       } else {
         chatRef.set({
           id: chatId,
-          participants: [1, user.id], // Thay thế bằng ID của người dùng hiện tại
+          participants: [teacher_id, user.id], // Thay thế bằng ID của người dùng hiện tại
           messages: [
             {
               ...message,
@@ -136,30 +136,7 @@ const HomeChats = ({ route, navigation }) => {
     // This is a received message
     return null;
   };
-
-  const handleTitle = () => {
-    Alert.alert("Alert Title", "My Alert Msg", [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
-  };
-  const renderAvatar = (props) => {
-    return (
-      <TouchableOpacity
-        onPress={handleTitle}
-        style={{ borderRadius: 20, overflow: "hidden" }}
-      >
-        <Image
-          source={{ uri: props.currentMessage?.user?.avatar }}
-          style={{ width: 36, height: 36 }}
-        />
-      </TouchableOpacity>
-    );
-  };
+  
   const renderInputToolbar = (props) => {
     return (
       <InputToolbar
@@ -187,7 +164,7 @@ const HomeChats = ({ route, navigation }) => {
       const dataSync = async() => {
         await axios.post(BASE_URL+"chat/sync", {
           parent_id : user.id,
-          teacher_id: data.teacher_id,
+          teacher_id: teacher_id,
           chat: chat[0]?.text
         },
         {
@@ -219,7 +196,6 @@ const HomeChats = ({ route, navigation }) => {
       isLoadingEarlier={true}
       alwaysShowSend
       keyboardShouldPersistTaps="handled"
-      renderAvatar={renderAvatar}
       renderSend={renderSend}
       renderInputToolbar={renderInputToolbar}
       textInputRef={(ref) => (textInputRef.current = ref)}

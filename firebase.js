@@ -1,8 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
-console.log(' process.env.REACT_APP_APIKEY',  process.env.REACT_APP_APIKEY)
+console.log(" process.env.REACT_APP_APIKEY", process.env.REACT_APP_APIKEY);
 
 // Replace this with your Firebase SDK config snippet
 const firebaseConfig = {
@@ -17,11 +17,11 @@ const firebaseConfig = {
   // measurementId: process.env.REACT_APP_MEASUREMENTID
 
   apiKey: "AIzaSyDmlLl9XoEQ05MaGOdmJ-0SL6N8-QQhCTc",
-    authDomain: "vietelite-chat.firebaseapp.com",
-    projectId: "vietelite-chat",
-    storageBucket: "vietelite-chat.appspot.com",
-    messagingSenderId: "578384786335",
-    appId: "1:578384786335:web:4f2fd313a3d1fb608943aa"
+  authDomain: "vietelite-chat.firebaseapp.com",
+  projectId: "vietelite-chat",
+  storageBucket: "vietelite-chat.appspot.com",
+  messagingSenderId: "578384786335",
+  appId: "1:578384786335:web:4f2fd313a3d1fb608943aa",
 };
 
 // Initialize Firebase

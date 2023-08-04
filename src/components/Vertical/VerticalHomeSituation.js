@@ -100,7 +100,7 @@ const VerticalHomeSituation = ({ item }) => {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate("Liên hệ giáo viên", {
-              data: item.item,
+              teacher_id: item.item.teacher_id,
             })
           }
         >
