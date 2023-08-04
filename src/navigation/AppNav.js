@@ -41,7 +41,17 @@ const AppNav = () => {
       });
     // phan hoi listen
     responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {});
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log('response', response)
+
+      //   _handleNotification = (notification) => {
+      //     if(notification.origin === 'received') {
+      //         // after receive push notification code
+      //     }else if(notification.origin === 'selected'){
+      //         // after click code
+      //     }
+      // }
+      });
 
     responseListener.current = Notifications.setBadgeCountAsync(
       notification?.length
@@ -55,6 +65,22 @@ const AppNav = () => {
       Notifications.dismissAllNotificationsAsync();
     };
   }, [lastNotificationResponse]);
+
+  // componentDidMount() and defined _handleNotifications
+  // _handleNotifications = async (notification) => {
+  //   const {a, b, c} = notification.data;
+  //   const {origin} = notification;
+  
+  //   if (origin === 'selected') {
+  //     this.props.navigation.push('History', { 
+  //       a, 
+  //       b, 
+  //       c, 
+  //     })
+  //   } else { // origin is 'received'
+  //     // show notification at the top of my app instead of navigate to other screen
+  //   }
+  // } 
 
   useEffect(() => {
     const dataRes = async () => {
