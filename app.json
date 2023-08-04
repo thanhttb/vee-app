@@ -16,8 +16,8 @@
   ],
   "ios": {
     "supportsTablet": true,
-    "buildNumber": "4",
-    "bundleIdentifier": "com.veesoft.vietelitestudents",
+    // "buildNumber": "4",
+    // "bundleIdentifier": "com.veesoft.vietelitestudents",
     "runtimeVersion": {
       "policy": "sdkVersion"
     }
@@ -35,12 +35,12 @@
       "policy": "sdkVersion"
     }
   },
-  "extra": {
-    "eas": {
-      // "projectId": "04b3d310-7a3e-493d-80ea-8917e541fd1e"
-    }
-  },
-  "owner": "tranthanhuet",
+  // "extra": {
+  //   "eas": {
+  //     "projectId": "04b3d310-7a3e-493d-80ea-8917e541fd1e"
+  //   }
+  // },
+  // "owner": "tranthanhuet",
   "updates": {
     "url": "https://u.expo.dev/04b3d310-7a3e-493d-80ea-8917e541fd1e"
   },

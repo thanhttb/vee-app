@@ -1,47 +1,45 @@
 import * as React from "react";
 import { useEffect, useRef, useState, useCallback } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Alert
-} from "react-native";
+import { View, Text, Image, StyleSheet, Alert } from "react-native";
 import {
   Bubble,
   GiftedChat,
   Send,
   Avatar,
   InputToolbar,
-  
 } from "react-native-gifted-chat";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
 
 import firestore from "../../../firebase";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { BASE_URL } from "../../../config";
 
-const itemUser = {"email": "truong@gmail.com", "id": "2", "name": "Truong"}
+const itemUser = { email: "truong@gmail.com", id: "2", name: "Truong" };
 
 const HomeChats = ({ route, navigation }) => {
   const { data } = route?.params;
   const textInputRef = useRef(null);
   const [messages, setMessages] = useState([]);
+  const [chat, setChat] = useState('')
+  const { authToken, user } = useSelector((state) => state.authReducer);
 
-  useEffect(()=>{
+  useEffect(() => {
     navigation.setOptions({
-      title: `Liên hệ giáo viên ${data?.teacher}`
-    })
-  },[navigation])
+      title: `Liên hệ giáo viên ${data?.teacher}`,
+    });
+  }, [navigation]);
 
   useEffect(() => {
     const chatId = getChatId();
 
     const unsubscribe = firestore
-      .collection("messages")
+      .collection("chats")
       .doc(chatId)
       .onSnapshot((snapshot) => {
         const chatData = snapshot.data();
@@ -60,8 +58,8 @@ const HomeChats = ({ route, navigation }) => {
   }, []);
 
   const getChatId = () => {
-    const currentUserUid = itemUser.id; // Thay thế bằng ID của người dùng hiện tại
-    const otherUserUid = 1;
+    const currentUserUid = user.id; // Thay thế bằng ID của người dùng hiện tại
+    const otherUserUid = data.teacher_id;
     const chatId = [currentUserUid, otherUserUid].sort().join("-");
     return chatId;
   };
@@ -70,7 +68,7 @@ const HomeChats = ({ route, navigation }) => {
     const chatId = getChatId();
     const message = newMessages[0];
 
-    const chatRef = firestore.collection("messages").doc(chatId);
+    const chatRef = firestore.collection("chats").doc(chatId);
 
     chatRef.get().then((snapshot) => {
       if (snapshot.exists) {
@@ -83,25 +81,23 @@ const HomeChats = ({ route, navigation }) => {
       } else {
         chatRef.set({
           id: chatId,
-          participants: [1, itemUser.id], // Thay thế bằng ID của người dùng hiện tại
+          participants: [1, user.id], // Thay thế bằng ID của người dùng hiện tại
           messages: [
             {
               ...message,
               createdAt: new Date().getTime(),
-            },],
+            },
+          ],
         });
       }
     });
   };
 
-  
-
   const renderSend = (props) => {
     return (
-      <Send {...props} >
+      <Send {...props}>
         <View>
-          <Ionicons name="md-send" size={32}
-            color={COLORS.green} />
+          <Ionicons name="md-send" size={32} color={COLORS.green} />
         </View>
       </Send>
     );
@@ -177,39 +173,59 @@ const HomeChats = ({ route, navigation }) => {
           borderWidth: 0,
           borderRadius: SIZES.radius,
           borderTopColor: "transparent",
-          // marginBottom: 4,
-          // marginVertical: 10
         }}
       />
     );
   };
-  
+
   const scrollToBottomComponent = () => {
     return <FontAwesome name="angle-double-down" size={22} color="#333" />;
   };
 
+  useEffect(() => {
+    if(chat){
+      const dataSync = async() => {
+        await axios.post(BASE_URL+"chat/sync", {
+          parent_id : user.id,
+          teacher_id: data.teacher_id,
+          chat: chat[0]?.text
+        },
+        {
+          headers: {
+            Accept: "application/json",
+          Authorization: "Bearer " + authToken,
+          }
+        }).catch(err=> console.log('err', err))
+        .then(setChat(null))
+      }
+      dataSync()
+    }
+  }, [chat])
+
   return (
-            
-                <GiftedChat
-                  messages={messages}
-                  onSend={(messages) => onSend(messages)}
-                  user={{
-                    _id: 1,
-                  }}
-                  renderBubble={renderBubble}
-                  renderTicks={renderTicks}
-                  placeholder="Gửi tin nhắn ..."
-                  isKeyboardInternallyHandled={true}
-                  isLoadingEarlier={true}
-                  alwaysShowSend
-                  keyboardShouldPersistTaps="handled"
-                  renderAvatar={renderAvatar}
-                  renderSend={renderSend}
-                  renderInputToolbar={renderInputToolbar}
-                  textInputRef={(ref) => (textInputRef.current = ref)}
-                  scrollToBottom
-                  scrollToBottomComponent={scrollToBottomComponent}
-                />
+    <GiftedChat
+      messages={messages}
+      onSend={(messages) =>{
+        setChat(messages)
+        onSend(messages)
+      }}
+      user={{
+        _id: user.id,
+      }}
+      renderBubble={renderBubble}
+      renderTicks={renderTicks}
+      placeholder="Gửi tin nhắn ..."
+      isKeyboardInternallyHandled={true}
+      isLoadingEarlier={true}
+      alwaysShowSend
+      keyboardShouldPersistTaps="handled"
+      renderAvatar={renderAvatar}
+      renderSend={renderSend}
+      renderInputToolbar={renderInputToolbar}
+      textInputRef={(ref) => (textInputRef.current = ref)}
+      scrollToBottom
+      scrollToBottomComponent={scrollToBottomComponent}
+    />
   );
 };
 
@@ -226,10 +242,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopColor: COLORS.background,
     borderTopWidth: 1,
-  },
-  chatContainer: {
-    flex: 1,
-    maxHeight: SIZES.height * 0.64,
   },
   imageAvatar: {
     width: 60,

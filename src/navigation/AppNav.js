@@ -23,11 +23,44 @@ const AppNav = () => {
   const { authToken, user } = useSelector((state) => state.authReducer);
   const [loading, setLoading] = useState(true);
   const dispath = useDispatch();
+  
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
+  async function registerForPushNotificationsAsync() {
+    let tokenRes;
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+  
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        // alert('Failed to get push token for push notification!');
+        // return;
+      }
+      tokenRes = (await Notifications.getExpoPushTokenAsync()).data;
+    } else {
+      // alert('Must use physical device for Push Notifications');
+    }
+  
+    return tokenRes;
+  }
+
   useEffect(() => {
     // dang ky thong bao
     registerForPushNotificationsAsync().then((tokenRes) => {
@@ -40,23 +73,16 @@ const AppNav = () => {
         setNotification(notification);
       });
     // phan hoi listen
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log('response', response)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+          //notification is received OK
+          console.log("opened", response?.notification?.request);
+          
+          //here I want to navigate to another screen using rootnavigation
+          // navigation.navigate("Account"); 
 
-      //   _handleNotification = (notification) => {
-      //     if(notification.origin === 'received') {
-      //         // after receive push notification code
-      //     }else if(notification.origin === 'selected'){
-      //         // after click code
-      //     }
-      // }
-      });
-
-    responseListener.current = Notifications.setBadgeCountAsync(
-      notification?.length
-    );
-
+      }
+  );
     return () => {
       Notifications.removeNotificationSubscription(
         notificationListener.current
@@ -65,22 +91,6 @@ const AppNav = () => {
       Notifications.dismissAllNotificationsAsync();
     };
   }, [lastNotificationResponse]);
-
-  // componentDidMount() and defined _handleNotifications
-  // _handleNotifications = async (notification) => {
-  //   const {a, b, c} = notification.data;
-  //   const {origin} = notification;
-  
-  //   if (origin === 'selected') {
-  //     this.props.navigation.push('History', { 
-  //       a, 
-  //       b, 
-  //       c, 
-  //     })
-  //   } else { // origin is 'received'
-  //     // show notification at the top of my app instead of navigate to other screen
-  //   }
-  // } 
 
   useEffect(() => {
     const dataRes = async () => {
@@ -92,6 +102,7 @@ const AppNav = () => {
           },
           {
             headers: {
+              Accept: "application/json",
               Authorization: "Bearer " + authToken,
             },
           }
@@ -101,17 +112,18 @@ const AppNav = () => {
     };
     dataRes();
   }, [authToken]);
+  console.log('expoPushToken',
+    expoPushToken
+  )
 
   const init = async () => {
     await dispath(initialize());
-    
   };
 
   useEffect(() => {
     init();
     setLoading(false);
   }, []);
-  console.log('ac', authToken)
 
   if (loading) {
     return (
@@ -135,34 +147,3 @@ const AppNav = () => {
 };
 
 export default AppNav;
-
-async function registerForPushNotificationsAsync() {
-  let tokenRes;
-  if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
-    });
-  }
-
-  if (Device.isDevice) {
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== "granted") {
-      // alert('Failed to get push token for push notification!');
-      // return;
-    }
-    tokenRes = (await Notifications.getExpoPushTokenAsync()).data;
-  } else {
-    // alert('Must use physical device for Push Notifications');
-  }
-
-  return tokenRes;
-}
