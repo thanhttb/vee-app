@@ -52,9 +52,11 @@ const AppNav = () => {
       }
       if (finalStatus !== "granted") {
         // alert('Failed to get push token for push notification!');
-        // return;
+        return;
       }
-      tokenRes = (await Notifications.getExpoPushTokenAsync()).data;
+      tokenRes = (await Notifications.getExpoPushTokenAsync({
+        projectId: "b97e8085-afa7-45b8-9048-f72cac8e0c63"
+      })).data;
     } else {
       // alert('Must use physical device for Push Notifications');
     }
@@ -66,6 +68,7 @@ const AppNav = () => {
     // dang ky thong bao
     registerForPushNotificationsAsync().then((tokenRes) => {
       setExpoPushToken(tokenRes);
+      console.log('tokenRes: ' + tokenRes);
     });
 
     // them noti listen
@@ -99,6 +102,7 @@ const AppNav = () => {
 
   useEffect(() => {
     const dataRes = async () => {
+      console.log('device-token', expoPushToken)
       await axios
         .post(
           BASE_URL + "device-token",
@@ -113,7 +117,7 @@ const AppNav = () => {
           }
         )
         .then((response) => console.log("device-token successfully"))
-        .catch((err) => console.error("device-token failed", err));
+        .catch((err) => console.error("device-token failed"));
     };
     dataRes();
   }, [expoPushToken]);
