@@ -1,16 +1,22 @@
 import * as React from "react";
 import { useEffect, useRef, useState, useCallback } from "react";
-import { View, Text, Image, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Image
+  // Keyboard
+} from "react-native";
 import {
   Bubble,
   GiftedChat,
   Send,
-  Avatar,
   InputToolbar,
 } from "react-native-gifted-chat";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../utils/theme";
 
 import firestore from "../../../firebase";
@@ -20,13 +26,11 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 
-const itemUser = { email: "truong@gmail.com", id: "2", name: "Truong" };
-
 const HomeChats = ({ route, navigation }) => {
   const { teacher_id } = route?.params;
   const textInputRef = useRef(null);
   const [messages, setMessages] = useState([]);
-  const [chat, setChat] = useState('')
+  const [chat, setChat] = useState("");
   const { authToken, user } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
@@ -96,7 +100,7 @@ const HomeChats = ({ route, navigation }) => {
   const renderSend = (props) => {
     return (
       <Send {...props}>
-        <View>
+        <View style={{ marginTop: -10}}>
           <Ionicons name="md-send" size={32} color={COLORS.green} />
         </View>
       </Send>
@@ -136,7 +140,7 @@ const HomeChats = ({ route, navigation }) => {
     // This is a received message
     return null;
   };
-  
+
   const renderInputToolbar = (props) => {
     return (
       <InputToolbar
@@ -144,6 +148,7 @@ const HomeChats = ({ route, navigation }) => {
         containerStyle={{
           marginLeft: 10,
           marginRight: 10,
+          paddingTop: 6,
           backgroundColor: COLORS.background,
           alignContent: "center",
           justifyContent: "center",
@@ -155,69 +160,115 @@ const HomeChats = ({ route, navigation }) => {
     );
   };
 
+  const renderAvatar = (props) => {
+    return (
+      <Image
+        style={{
+          height: 36,
+          width: 36,
+          borderRadius: 50,
+        }}
+        source={avatar}
+      />
+    );
+  };
+
   const scrollToBottomComponent = () => {
     return <FontAwesome name="angle-double-down" size={22} color="#333" />;
   };
 
   useEffect(() => {
-    if(chat){
-      const dataSync = async() => {
-        await axios.post(BASE_URL+"chat/sync", {
-          parent_id : user.id,
-          teacher_id: teacher_id,
-          chat: chat[0]?.text
-        },
-        {
-          headers: {
-            Accept: "application/json",
-          Authorization: "Bearer " + authToken,
-          }
-        }).catch(err=> console.log('err', err))
-        .then(setChat(null))
-      }
-      dataSync()
+    if (chat) {
+      const dataSync = async () => {
+        await axios
+          .post(
+            BASE_URL + "chat/sync",
+            {
+              parent_id: user.id,
+              teacher_id: teacher_id,
+              chat: chat[0]?.text,
+            },
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: "Bearer " + authToken,
+              },
+            }
+          )
+          .catch((err) => console.log("err", err))
+          .then(setChat(null));
+      };
+      dataSync();
     }
-  }, [chat])
+  }, [chat]);
 
   return (
-    <GiftedChat
-      messages={messages}
-      onSend={(messages) =>{
-        setChat(messages)
-        onSend(messages)
-      }}
-      user={{
-        _id: user.id,
-      }}
-      renderBubble={renderBubble}
-      renderTicks={renderTicks}
-      placeholder="Gửi tin nhắn ..."
-      isKeyboardInternallyHandled={true}
-      isLoadingEarlier={true}
-      alwaysShowSend
-      keyboardShouldPersistTaps="handled"
-      renderSend={renderSend}
-      renderInputToolbar={renderInputToolbar}
-      textInputRef={(ref) => (textInputRef.current = ref)}
-      scrollToBottom
-      scrollToBottomComponent={scrollToBottomComponent}
-    />
+    <SafeAreaProvider style={{ flex: 1 }}>
+      {/* <View style={{ backgroundColor: COLORS.white, height: SIZES.height }}> */}
+        <View style={styles.component}>
+          <View
+            style={[
+              styles.chatContainer,
+              Platform.OS === "android"
+                ? { maxHeight: SIZES.height - 120 }
+                : { maxHeight: SIZES.height - 180 },
+            ]}
+          >
+            <GiftedChat
+              messages={messages}
+              onSend={(messages) => {
+                setChat(messages);
+                onSend(messages);
+              }}
+              user={{
+                _id: user.id,
+              }}
+              renderBubble={renderBubble}
+              renderTicks={renderTicks}
+              placeholder="Gửi tin nhắn ..."
+              isKeyboardInternallyHandled={true}
+              isLoadingEarlier={true}
+              alwaysShowSend
+              keyboardShouldPersistTaps="handled"
+              renderSend={renderSend}
+              renderInputToolbar={renderInputToolbar}
+              textInputRef={(ref) => (textInputRef.current = ref)}
+              scrollToBottom
+              scrollToBottomComponent={scrollToBottomComponent}
+              bottomOffset={80} 
+            />
+            {Platform.OS === "android" ? (
+              <KeyboardAvoidingView
+                behavior="padding"
+                keyboardVerticalOffset={30}
+              />
+            ) : (
+              <KeyboardAvoidingView
+                behavior="height"
+                keyboardVerticalOffset={0}
+              />
+            )}
+            {/* </ScrollView> */}
+          </View>
+        </View>
+        {Platform.OS === "android" && (
+          <KeyboardAvoidingView behavior="padding" />
+        )}
+      {/* </KeyboardAvoidingView> */}
+    </SafeAreaProvider>
   );
 };
 
 export default HomeChats;
 
 const styles = StyleSheet.create({
-  header: {
-    height: 100,
-    display: "flex",
-    flexDirection: "row",
-    margin: SIZES.margin,
-  },
   component: {
     flex: 1,
     borderTopColor: COLORS.background,
     borderTopWidth: 1,
+  },
+  chatContainer: {
+    flex: 1,
   },
   imageAvatar: {
     width: 60,
@@ -234,5 +285,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: SIZES.fs14,
+  },
+  number: {
+    fontSize: SIZES.fs14,
+    color: COLORS.gray,
   },
 });

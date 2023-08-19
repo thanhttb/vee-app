@@ -55,6 +55,7 @@ local.properties
 *.keystore
 !debug.keystore
 
+
 # node.js
 #
 node_modules/
@@ -76,3 +77,7 @@ web-build/
 dist/
 
 # @end expo-cli
+
+
+#configFirebase
+configFirebase.js

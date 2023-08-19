@@ -28,7 +28,7 @@ import ScheduleTutoring from "../screens/Schedule/ScheduleTutoring";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const HomeStack = () => {
+const HomeStack = () => {   
   return (
     <Stack.Navigator initialRouteName="Trang chính">
       <Stack.Screen
