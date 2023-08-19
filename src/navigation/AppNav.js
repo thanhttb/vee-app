@@ -54,9 +54,7 @@ const AppNav = () => {
         // alert('Failed to get push token for push notification!');
         return;
       }
-      tokenRes = (await Notifications.getExpoPushTokenAsync({
-        projectId: "b97e8085-afa7-45b8-9048-f72cac8e0c63"
-      })).data;
+      tokenRes = (await Notifications.getExpoPushTokenAsync()).data;
     } else {
       // alert('Must use physical device for Push Notifications');
     }
@@ -68,7 +66,6 @@ const AppNav = () => {
     // dang ky thong bao
     registerForPushNotificationsAsync().then((tokenRes) => {
       setExpoPushToken(tokenRes);
-      console.log('tokenRes: ' + tokenRes);
     });
 
     // them noti listen
@@ -80,8 +77,6 @@ const AppNav = () => {
     responseListener.current = Notifications.addNotificationResponseReceivedListener(
       (response) => {
           //notification is received OK
-          console.log("opened", response?.notification?.request.content.data);
-          
           //here I want to navigate to another screen using rootnavigation
           if (response?.notification?.request.content.data.teacher_id) {
             navigation.navigate("Liên hệ giáo viên", {
@@ -102,7 +97,6 @@ const AppNav = () => {
 
   useEffect(() => {
     const dataRes = async () => {
-      console.log('device-token', expoPushToken)
       await axios
         .post(
           BASE_URL + "device-token",
@@ -119,7 +113,9 @@ const AppNav = () => {
         .then((response) => console.log("device-token successfully"))
         .catch((err) => console.error("device-token failed"));
     };
-    dataRes();
+    if(expoPushToken !== ""){
+      dataRes();
+    }
   }, [expoPushToken]);
 
   const init = async () => {
