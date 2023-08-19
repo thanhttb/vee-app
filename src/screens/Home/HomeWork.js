@@ -4,21 +4,14 @@ import {
   StyleSheet,
   StatusBar,
   FlatList,
-  Button,
-  Modal,
   Animated,
-  TouchableOpacity,
-  Image,
   Text,
   ActivityIndicator
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
-import PDFReader from "rn-pdf-reader-js";
 import axios from "axios";
-import { Video, ResizeMode } from "expo-av";
 // redux
-import { useNavigation } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { listClass } from "../../redux/actions/classActions";
 //utils

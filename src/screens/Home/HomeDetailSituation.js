@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import PDFReader from "rn-pdf-reader-js";
+import { WebView } from 'react-native-webview';
 import { Audio, Video as OriginalVideo, ResizeMode } from "expo-av";
 import * as Linking from "expo-linking";
 
@@ -165,7 +165,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
               />
             </TouchableOpacity>
             {type == "doc" && (
-              <PDFReader
+              <WebView
                 customStyle={{
                   readerContainerNavigateArrow: true,
                   readerContainerNavigate: true,
@@ -178,7 +178,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
             )}
 
             {type == "pdf" && (
-              <PDFReader
+              <WebView
                 customStyle={{
                   readerContainerNavigateArrow: true,
                   readerContainerNavigate: true,

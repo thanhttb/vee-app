@@ -26,6 +26,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 
+const avatar = require("../../../assets/avatar_gv.jpg");
+
 const HomeChats = ({ route, navigation }) => {
   const { teacher_id } = route?.params;
   const textInputRef = useRef(null);
@@ -236,6 +238,7 @@ const HomeChats = ({ route, navigation }) => {
               scrollToBottom
               scrollToBottomComponent={scrollToBottomComponent}
               bottomOffset={80} 
+              renderAvatar={renderAvatar}
             />
             {Platform.OS === "android" ? (
               <KeyboardAvoidingView
