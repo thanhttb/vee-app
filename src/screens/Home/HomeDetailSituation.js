@@ -19,12 +19,12 @@ import * as Linking from "expo-linking";
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
 const imagesPath = {
-  doc: require("../../../assets/folder/image_docx.png"),
-  mp3: require("../../../assets/folder/image_mp3.png"),
-  pdf: require("../../../assets/folder/image_pdf.png"),
-  png: require("../../../assets/folder/image_png.png"),
-  jpg: require("../../../assets/folder/image_png.png"),
-}
+  docx: require("../../../assets/folder/image_docx.png"),
+  ".mp3": require("../../../assets/folder/image_mp3.png"),
+  ".pdf": require("../../../assets/folder/image_pdf.png"),
+  ".png": require("../../../assets/folder/image_png.png"),
+  ".jpg": require("../../../assets/folder/image_png.png"),
+};
 const triggerAudio = async (ref) => {
   await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
   ref.current.playAsync();
@@ -69,7 +69,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
           <View style={styles.boxs}>
             {data?.documents?.map((item, index) => {
               let myArray = item.split("/");
-              const last3 = item.slice(-3);
+              const last3 = item.slice(-4);
               const imagePath = imagesPath[last3];
              
               return (
@@ -108,7 +108,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
           <View style={styles.boxs}>
             {data?.exercices?.map((item, index) => {
               let myArray = item.split("/");
-              const last3 = item.slice(-3);
+              const last3 = item.slice(-4);
               const imagePath = imagesPath[last3];
               return (
                 <TouchableOpacity
