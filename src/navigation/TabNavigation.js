@@ -2,8 +2,8 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { COLORS } from "../utils/theme";
-import { Image } from "react-native";
+import { COLORS, SIZES } from "../utils/theme";
+import { Image, Button } from "react-native";
 
 import Notifications from "../screens/Notifications/Notifications";
 
@@ -24,11 +24,16 @@ import HomeChats from "../screens/Home/HomeChats";
 import Schedule from "../screens/Schedule/Schedule";
 import ScheduleLeave from "../screens/Schedule/ScheduleLeave";
 import ScheduleTutoring from "../screens/Schedule/ScheduleTutoring";
+import ListSurveys from "../screens/Survey/ListSurveys";
+import { Text } from "react-native";
+
+import { Ionicons } from "@expo/vector-icons";
+import SurveyResult from "../screens/Survey/SurveyResult";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const HomeStack = () => {   
+const HomeStack = () => {
   return (
     <Stack.Navigator initialRouteName="Trang chính">
       <Stack.Screen
@@ -138,7 +143,7 @@ const HomeStack = () => {
       <Stack.Screen
         name={`Liên hệ giáo viên`}
         component={HomeChats}
-        options={({ route , navigation}) => ({
+        options={({ route, navigation }) => ({
           // dataItem: {
           //   id: route.params?.id,
           // },
@@ -149,7 +154,9 @@ const HomeStack = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          headerTitle: (props) => {`Liên hệ giáo viên ${route?.params?.teacher}`},
+          headerTitle: (props) => {
+            `Liên hệ giáo viên ${route?.params?.teacher}`;
+          },
           // title: (props) => {`Liên hệ giáo viên ${route?.params?.teacher}`}
         })}
       />
@@ -286,6 +293,57 @@ const NotiStack = () => {
   );
 };
 
+const SurveyStack = ({ navigation }) => {
+  return (
+    <Stack.Navigator initialRouteName="Danh sách khảo sát">
+      <Stack.Screen
+        name="Danh sách khảo sát"
+        component={ListSurveys}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTitle: (props) => (
+            <Text style={{ fontSize: SIZES.h2, color: COLORS.white }}>
+              Danh sách khảo sát
+            </Text>
+          ),
+          headerLeft: () => (
+            <Ionicons
+              name="chevron-back"
+              size={24}
+              color={COLORS.white}
+              onPress={() => navigation.navigate("Trang chủ")}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Kết quả khảo sát"
+        component={SurveyResult}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.green,
+          },
+          headerTitle: (props) => (
+            <Text style={{ fontSize: SIZES.h2, color: COLORS.white }}>
+              Kết quả khảo sát
+            </Text>
+          ),
+          headerLeft: () => (
+            <Ionicons
+              name="chevron-back"
+              size={24}
+              color={COLORS.white}
+              onPress={() => navigation.navigate("Danh sách khảo sát")}
+            />
+          ),
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const TabNavigation = () => {
   return (
     <Tab.Navigator>
@@ -403,6 +461,18 @@ const TabNavigation = () => {
           },
           tabBarActiveTintColor: COLORS.green,
           tabBarInactiveTintColor: COLORS.gray,
+        })}
+      />
+
+      <Tab.Screen
+        name="Khảo sát"
+        component={SurveyStack}
+        options={({ route }) => ({
+          headerShown: false,
+          tabBarStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
         })}
       />
     </Tab.Navigator>

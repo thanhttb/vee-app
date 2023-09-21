@@ -70,6 +70,23 @@ const ProfileHome = () => {
 
       <View style={styles.action}>
         <View style={styles.content}>
+        <TouchableOpacity
+            onPress={() => navigation.navigate("Khảo sát")}
+          >
+            <View style={styles.actionPush}>
+              <Image
+                source={require("../../../assets/Icon-profile/Icon_change.png")}
+                style={styles.bellIcon}
+              />
+              <Text style={styles.textAction}>Danh sách khảo sát</Text>
+              <MaterialIcons
+                style={{ position: "absolute", right: 0 }}
+                name="navigate-next"
+                size={24}
+                color="black"
+              />
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("Thông tin phụ huynh")}
           >
