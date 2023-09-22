@@ -10,16 +10,15 @@ import {
 import { COLORS, SIZES } from "../../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 
-const url = "https://thithu.vietelite.edu.vn/assets/background/bg-mon.jpg";
 const VertiacalSurvey = ({ item }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={{ padding: 8 }}>
         <Image
-          source={{ uri: url }}
+          source={require('../../../assets/bg-mon.jpg')}
           
-          style={{ width: "100%", height: 150, borderRadius: SIZES.radius }}
+          style={{ width: "100%", height: 150, borderRadius: SIZES.radius, resizeMode:'center' }}
         />
         <View style={styles.content}>
           <Text style={styles.name}>Học sinh: {item?.student}</Text>

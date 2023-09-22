@@ -218,7 +218,7 @@ const SurveyResult = () => {
       } else if ((index - 2) % 3 !== 0) {
         return {
           value: value === 0 ? 1 : value,
-          label: `${index / 3} - ${(index + 3) / 3}`,
+          label: `${index / 3}-${(index + 3) / 3}`,
           spacing: 2,
           labelWidth: 30,
           labelTextStyle: { color: "gray" },
@@ -290,7 +290,7 @@ const SurveyResult = () => {
                     {danhgia?.diem}
                   </Text>
 
-                  {
+                  {/* {
                     danhgia.danh_gia.map((dg, index) => {
                       return (
                         <>
@@ -298,7 +298,7 @@ const SurveyResult = () => {
                         </>
                       )
                     })
-                  }
+                  } */}
                 </View>
               </View>
             </View>
