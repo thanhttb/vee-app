@@ -118,126 +118,85 @@ const data = {
     },
   ],
 };
-const barData = [
-  // 1
-  {
-    value: 40,
-    label: "0-1",
-    spacing: 2,
-    labelWidth: 30,
-    labelTextStyle: { color: "gray" },
-    frontColor: COLORS.green,
-  },
-  {
-    value: 1,
-    spacing: 2,
-    labelWidth: 30,
-    labelTextStyle: { color: "red" },
-    frontColor: COLORS.yellow,
-  },
-  { value: 20, frontColor: COLORS.blue },
-  //2
-  {
-    value: 60,
-    label: "1-2",
-    spacing: 2,
-    labelWidth: 30,
-    labelTextStyle: { color: "gray" },
-    frontColor: COLORS.green,
-  },
-  {
-    value: 30,
-    spacing: 2,
-    labelWidth: 30,
-    labelTextStyle: { color: "red" },
-    frontColor: COLORS.yellow,
-  },
-  { value: 20, frontColor: COLORS.blue },
-
-];
 
 const renderTitle = () => {
-  return(
-    <View >
-    <Text
-      style={{
-        color: 'black',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-      }}>
-      Thống kê kết quả
-    </Text>
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        marginTop: 12,
-      }}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <View
-          style={{
-            height: 12,
-            width: 12,
-            borderRadius: 6,
-            backgroundColor: COLORS.green,
-            marginRight: 4,
-          }}
-        />
-        <Text
-          style={{
-            width: 70,
-            height: 16,
-            color: 'lightgray',
-          }}>
-          Toán
-        </Text>
-      </View>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <View
-          style={{
-            height: 12,
-            width: 12,
-            borderRadius: 6,
-            backgroundColor: COLORS.yellow,
-            marginRight: 4,
-          }}
-        />
-        <Text
-          style={{
-            width: 70,
-            height: 16,
-            color: 'lightgray',
-          }}>
-          Tiếng việt
-        </Text>
-      </View>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <View
-          style={{
-            height: 12,
-            width: 12,
-            borderRadius: 6,
-            backgroundColor: COLORS.blue,
-            marginRight: 4,
-          }}
-        />
-        <Text
-          style={{
-            width: 70,
-            height: 16,
-            color: 'lightgray',
-          }}>
-          Tiếng anh
-        </Text>
+  return (
+    <View>
+      <Text style={styles.title}>Thống kê kết quả</Text>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          marginTop: 12,
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              height: 12,
+              width: 12,
+              borderRadius: 6,
+              backgroundColor: COLORS.green,
+              marginRight: 4,
+            }}
+          />
+          <Text
+            style={{
+              width: 70,
+              height: 16,
+              color: "lightgray",
+            }}
+          >
+            Toán
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              height: 12,
+              width: 12,
+              borderRadius: 6,
+              backgroundColor: COLORS.yellow,
+              marginRight: 4,
+            }}
+          />
+          <Text
+            style={{
+              width: 70,
+              height: 16,
+              color: "lightgray",
+            }}
+          >
+            Tiếng việt
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              height: 12,
+              width: 12,
+              borderRadius: 6,
+              backgroundColor: COLORS.blue,
+              marginRight: 4,
+            }}
+          />
+          <Text
+            style={{
+              width: 70,
+              height: 16,
+              color: "lightgray",
+            }}
+          >
+            Tiếng anh
+          </Text>
+        </View>
       </View>
     </View>
-  </View>
-  )
-}
+  );
+};
 const SurveyResult = () => {
-  const [dataChart , setDataChart] = useState([]);
+  const [dataChart, setDataChart] = useState([]);
   const newData = Array(30).fill(0);
   useEffect(() => {
     for (let i = 0; i < data.chart.length; i++) {
@@ -246,38 +205,65 @@ const SurveyResult = () => {
         newData[j * data.chart.length + i] = dataNew[j];
       }
     }
-    setDataChart(newData)
-  }, [])
-  
-  console.log('dataChart',dataChart)
-  
-  // Interleave the data from the original arrays.
- 
-  
+
+    const result = newData.map((value, index) => {
+      if (index % 3 === 1) {
+        return {
+          value: value === 0 ? 1 : value,
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: { color: "red" },
+          frontColor: COLORS.yellow,
+        };
+      } else if ((index - 2) % 3 !== 0) {
+        return {
+          value: value === 0 ? 1 : value,
+          label: `${index / 3} - ${(index + 3) / 3}`,
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: { color: "gray" },
+          frontColor: COLORS.green,
+        };
+      } else {
+        return {
+          value: value === 0 ? 1 : value,
+          frontColor: COLORS.blue,
+        };
+      }
+    });
+    setDataChart(result);
+  }, []);
+
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.card}>
-            <Text>Kết quả thi</Text>
+            <Text style={styles.title}>Kết quả thi</Text>
             <View style={styles.content}>
-              <Text>Môn thi: {data?.event_name}</Text>
-              <Text>
-                Tổng điểm thi: {data?.total_score}/{data?.max_score}
+              <Text style={styles.text}>
+                <Text style={styles.note}>Môn thi: </Text>
+                {data?.event_name}
               </Text>
-              <Text>Mục tiêu: {data?.objective}</Text>
+              <Text style={styles.text}>
+                <Text style={styles.note}>Tổng điểm thi: </Text>
+                {data?.total_score}/{data?.max_score}
+              </Text>
+              <Text style={styles.text}>
+                <Text style={styles.note}>Mục tiêu: </Text>
+                {data?.objective}
+              </Text>
             </View>
           </View>
         </View>
         <View style={styles.container}>
           <View style={styles.card}>
-            {/* <Text>Thong ke ket qua</Text> */}
             <View style={styles.content}>
-            {renderTitle()}
+              {renderTitle()}
               <BarChart
-                data={barData}
+                data={dataChart}
                 barWidth={8}
-                spacing={20}
+                spacing={24}
                 roundedTop
                 roundedBottom
                 hideRules
@@ -285,15 +271,39 @@ const SurveyResult = () => {
                 yAxisThickness={0}
                 yAxisTextStyle={{ color: "gray" }}
                 noOfSections={3}
-                maxValue={100}
+                maxValue={30}
               />
             </View>
           </View>
         </View>
         <Spacer />
-        <View style={styles.container}>
-          <Text>Danh gia chi tiet mon thi</Text>
-        </View>
+        {data?.__danhgia.map((danhgia, index) => {
+          return (
+            <View style={styles.container} key={index}>
+              <View style={styles.card}>
+                <Text style={styles.title}>
+                  Đánh giá chi tiết môn thi: {danhgia.subject}
+                </Text>
+                <View style={styles.content}>
+                  <Text style={styles.text}>
+                    <Text style={styles.note}>Điểm: </Text>
+                    {danhgia?.diem}
+                  </Text>
+
+                  {
+                    danhgia.danh_gia.map((dg, index) => {
+                      return (
+                        <>
+                          
+                        </>
+                      )
+                    })
+                  }
+                </View>
+              </View>
+            </View>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
@@ -313,7 +323,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
+  content: { paddingHorizontal: 4 },
   card: {
     padding: 4,
+  },
+  title: {
+    color: "black",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  note: {
+    color: "black",
+  },
+  text: {
+    fontWeight: 500,
+    color: COLORS.gray,
   },
 });
