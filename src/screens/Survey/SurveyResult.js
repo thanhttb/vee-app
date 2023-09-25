@@ -1,9 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Modal,
+  Alert,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { SIZES, COLORS } from "../../utils/theme";
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 import Spacer from "../../components/Spacer";
 import { useEffect } from "react";
+import Button from "../../components/Button/ButtonSurvey";
+import ButtonSurvey from "../../components/Button/ButtonSurvey";
 
 const data = {
   chart: [
@@ -31,9 +42,10 @@ const data = {
       danh_gia: [
         {
           attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
+          content: "",
+          content_1:
+            "Con đã chép đủ 2 phiếu Câu Điều kiện vào vở nhưng chưa hoàn thành bài Test, con cần chú ý cố gắng hơn. Con còn nhầm lẫn nhiều ở phần phát âm và chia động từ.|",
+          content_2: "Con sai",
           created_at: "2023-01-04T17:10:32.000000Z",
           domain: "Toán",
           id: 2940,
@@ -49,7 +61,7 @@ const data = {
           created_at: "2023-01-04T17:10:32.000000Z",
           domain: "Toán",
           id: 2948,
-          title: "Trình bày",
+          title: "Đọc hiểu",
           total_score: 0,
           updated_at: "2023-01-05T17:16:42.000000Z",
         },
@@ -61,7 +73,43 @@ const data = {
           created_at: "2023-01-04T17:10:32.000000Z",
           domain: "Toán",
           id: 2949,
-          title: "Trình bày",
+          title: "Ngữ pháp",
+          total_score: 0,
+          updated_at: "2023-01-05T17:16:42.000000Z",
+        },
+        {
+          attempt_id: 6286,
+          content: "12|123",
+          content_1: "12",
+          content_2: "123",
+          created_at: "2023-01-04T17:10:32.000000Z",
+          domain: "Toán",
+          id: 2949,
+          title: "Viết lại câu",
+          total_score: 0,
+          updated_at: "2023-01-05T17:16:42.000000Z",
+        },
+        {
+          attempt_id: 6286,
+          content: "12|123",
+          content_1: "12",
+          content_2: "123",
+          created_at: "2023-01-04T17:10:32.000000Z",
+          domain: "Toán",
+          id: 2949,
+          title: "Lời khuyên cho giai đoạn tới",
+          total_score: 0,
+          updated_at: "2023-01-05T17:16:42.000000Z",
+        },
+        {
+          attempt_id: 6286,
+          content: "12|123",
+          content_1: "12",
+          content_2: "123",
+          created_at: "2023-01-04T17:10:32.000000Z",
+          domain: "Toán",
+          id: 2949,
+          title: "Lời khuyên cho giai đoạn tới",
           total_score: 0,
           updated_at: "2023-01-05T17:16:42.000000Z",
         },
@@ -115,6 +163,76 @@ const data = {
       diem_10: false,
       question_number: 1,
       subject: "Tieng Viet",
+    },
+    {
+      active: true,
+      danh_gia: [
+        {
+          attempt_id: 6286,
+          content: "",
+          content_1:
+            "Con đã chép đủ 2 phiếu Câu Điều kiện vào vở nhưng chưa hoàn thành bài Test, con cần chú ý cố gắng hơn. Con còn nhầm lẫn nhiều ở phần phát âm và chia động từ.|",
+          content_2: "Con sai",
+          created_at: "2023-01-04T17:10:32.000000Z",
+          domain: "Toán",
+          id: 2940,
+          title: "Trình bày",
+          total_score: 0,
+          updated_at: "2023-01-05T17:16:42.000000Z",
+        },
+        {
+          attempt_id: 6286,
+          content: "12|123",
+          content_1: "12",
+          content_2: "123",
+          created_at: "2023-01-04T17:10:32.000000Z",
+          domain: "Toán",
+          id: 2948,
+          title: "Đọc hiểu",
+          total_score: 0,
+          updated_at: "2023-01-05T17:16:42.000000Z",
+        },
+        {
+          attempt_id: 6286,
+          content: "12|123",
+          content_1: "12",
+          content_2: "123",
+          created_at: "2023-01-04T17:10:32.000000Z",
+          domain: "Toán",
+          id: 2949,
+          title: "Ngữ pháp",
+          total_score: 0,
+          updated_at: "2023-01-05T17:16:42.000000Z",
+        },
+        {
+          attempt_id: 6286,
+          content: "12|123",
+          content_1: "12",
+          content_2: "123",
+          created_at: "2023-01-04T17:10:32.000000Z",
+          domain: "Toán",
+          id: 2949,
+          title: "Viết lại câu",
+          total_score: 0,
+          updated_at: "2023-01-05T17:16:42.000000Z",
+        },
+        {
+          attempt_id: 6286,
+          content: "12|123",
+          content_1: "12",
+          content_2: "123",
+          created_at: "2023-01-04T17:10:32.000000Z",
+          domain: "Toán",
+          id: 2949,
+          title: "Lời khuyên cho giai đoạn tới",
+          total_score: 0,
+          updated_at: "2023-01-05T17:16:42.000000Z",
+        },
+      ],
+      diem: "9/0",
+      diem_10: false,
+      question_number: 1,
+      subject: "Toan",
     },
   ],
 };
@@ -197,6 +315,8 @@ const renderTitle = () => {
 };
 const SurveyResult = () => {
   const [dataChart, setDataChart] = useState([]);
+  const [isActive, setIsActive] = useState(false);
+  const [dataSurvey, setDataSurvey] = useState();
   const newData = Array(30).fill(0);
   useEffect(() => {
     for (let i = 0; i < data.chart.length; i++) {
@@ -234,8 +354,17 @@ const SurveyResult = () => {
     setDataChart(result);
   }, []);
 
+  const showReview = (data) => {
+    setIsActive(!isActive);
+    setDataSurvey(data);
+  };
+
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      edges={["right", "left", "top"]}
+      // style={{ paddingTop: Platform.OS === 'android' ? 20 : 0 }}
+      style={[styles.overlay, isActive == false && { opacity: 1 }]}
+    >
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.card}>
@@ -263,20 +392,19 @@ const SurveyResult = () => {
               <BarChart
                 data={dataChart}
                 barWidth={8}
-                spacing={24}
+                spacing={20}
                 roundedTop
-                roundedBottom
-                hideRules
+                // hideRules
                 xAxisThickness={0}
                 yAxisThickness={0}
                 yAxisTextStyle={{ color: "gray" }}
-                noOfSections={3}
+                noOfSections={6}
                 maxValue={30}
               />
             </View>
           </View>
         </View>
-        <Spacer />
+
         {data?.__danhgia.map((danhgia, index) => {
           return (
             <View style={styles.container} key={index}>
@@ -290,21 +418,62 @@ const SurveyResult = () => {
                     {danhgia?.diem}
                   </Text>
 
-                  {/* {
-                    danhgia.danh_gia.map((dg, index) => {
+                  <View style={styles.row}>
+                    {danhgia.danh_gia.map((dg, index) => {
                       return (
-                        <>
-                          
-                        </>
-                      )
-                    })
-                  } */}
+                        <Button
+                          onPress={() => showReview(dg)}
+                          label={dg.title}
+                          color={COLORS.green}
+                          background={COLORS.white}
+                        />
+                      );
+                    })}
+                  </View>
                 </View>
               </View>
             </View>
           );
         })}
       </ScrollView>
+
+      {isActive == true && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isActive}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}
+          style={{
+            height: SIZES.height,
+            width: SIZES.width,
+          }}
+        >
+          <TouchableWithoutFeedback onPress={() => setIsActive(false)}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={[styles.title, {paddingBottom: 10}]}>Tiêu chí: {dataSurvey?.title}</Text>
+                <Text style={[styles.title, { textAlign: "left", fontWeight: 700 }]}>
+                  Những điều con đã thể hiện tốt:
+                </Text>
+                <Text>{dataSurvey?.content_1}</Text>
+                <Text style={[styles.title, { textAlign: "left", fontWeight: 700 }]}>
+                  Những điều con có thể rút kinh nghiệm:
+                </Text>
+                <Text>{dataSurvey?.content_2}</Text>
+                <Spacer height={10} />
+                <Button
+                  onPress={() => setIsActive(false)}
+                  label={"Đóng"}
+                  color={COLORS.red}
+                  background={COLORS.white}
+                />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      )}
     </SafeAreaView>
   );
 };
@@ -314,7 +483,7 @@ export default SurveyResult;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: SIZES.spacing,
-    marginTop: SIZES.spacing,
+    marginTop: 16,
     backgroundColor: "white",
     borderRadius: SIZES.radius,
     elevation: 4,
@@ -323,7 +492,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    opacity: 0.4,
+  },
   content: { paddingHorizontal: 4 },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    marginVertical: SIZES.spacing,
+  },
   card: {
     padding: 4,
   },
@@ -335,9 +518,30 @@ const styles = StyleSheet.create({
   },
   note: {
     color: "black",
+    textAlign: "center",
   },
   text: {
     fontWeight: 500,
     color: COLORS.gray,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 10,
+    backgroundColor: "white",
+    borderRadius: SIZES.radius,
+    padding: SIZES.padding,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
