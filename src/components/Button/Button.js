@@ -8,6 +8,7 @@ export default function Button({ label, onPress, color, background, loading }) {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={loading}
       style={{
         backgroundColor: background,
         borderWidth: 1,

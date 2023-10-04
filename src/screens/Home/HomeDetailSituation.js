@@ -52,6 +52,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
   const [emailParent, setEmailParent] = useState(user.email);
   const [keyboardStatus, setKeyboardStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [activeLoading, setActiveLoading] = useState(false)
 
   useEffect(() => {
     if (status.isPlaying) triggerAudio(ref);
@@ -74,6 +75,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
 
   const postEmailParent = async () => {
     setLoading(true);
+    setActiveLoading(true)
     axios
       .post(
         "https://api.vietelite.edu.vn/api/session/send-email",
@@ -92,6 +94,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
         console.log("res");
         setActive(false);
         setLoading(false);
+        setActiveLoading(false)
         Alert.alert(
           "VietElite",
           "Gửi thành công, vui lòng kiểm tra hòm thư",
@@ -110,6 +113,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
       .catch((err) => {
         console.log("err", err);
         setLoading(false);
+        setActiveLoading(false)
         Alert.alert(
           "VietElite",
           "Gửi thất bại, vui lòng kiểm tra lại",
@@ -346,7 +350,9 @@ const HomeDetailSituation = ({ route, navigation }) => {
                   <Spacer height={10} />
                   <ButtonComponent
                     label={"Xác nhận gửi"}
+                    
                     color={COLORS.white}
+                    loading={loading}
                     background={COLORS.green}
                     onPress={postEmailParent}
                   />
