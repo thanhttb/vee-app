@@ -14,6 +14,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  Alert
 } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -49,7 +50,8 @@ const HomeDetailSituation = ({ route, navigation }) => {
   const [active, setActive] = useState(false);
   const [status, setStatus] = useState({});
   const [emailParent, setEmailParent] = useState(user.email);
-  const [keyboardStatus, setKeyboardStatus] = useState('');
+  const [keyboardStatus, setKeyboardStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (status.isPlaying) triggerAudio(ref);
@@ -71,6 +73,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
   };
 
   const postEmailParent = async () => {
+    setLoading(true);
     axios
       .post(
         "https://api.vietelite.edu.vn/api/session/send-email",
@@ -88,16 +91,48 @@ const HomeDetailSituation = ({ route, navigation }) => {
       .then((res) => {
         console.log("res");
         setActive(false);
+        setLoading(false);
+        Alert.alert(
+          "VietElite",
+          "Gửi thành công, vui lòng kiểm tra hòm thư",
+          [
+            // { text: "Để sau", onPress: () => console.log("OK Pressed") },
+            {
+              text: "Xác nhận",
+              
+            },
+          ],
+          {
+            userInterfaceStyle: "light",
+          }
+        );
       })
-      .catch((err) => console.log("err", err));
+      .catch((err) => {
+        console.log("err", err);
+        setLoading(false);
+        Alert.alert(
+          "VietElite",
+          "Gửi thất bại, vui lòng kiểm tra lại",
+          [
+            // { text: "Để sau", onPress: () => console.log("OK Pressed") },
+            {
+              text: "Xác nhận",
+              
+            },
+          ],
+          {
+            userInterfaceStyle: "light",
+          }
+        );
+      });
   };
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardStatus('Keyboard Shown');
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus("Keyboard Shown");
     });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardStatus('Keyboard Hidden');
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus("Keyboard Hidden");
     });
 
     return () => {
@@ -105,7 +140,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
       hideSubscription.remove();
     };
   }, []);
-
 
   return (
     <KeyboardAvoidingView
@@ -287,7 +321,13 @@ const HomeDetailSituation = ({ route, navigation }) => {
             )}
           </Modal>
 
-          <View style={{ position: "absolute", bottom: keyboardStatus == 'Keyboard Shown' ?100 :10, width: "100%" }}>
+          <View
+            style={{
+              position: "absolute",
+              bottom: keyboardStatus == "Keyboard Shown" ? 100 : 10,
+              width: "100%",
+            }}
+          >
             <View style={{ marginHorizontal: SIZES.padding }}>
               {active == true ? (
                 <>
