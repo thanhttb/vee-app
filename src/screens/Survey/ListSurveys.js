@@ -1,45 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView } from "react-native";
 import { Text, View, FlatList, StyleSheet } from "react-native";
 import VertiacalSurvey from "../../components/Vertical/VertiacalSurvey";
 import { SIZES } from "../../utils/theme";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const data = [
-  {
-    id: 1,
-    student: "Phajm quynh chi 1",
-    target: "",
-    exam: "Toán điều kiện",
-    time: "16:00-18:00, 07/01/2023",
-    location: "Số 17,ngõ 26 phó Đỗ Quang, Trung Hòa, Cầu Giấy",
-    sbd: "30285",
-    room: "30285",
-  },
-  {
-    id: 2,
-    student: "Phajm quynh chi 2",
-    target: "",
-    exam: "Toán điều kiện",
-    time: "16:00-18:00, 07/01/2023",
-    location: "Số 17,ngõ 26 phó Đỗ Quang, Trung Hòa, Cầu Giấy",
-    sbd: "30285",
-    room: "30285",
-  },
-  {
-    id: 3,
-    student: "Phajm quynh chi 3",
-    target: "",
-    exam: "Toán điều kiện",
-    time: "16:00-18:00, 07/01/2023",
-    location: "Số 17,ngõ 26 phó Đỗ Quang, Trung Hòa, Cầu Giấy",
-    sbd: "30285",
-    room: "30285",
-  },
-];
 const ListSurveys = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    setIsLoading(true)
+    async function fetchData() {
+      let token = await AsyncStorage.getItem("tokenUser");
+      axios
+        .get("https://api.vietelite.edu.vn/api/event/get", {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((res) => {setData(res.data); setIsLoading(false)})
+        .catch((err) => {console.log(err); setIsLoading(false)});
+    }
+    fetchData();
+  }, []);
   return (
-    <SafeAreaView style={{ flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       {isLoading == true ? (
         <View style={styles.loading}>
           <ActivityIndicator />
@@ -71,9 +58,11 @@ const ListSurveys = () => {
 export default ListSurveys;
 
 const styles = StyleSheet.create({
+ loading: {
   display: "flex",
   flex: 1,
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
+ }
 });

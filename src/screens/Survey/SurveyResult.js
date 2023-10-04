@@ -8,6 +8,7 @@ import {
   Modal,
   Alert,
   TouchableWithoutFeedback,
+  ActivityIndicator
 } from "react-native";
 import { SIZES, COLORS } from "../../utils/theme";
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
@@ -15,227 +16,229 @@ import Spacer from "../../components/Spacer";
 import { useEffect } from "react";
 import Button from "../../components/Button/ButtonSurvey";
 import ButtonSurvey from "../../components/Button/ButtonSurvey";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const data = {
-  chart: [
-    {
-      name: "Toan",
-      data: [10, 6, 11, 18, 19, 15, 7, 8, 1, 5],
-    },
-    {
-      name: "Tiếng Việt",
-      data: [2, 1, 6, 18, 26, 20, 15, 6, 0, 6],
-    },
-    { name: "Tiếng Anh", data: [0, 0, 11, 14, 16, 17, 17, 12, 6, 7] },
-  ],
-  event_name: "Khảo sát 5 lên 6 năm 2023 đợt 1",
-  max_score: 0,
-  objective: "Marie Curie",
-  session_name: "Tổ hợp Toán - Tiếng Việt - Tiếng Anh ngày 1",
-  status: 1,
-  student_name: "Quang Minh",
-  time: "07/01/2023 08:00",
-  total_score: 22.5,
-  __danhgia: [
-    {
-      active: true,
-      danh_gia: [
-        {
-          attempt_id: 6286,
-          content: "",
-          content_1:
-            "Con đã chép đủ 2 phiếu Câu Điều kiện vào vở nhưng chưa hoàn thành bài Test, con cần chú ý cố gắng hơn. Con còn nhầm lẫn nhiều ở phần phát âm và chia động từ.|",
-          content_2: "Con sai",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2940,
-          title: "Trình bày",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2948,
-          title: "Đọc hiểu",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2949,
-          title: "Ngữ pháp",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2949,
-          title: "Viết lại câu",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2949,
-          title: "Lời khuyên cho giai đoạn tới",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2949,
-          title: "Lời khuyên cho giai đoạn tới",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-      ],
-      diem: "9/0",
-      diem_10: false,
-      question_number: 1,
-      subject: "Toan",
-    },
-    {
-      active: false,
-      danh_gia: [
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2940,
-          title: "Trình bày",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2948,
-          title: "Trình bày",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2949,
-          title: "Trình bày",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-      ],
-      diem: "9/0",
-      diem_10: false,
-      question_number: 1,
-      subject: "Tieng Viet",
-    },
-    {
-      active: true,
-      danh_gia: [
-        {
-          attempt_id: 6286,
-          content: "",
-          content_1:
-            "Con đã chép đủ 2 phiếu Câu Điều kiện vào vở nhưng chưa hoàn thành bài Test, con cần chú ý cố gắng hơn. Con còn nhầm lẫn nhiều ở phần phát âm và chia động từ.|",
-          content_2: "Con sai",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2940,
-          title: "Trình bày",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2948,
-          title: "Đọc hiểu",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2949,
-          title: "Ngữ pháp",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2949,
-          title: "Viết lại câu",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-        {
-          attempt_id: 6286,
-          content: "12|123",
-          content_1: "12",
-          content_2: "123",
-          created_at: "2023-01-04T17:10:32.000000Z",
-          domain: "Toán",
-          id: 2949,
-          title: "Lời khuyên cho giai đoạn tới",
-          total_score: 0,
-          updated_at: "2023-01-05T17:16:42.000000Z",
-        },
-      ],
-      diem: "9/0",
-      diem_10: false,
-      question_number: 1,
-      subject: "Toan",
-    },
-  ],
-};
+// const data = {
+//   chart: [
+//     {
+//       name: "Toan",
+//       data: [10, 6, 11, 18, 19, 15, 7, 8, 1, 5],
+//     },
+//     {
+//       name: "Tiếng Việt",
+//       data: [2, 1, 6, 18, 26, 20, 15, 6, 0, 6],
+//     },
+//     { name: "Tiếng Anh", data: [0, 0, 11, 14, 16, 17, 17, 12, 6, 7] },
+//   ],
+//   event_name: "Khảo sát 5 lên 6 năm 2023 đợt 1",
+//   max_score: 0,
+//   objective: "Marie Curie",
+//   session_name: "Tổ hợp Toán - Tiếng Việt - Tiếng Anh ngày 1",
+//   status: 1,
+//   student_name: "Quang Minh",
+//   time: "07/01/2023 08:00",
+//   total_score: 22.5,
+//   __danhgia: [
+//     {
+//       active: true,
+//       danh_gia: [
+//         {
+//           attempt_id: 6286,
+//           content: "",
+//           content_1:
+//             "Con đã chép đủ 2 phiếu Câu Điều kiện vào vở nhưng chưa hoàn thành bài Test, con cần chú ý cố gắng hơn. Con còn nhầm lẫn nhiều ở phần phát âm và chia động từ.|",
+//           content_2: "Con sai",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2940,
+//           title: "Trình bày",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2948,
+//           title: "Đọc hiểu",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2949,
+//           title: "Ngữ pháp",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2949,
+//           title: "Viết lại câu",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2949,
+//           title: "Lời khuyên cho giai đoạn tới",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2949,
+//           title: "Lời khuyên cho giai đoạn tới",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//       ],
+//       diem: "9/0",
+//       diem_10: false,
+//       question_number: 1,
+//       subject: "Toan",
+//     },
+//     {
+//       active: false,
+//       danh_gia: [
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2940,
+//           title: "Trình bày",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2948,
+//           title: "Trình bày",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2949,
+//           title: "Trình bày",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//       ],
+//       diem: "9/0",
+//       diem_10: false,
+//       question_number: 1,
+//       subject: "Tieng Viet",
+//     },
+//     {
+//       active: true,
+//       danh_gia: [
+//         {
+//           attempt_id: 6286,
+//           content: "",
+//           content_1:
+//             "Con đã chép đủ 2 phiếu Câu Điều kiện vào vở nhưng chưa hoàn thành bài Test, con cần chú ý cố gắng hơn. Con còn nhầm lẫn nhiều ở phần phát âm và chia động từ.|",
+//           content_2: "Con sai",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2940,
+//           title: "Trình bày",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2948,
+//           title: "Đọc hiểu",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2949,
+//           title: "Ngữ pháp",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2949,
+//           title: "Viết lại câu",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//         {
+//           attempt_id: 6286,
+//           content: "12|123",
+//           content_1: "12",
+//           content_2: "123",
+//           created_at: "2023-01-04T17:10:32.000000Z",
+//           domain: "Toán",
+//           id: 2949,
+//           title: "Lời khuyên cho giai đoạn tới",
+//           total_score: 0,
+//           updated_at: "2023-01-05T17:16:42.000000Z",
+//         },
+//       ],
+//       diem: "9/0",
+//       diem_10: false,
+//       question_number: 1,
+//       subject: "Toan",
+//     },
+//   ],
+// };
 
 const renderTitle = () => {
   return (
@@ -313,46 +316,78 @@ const renderTitle = () => {
     </View>
   );
 };
-const SurveyResult = () => {
+const SurveyResult = ({ route, navigation }) => {
   const [dataChart, setDataChart] = useState([]);
   const [isActive, setIsActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [dataSurvey, setDataSurvey] = useState();
+  const [data, setData] = useState();
   const newData = Array(30).fill(0);
-  useEffect(() => {
-    for (let i = 0; i < data.chart.length; i++) {
-      const dataNew = data.chart[i].data;
-      for (let j = 0; j < dataNew.length; j++) {
-        newData[j * data.chart.length + i] = dataNew[j];
-      }
-    }
+  const { result_id } = route.params;
 
-    const result = newData.map((value, index) => {
-      if (index % 3 === 1) {
-        return {
-          value: value === 0 ? 1 : value,
-          spacing: 2,
-          labelWidth: 30,
-          labelTextStyle: { color: "red" },
-          frontColor: COLORS.yellow,
-        };
-      } else if ((index - 2) % 3 !== 0) {
-        return {
-          value: value === 0 ? 1 : value,
-          label: `${index / 3}-${(index + 3) / 3}`,
-          spacing: 2,
-          labelWidth: 30,
-          labelTextStyle: { color: "gray" },
-          frontColor: COLORS.green,
-        };
-      } else {
-        return {
-          value: value === 0 ? 1 : value,
-          frontColor: COLORS.blue,
-        };
+  useEffect(() => {
+    setIsLoading(true);
+    async function fetchData() {
+      let token = await AsyncStorage.getItem("tokenUser");
+      axios
+        .get(
+          `https://api.vietelite.edu.vn/api/portal/event/result?ss_id=${result_id}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then((res) => {
+          setData(res.data);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log("ERROR", err);
+          setIsLoading(false);
+        });
+    }
+    fetchData();
+  }, [result_id]);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      for (let i = 0; i < data?.chart?.length; i++) {
+        const dataNew = data?.chart[i].data;
+        for (let j = 0; j < dataNew.length; j++) {
+          newData[j * data.chart.length + i] = dataNew[j];
+        }
       }
-    });
-    setDataChart(result);
-  }, []);
+
+      const result = newData.map((value, index) => {
+        if (index % 3 === 1) {
+          return {
+            value: value === 0 ? 1 : value,
+            spacing: 2,
+            labelWidth: 30,
+            labelTextStyle: { color: "red" },
+            frontColor: COLORS.yellow,
+          };
+        } else if ((index - 2) % 3 !== 0) {
+          return {
+            value: value === 0 ? 1 : value,
+            label: `${index / 3}-${(index + 3) / 3}`,
+            spacing: 2,
+            labelWidth: 30,
+            labelTextStyle: { color: "gray" },
+            frontColor: COLORS.green,
+          };
+        } else {
+          return {
+            value: value === 0 ? 1 : value,
+            frontColor: COLORS.blue,
+          };
+        }
+      });
+      setDataChart(result);
+    }
+  }, [data]);
 
   const showReview = (data) => {
     setIsActive(!isActive);
@@ -362,80 +397,110 @@ const SurveyResult = () => {
   return (
     <SafeAreaView
       edges={["right", "left", "top"]}
-      // style={{ paddingTop: Platform.OS === 'android' ? 20 : 0 }}
       style={[styles.overlay, isActive == false && { opacity: 1 }]}
     >
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.card}>
-            <Text style={styles.title}>Kết quả thi</Text>
-            <View style={styles.content}>
-              <Text style={styles.text}>
-                <Text style={styles.note}>Môn thi: </Text>
-                {data?.event_name}
-              </Text>
-              <Text style={styles.text}>
-                <Text style={styles.note}>Tổng điểm thi: </Text>
-                {data?.total_score}/{data?.max_score}
-              </Text>
-              <Text style={styles.text}>
-                <Text style={styles.note}>Mục tiêu: </Text>
-                {data?.objective}
-              </Text>
-            </View>
-          </View>
+      {isLoading == true ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" , flexDirection: 'row'}}
+        >
+          <ActivityIndicator size="small" color={COLORS.green}style={{paddingRight: 2}}/>
+          <Text style={styles.titleNote}>Loading</Text>
         </View>
-        <View style={styles.container}>
-          <View style={styles.card}>
-            <View style={styles.content}>
-              {renderTitle()}
-              <BarChart
-                data={dataChart}
-                barWidth={8}
-                spacing={20}
-                roundedTop
-                // hideRules
-                xAxisThickness={0}
-                yAxisThickness={0}
-                yAxisTextStyle={{ color: "gray" }}
-                noOfSections={6}
-                maxValue={30}
-              />
-            </View>
-          </View>
-        </View>
-
-        {data?.__danhgia.map((danhgia, index) => {
-          return (
-            <View style={styles.container} key={index}>
-              <View style={styles.card}>
-                <Text style={styles.title}>
-                  Đánh giá chi tiết môn thi: {danhgia.subject}
-                </Text>
-                <View style={styles.content}>
-                  <Text style={styles.text}>
-                    <Text style={styles.note}>Điểm: </Text>
-                    {danhgia?.diem}
-                  </Text>
-
-                  <View style={styles.row}>
-                    {danhgia.danh_gia.map((dg, index) => {
-                      return (
-                        <Button
-                          onPress={() => showReview(dg)}
-                          label={dg.title}
-                          color={COLORS.green}
-                          background={COLORS.white}
-                        />
-                      );
-                    })}
+      ) : (
+        <>
+          {data?.status == 0 ? (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={styles.titleNote}>Môn thi của bạn chưa có điểm, vui lòng đợi !!! </Text>
+              </View>
+            </>
+          ) : (
+            <>
+              <ScrollView>
+                <View style={styles.container}>
+                  <View style={styles.card}>
+                    <Text style={styles.title}>Kết quả thi</Text>
+                    <View style={styles.content}>
+                      <Text style={styles.text}>
+                        <Text style={styles.note}>Môn thi: </Text>
+                        {data?.event_name}
+                      </Text>
+                      <Text style={styles.text}>
+                        <Text style={styles.note}>Tổng điểm thi: </Text>
+                        {data?.total_score}/{data?.max_score}
+                      </Text>
+                      <Text style={styles.text}>
+                        <Text style={styles.note}>Mục tiêu: </Text>
+                        {data?.objective}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </View>
-          );
-        })}
-      </ScrollView>
+                <View style={styles.container}>
+                  <View style={styles.card}>
+                    {data && data.chart && (
+                      <>
+                        <View style={styles.content}>
+                          {renderTitle()}
+                          <BarChart
+                            data={dataChart}
+                            barWidth={8}
+                            spacing={20}
+                            roundedTop
+                            xAxisThickness={0}
+                            yAxisThickness={0}
+                            yAxisTextStyle={{ color: "gray" }}
+                            noOfSections={6}
+                            maxValue={30}
+                          />
+                        </View>
+                      </>
+                    )}
+                  </View>
+                </View>
+
+                {data?.__danhgia.map((danhgia, index) => {
+                  return (
+                    <View style={styles.container} key={index}>
+                      <View style={styles.card}>
+                        <Text style={styles.title}>
+                          Đánh giá chi tiết môn thi: {danhgia.subject}
+                        </Text>
+                        <View style={styles.content}>
+                          <Text style={styles.text}>
+                            <Text style={styles.note}>Điểm: </Text>
+                            {danhgia?.diem}
+                          </Text>
+
+                          <View style={styles.row}>
+                            {danhgia.danh_gia.map((dg, index) => {
+                              return (
+                                <Button
+                                key={index}
+                                  onPress={() => showReview(dg)}
+                                  label={dg.title}
+                                  color={COLORS.green}
+                                  background={COLORS.white}
+                                />
+                              );
+                            })}
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  );
+                })}
+              </ScrollView>
+            </>
+          )}
+        </>
+      )}
 
       {isActive == true && (
         <Modal
@@ -453,12 +518,18 @@ const SurveyResult = () => {
           <TouchableWithoutFeedback onPress={() => setIsActive(false)}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={[styles.title, {paddingBottom: 10}]}>Tiêu chí: {dataSurvey?.title}</Text>
-                <Text style={[styles.title, { textAlign: "left", fontWeight: 700 }]}>
+                <Text style={[styles.title, { paddingBottom: 10 }]}>
+                  Tiêu chí: {dataSurvey?.title}
+                </Text>
+                <Text
+                  style={[styles.title, { textAlign: "left", fontWeight: 700 }]}
+                >
                   Những điều con đã thể hiện tốt:
                 </Text>
                 <Text>{dataSurvey?.content_1}</Text>
-                <Text style={[styles.title, { textAlign: "left", fontWeight: 700 }]}>
+                <Text
+                  style={[styles.title, { textAlign: "left", fontWeight: 700 }]}
+                >
                   Những điều con có thể rút kinh nghiệm:
                 </Text>
                 <Text>{dataSurvey?.content_2}</Text>
@@ -544,4 +615,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+
+  titleNote: {
+    fontWeight: 500,
+    color: COLORS.green
+  }
 });

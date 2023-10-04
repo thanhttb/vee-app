@@ -93,6 +93,7 @@ const HomeWork = ({ route, navigation }) => {
       .catch((err) => {setIsLoading(false)});
   }, [selectedItem]);
 
+
   useEffect(() => {
     if (selectedItem !== null) {
       let index = classes.findIndex((item) => item.id == selectedItem.id);

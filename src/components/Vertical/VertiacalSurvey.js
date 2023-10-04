@@ -21,18 +21,18 @@ const VertiacalSurvey = ({ item }) => {
           style={{ width: "100%", height: 150, borderRadius: SIZES.radius, resizeMode:'center' }}
         />
         <View style={styles.content}>
-          <Text style={styles.name}>Học sinh: {item?.student}</Text>
+          <Text style={styles.name}>Học sinh: {item?.student_name}</Text>
           <Text style={styles.text}>
             <Text style={styles.note}>Mục tiêu: </Text>
-            {item?.target}
+            {item?.event_name}
           </Text>
           <Text style={styles.text}>
             <Text style={styles.note}>Môn khảo sát: </Text>
-            {item?.exam}
+            {item?.ss_name}
           </Text>
           <Text style={styles.text}>
             <Text style={styles.note}>Thời gian: </Text>
-            {item?.time}
+            {item?.due_date}
           </Text>
           <Text style={styles.text}>
             <Text style={styles.note}>Cơ sở thi: </Text>
@@ -42,17 +42,13 @@ const VertiacalSurvey = ({ item }) => {
             <Text style={styles.note}>SBD: </Text>
             {item?.sbd}
           </Text>
-          <Text style={styles.text}>
-            <Text style={styles.note}>Phòng thi: </Text>
-            {item?.room}
-          </Text>
         </View>
 
         <View>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("Kết quả khảo sát", {
-                //   teacher_id: item.item.teacher_id,
+                  result_id: item.ss_id,
               })
             }
           >

@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   RefreshControl,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 //npm
 import _ from "lodash";
@@ -54,7 +55,9 @@ const Home = () => {
   const dispatch = useDispatch();
   const { user, authToken } = useSelector((state) => state.authReducer);
   const { users } = useSelector((state) => state.userReducer);
-  const { classes, isLoadingClass } = useSelector((state) => state.classReducer);
+  const { classes, isLoadingClass } = useSelector(
+    (state) => state.classReducer
+  );
 
   const [dataPost, setDataPost] = useState([]);
   const [arrClass, setArrClass] = useState([]);
@@ -78,7 +81,6 @@ const Home = () => {
     dispatch(userList(user?.id));
   }, [dispatch]);
 
-  
   const getData = async () => {
     setLoading(true);
     await axios
@@ -110,32 +112,31 @@ const Home = () => {
     setArrClass(idArray);
   }, [classes]);
 
-
   useEffect(() => {
     setLoading(true);
-    if(isLoadingClass == false){
+    if (isLoadingClass == false) {
       axios
-      .post(
-        BASE_URL + "feed/get",
-        {
-          parent_id: user.id,
-          class_ids: arrClass,
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: "Bearer " + authToken,
+        .post(
+          BASE_URL + "feed/get",
+          {
+            parent_id: user.id,
+            class_ids: arrClass,
           },
-        }
-      )
-      .then((response) => {
-        setDataPost(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Home err", err);
-        setLoading(false);
-      });
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: "Bearer " + authToken,
+            },
+          }
+        )
+        .then((response) => {
+          setDataPost(response.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Home err", err);
+          setLoading(false);
+        });
     }
   }, [arrClass]);
 
@@ -284,7 +285,6 @@ const Home = () => {
     }),
   };
 
-
   return (
     <GestureHandlerRootView style={styles.safeview}>
       <KeyboardAvoidingView
@@ -361,15 +361,31 @@ const Home = () => {
           >
             <View style={styles.paddingForHeader}></View>
             <Animated.View style={styles.scrollViewContent}>
-              {loading == true || isLoadingClass == true  ? (
+              {loading == true || isLoadingClass == true ? (
                 <View style={styles.loading}>
                   <ActivityIndicator size={"small"} />
                   <Text style={{ textAlign: "center" }}> Loading...</Text>
                 </View>
               ) : (
                 <>
-                  {dataPost?.length > 0  ? (
+                  {dataPost?.length > 0 ? (
                     <View style={{ flex: 1 }}>
+                      <View style={{ marginHorizontal: SIZES.padding }}>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate("Khảo sát")}
+                        >
+                          <Image
+                            source={require("../../../assets/ket-qua-01.jpg")}
+                            style={{
+                              width: "100%",
+                              height: 180,
+                              borderRadius: 16,
+                              marginTop: SIZES.padding,
+                            }}
+                            resizeMode="cover"
+                          />
+                        </TouchableOpacity>
+                      </View>
                       <FlatList
                         nestedScrollEnabled
                         style={{ flex: 1, paddingBottom: 20 }}
@@ -378,13 +394,6 @@ const Home = () => {
                         data={dataPost}
                         scrollEnabled={false}
                         renderItem={(item) => <VerticalPostCard item={item} />}
-                        //   maxToRenderPerBatch={5} //render only 5 items per scroll.
-                        //   onEndReached={onScrollHandler}
-                        //  onEndReachedThreshold={0.1}
-                        //  onScrollBeginDrag={() => {
-                        //   stopFetchMore = false;
-                        // }}
-                        // ListFooterComponent={() => loadingMore && <ListFooterComponent />}
                       />
                     </View>
                   ) : (
