@@ -1,13 +1,14 @@
-import React from "react";
 import {
-  View,
-  Text,
-  Image,
   Button,
-  TouchableOpacity,
+  Image,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
+
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
 const VertiacalSurvey = ({ item }) => {
@@ -49,6 +50,8 @@ const VertiacalSurvey = ({ item }) => {
             onPress={() =>
               navigation.navigate("Kết quả khảo sát", {
                   result_id: item.ss_id,
+                  ss_name: item.ss_name,
+                  grade: item.grade
               })
             }
           >

@@ -19,91 +19,15 @@ import Spacer from "../../components/Spacer";
 import axios from "axios";
 import { useEffect } from "react";
 
-const renderTitle = () => {
-  return (
-    <View>
-      <Text style={styles.title}>Thống kê kết quả</Text>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          marginTop: 12,
-        }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              height: 12,
-              width: 12,
-              borderRadius: 6,
-              backgroundColor: COLORS.green,
-              marginRight: 4,
-            }}
-          />
-          <Text
-            style={{
-              width: 70,
-              height: 16,
-              color: "lightgray",
-            }}
-          >
-            Toán
-          </Text>
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              height: 12,
-              width: 12,
-              borderRadius: 6,
-              backgroundColor: COLORS.yellow,
-              marginRight: 4,
-            }}
-          />
-          <Text
-            style={{
-              width: 70,
-              height: 16,
-              color: "lightgray",
-            }}
-          >
-            Tiếng việt
-          </Text>
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              height: 12,
-              width: 12,
-              borderRadius: 6,
-              backgroundColor: COLORS.blue,
-              marginRight: 4,
-            }}
-          />
-          <Text
-            style={{
-              width: 70,
-              height: 16,
-              color: "lightgray",
-            }}
-          >
-            Tiếng anh
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
-};
 const SurveyResult = ({ route, navigation }) => {
   const [dataChart, setDataChart] = useState([]);
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingBarChart, setIsLoadingBarChart] = useState(false)
+  const [isLoadingBarChart, setIsLoadingBarChart] = useState(false);
   const [dataSurvey, setDataSurvey] = useState();
   const [data, setData] = useState();
-  const newData = Array(30).fill(0);
-  const { result_id } = route.params;
+
+  const { result_id, ss_name, grade } = route.params;
 
   useEffect(() => {
     setIsLoading(true);
@@ -132,7 +56,10 @@ const SurveyResult = ({ route, navigation }) => {
   }, [result_id]);
 
   useEffect(() => {
-    setIsLoadingBarChart(true)
+    const newData = Array(
+      data?.chart?.length == 3 ? 30 : data?.chart?.length == 2 ? 20 : 10
+    ).fill(0);
+    setIsLoadingBarChart(true);
     if (data !== undefined) {
       for (let i = 0; i < data?.chart?.length; i++) {
         const dataNew = data?.chart[i].data;
@@ -141,41 +68,160 @@ const SurveyResult = ({ route, navigation }) => {
         }
       }
 
-      const result = newData.map((value, index) => {
-        if (index % 3 === 1) {
+      if (data?.chart?.length == 3) {
+        const result = newData.map((value, index) => {
+          if (index % 3 === 1) {
+            return {
+              value: value === 0 ? 1 : value,
+              spacing: 2,
+              labelWidth: 30,
+              labelTextStyle: { color: "red" },
+              frontColor: COLORS.yellow,
+            };
+          } else if ((index - 2) % 3 !== 0) {
+            return {
+              value: value === 0 ? 1 : value,
+              label: `${index / 3}-${(index + 3) / 3}`,
+              spacing: 2,
+              labelWidth: 30,
+              labelTextStyle: { color: "gray" },
+              frontColor: COLORS.green,
+            };
+          } else {
+            return {
+              value: value === 0 ? 1 : value,
+              frontColor: COLORS.blue,
+            };
+          }
+        });
+        setDataChart(result);
+        setIsLoadingBarChart(false);
+      } else {
+        const result = newData?.map((value, index) => {
           return {
             value: value === 0 ? 1 : value,
-            spacing: 2,
-            labelWidth: 30,
-            labelTextStyle: { color: "red" },
-            frontColor: COLORS.yellow,
-          };
-        } else if ((index - 2) % 3 !== 0) {
-          return {
-            value: value === 0 ? 1 : value,
-            label: `${index / 3}-${(index + 3) / 3}`,
-            spacing: 2,
-            labelWidth: 30,
-            labelTextStyle: { color: "gray" },
+            spacing: 10,
+            label: `${index + 1}`,
+            labelWidth: 10,
+            labelTextStyle: COLORS.green,
             frontColor: COLORS.green,
           };
-        } else {
-          return {
-            value: value === 0 ? 1 : value,
-            frontColor: COLORS.blue,
-          };
-        }
-      });
-      setDataChart(result);
-      setIsLoadingBarChart(false)
+        });
+        setDataChart(result);
+        setIsLoadingBarChart(false);
+      }
     }
   }, [data]);
-
-  console.log('isLoadingBarChart', isLoadingBarChart)
 
   const showReview = (data) => {
     setIsActive(!isActive);
     setDataSurvey(data);
+  };
+
+  const renderTitle = () => {
+    return (
+      <View>
+        <Text style={styles.title}>Thống kê kết quả</Text>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            marginTop: 12,
+          }}
+        >
+          {grade === 5 && (
+            <>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    height: 12,
+                    width: 12,
+                    borderRadius: 6,
+                    backgroundColor: COLORS.green,
+                    marginRight: 4,
+                  }}
+                />
+                <Text
+                  style={{
+                    width: 70,
+                    height: 16,
+                    color: "lightgray",
+                  }}
+                >
+                  Toán
+                </Text>
+              </View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    height: 12,
+                    width: 12,
+                    borderRadius: 6,
+                    backgroundColor: COLORS.yellow,
+                    marginRight: 4,
+                  }}
+                />
+                <Text
+                  style={{
+                    width: 70,
+                    height: 16,
+                    color: "lightgray",
+                  }}
+                >
+                  Tiếng việt
+                </Text>
+              </View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    height: 12,
+                    width: 12,
+                    borderRadius: 6,
+                    backgroundColor: COLORS.blue,
+                    marginRight: 4,
+                  }}
+                />
+                <Text
+                  style={{
+                    width: 70,
+                    height: 16,
+                    color: "lightgray",
+                  }}
+                >
+                  Tiếng anh
+                </Text>
+              </View>
+            </>
+          )}
+
+          {grade === 9 && (
+            <>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    height: 12,
+                    width: 12,
+                    borderRadius: 6,
+                    backgroundColor: COLORS.green,
+                    marginRight: 4,
+                  }}
+                />
+                <Text
+                  style={{
+                    width: 120,
+                    height: 16,
+                    color: "lightgray",
+                  }}
+                >
+                  {ss_name}
+                </Text>
+              </View>
+            </>
+          )}
+        </View>
+      </View>
+    );
   };
 
   return (
@@ -211,7 +257,7 @@ const SurveyResult = ({ route, navigation }) => {
                 }}
               >
                 <Text style={styles.titleNote}>
-                  Môn thi của bạn chưa có điểm, vui lòng đợi !!!{" "}
+                  Môn thi của bạn chưa có điểm, vui lòng đợi !!!
                 </Text>
               </View>
             </>
@@ -224,11 +270,11 @@ const SurveyResult = ({ route, navigation }) => {
                     <View style={styles.content}>
                       <Text style={styles.text}>
                         <Text style={styles.note}>Môn thi: </Text>
-                        {data?.event_name}
+                        {data?.session_name}
                       </Text>
                       <Text style={styles.text}>
                         <Text style={styles.note}>Tổng điểm thi: </Text>
-                        {data?.total_score}/{data?.max_score}
+                        {data?.total_score}/
                       </Text>
                       <Text style={styles.text}>
                         <Text style={styles.note}>Mục tiêu: </Text>
@@ -237,7 +283,7 @@ const SurveyResult = ({ route, navigation }) => {
                     </View>
                   </View>
                 </View>
-                <View style={styles.container}>
+                {/* <View style={styles.container}>
                   <View style={styles.card}>
                     {data && !data.chart && isLoadingBarChart === true ? (
                       <ActivityIndicator />
@@ -266,13 +312,14 @@ const SurveyResult = ({ route, navigation }) => {
                             yAxisThickness={0}
                             yAxisTextStyle={{ color: "gray" }}
                             noOfSections={6}
-                            maxValue={30}
+
+                            // maxValue={30}
                           />
                         </View>
                       </>
                     )}
                   </View>
-                </View>
+                </View> */}
 
                 {data?.__danhgia.map((danhgia, index) => {
                   return (

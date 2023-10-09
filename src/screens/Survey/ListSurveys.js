@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView } from "react-native";
-import { Text, View, FlatList, StyleSheet } from "react-native";
-import VertiacalSurvey from "../../components/Vertical/VertiacalSurvey";
-import { SIZES } from "../../utils/theme";
-import axios from "axios";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BASE_URL } from "../../../config";
+import { SIZES } from "../../utils/theme";
+import VertiacalSurvey from "../../components/Vertical/VertiacalSurvey";
+import axios from "axios";
 
 const ListSurveys = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +16,7 @@ const ListSurveys = () => {
     async function fetchData() {
       let token = await AsyncStorage.getItem("tokenUser");
       axios
-        .get("https://api.vietelite.edu.vn/api/event/get", {
+        .get(BASE_URL+"event/get", {
           headers: {
             Accept: "application/json",
             Authorization: "Bearer " + token,
@@ -40,7 +42,6 @@ const ListSurveys = () => {
                 stickySectionHeadersEnabled={false}
                 style={{ flex: 1, paddingBottom: 20 }}
                 keyExtractor={(item, index) => index.toString()}
-                // scrollEnabled={false}
                 renderItem={({ item }) => <VertiacalSurvey item={item} />}
               />
             </View>
