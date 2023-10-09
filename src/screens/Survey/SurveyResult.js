@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
 import React, { useState } from "react";
@@ -99,6 +99,7 @@ const SurveyResult = ({ route, navigation }) => {
   const [dataChart, setDataChart] = useState([]);
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingBarChart, setIsLoadingBarChart] = useState(false)
   const [dataSurvey, setDataSurvey] = useState();
   const [data, setData] = useState();
   const newData = Array(30).fill(0);
@@ -131,6 +132,7 @@ const SurveyResult = ({ route, navigation }) => {
   }, [result_id]);
 
   useEffect(() => {
+    setIsLoadingBarChart(true)
     if (data !== undefined) {
       for (let i = 0; i < data?.chart?.length; i++) {
         const dataNew = data?.chart[i].data;
@@ -165,8 +167,11 @@ const SurveyResult = ({ route, navigation }) => {
         }
       });
       setDataChart(result);
+      setIsLoadingBarChart(false)
     }
   }, [data]);
+
+  console.log('isLoadingBarChart', isLoadingBarChart)
 
   const showReview = (data) => {
     setIsActive(!isActive);
@@ -180,9 +185,18 @@ const SurveyResult = ({ route, navigation }) => {
     >
       {isLoading == true ? (
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" , flexDirection: 'row'}}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
         >
-          <ActivityIndicator size="small" color={COLORS.green}style={{paddingRight: 2}}/>
+          <ActivityIndicator
+            size="small"
+            color={COLORS.green}
+            style={{ paddingRight: 2 }}
+          />
           <Text style={styles.titleNote}>Loading</Text>
         </View>
       ) : (
@@ -196,7 +210,9 @@ const SurveyResult = ({ route, navigation }) => {
                   alignItems: "center",
                 }}
               >
-                <Text style={styles.titleNote}>Môn thi của bạn chưa có điểm, vui lòng đợi !!! </Text>
+                <Text style={styles.titleNote}>
+                  Môn thi của bạn chưa có điểm, vui lòng đợi !!!{" "}
+                </Text>
               </View>
             </>
           ) : (
@@ -223,14 +239,28 @@ const SurveyResult = ({ route, navigation }) => {
                 </View>
                 <View style={styles.container}>
                   <View style={styles.card}>
-                    {data && data.chart && (
+                    {data && !data.chart && isLoadingBarChart === true ? (
+                      <ActivityIndicator />
+                    ) : (
                       <>
                         <View style={styles.content}>
                           {renderTitle()}
                           <BarChart
+                            initialSpacing={0}
+                            isAnimated
+                            thickness={3}
+                            color="#07BAD1"
+                            pressEnabled={true}
                             data={dataChart}
+                            showDataPointOnPress={true}
+                            stepValue
+                            animateOnDataChange
+                            animationDuration={1000}
+                            onDataChangeAnimationDuration={300}
                             barWidth={8}
                             spacing={20}
+                            startOpacity={0.4}
+                            endOpacity={0.1}
                             roundedTop
                             xAxisThickness={0}
                             yAxisThickness={0}
@@ -261,7 +291,7 @@ const SurveyResult = ({ route, navigation }) => {
                             {danhgia.danh_gia.map((dg, index) => {
                               return (
                                 <Button
-                                key={index}
+                                  key={index}
                                   onPress={() => showReview(dg)}
                                   label={dg.title}
                                   color={COLORS.green}
@@ -397,6 +427,6 @@ const styles = StyleSheet.create({
 
   titleNote: {
     fontWeight: 500,
-    color: COLORS.green
-  }
+    color: COLORS.green,
+  },
 });
