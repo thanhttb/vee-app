@@ -223,7 +223,7 @@ const SurveyResult = ({ route, navigation }) => {
       </View>
     );
   };
-
+  const examLength = data?.__danhgia.length
   return (
     <SafeAreaView
       edges={["right", "left", "top"]}
@@ -274,7 +274,7 @@ const SurveyResult = ({ route, navigation }) => {
                       </Text>
                       <Text style={styles.text}>
                         <Text style={styles.note}>Tổng điểm thi: </Text>
-                        {data?.total_score}/
+                        {data?.total_score}{examLength == 3 ? `/30` : `/10`}
                       </Text>
                       <Text style={styles.text}>
                         <Text style={styles.note}>Mục tiêu: </Text>
@@ -322,16 +322,17 @@ const SurveyResult = ({ route, navigation }) => {
                 </View> */}
 
                 {data?.__danhgia.map((danhgia, index) => {
+                  const isCheck = danhgia?.diem.includes('/10')
                   return (
                     <View style={styles.container} key={index}>
                       <View style={styles.card}>
-                        <Text style={styles.title}>
+                        <Text style={[styles.title]}>
                           Đánh giá chi tiết môn thi: {danhgia.subject}
                         </Text>
                         <View style={styles.content}>
                           <Text style={styles.text}>
                             <Text style={styles.note}>Điểm: </Text>
-                            {danhgia?.diem}
+                            {isCheck ? danhgia?.diem : `${danhgia.diem}10`}
                           </Text>
 
                           <View style={styles.row}>
@@ -341,7 +342,7 @@ const SurveyResult = ({ route, navigation }) => {
                                   key={index}
                                   onPress={() => showReview(dg)}
                                   label={dg.title}
-                                  color={COLORS.green}
+                                  color={'black'}
                                   background={COLORS.white}
                                 />
                               );
@@ -442,6 +443,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+    paddingTop: 4
   },
   note: {
     color: "black",
