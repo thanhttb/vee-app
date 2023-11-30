@@ -27,6 +27,8 @@ import ButtonComponent from "../../components/Button/Button";
 import Spacer from "../../components/Spacer";
 import axios from "axios";
 
+import { BASE_URL } from "../../../config";
+
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
 const imagesPath = {
   docx: require("../../../assets/folder/image_docx.png"),
@@ -78,7 +80,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
     setActiveLoading(true)
     axios
       .post(
-        "https://api.vietelite.edu.vn/api/session/send-email",
+        BASE_URL+`session/send-email`,
         {
           session_id: data.session_id,
           email: emailParent,

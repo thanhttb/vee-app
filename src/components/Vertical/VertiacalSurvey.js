@@ -49,9 +49,9 @@ const VertiacalSurvey = ({ item }) => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("Kết quả khảo sát", {
-                  result_id: item.ss_id,
-                  ss_name: item.ss_name,
-                  grade: item.grade
+                  result_id: item?.ss_id,
+                  ss_name: item?.ss_name,
+                  grade: item?.grade
               })
             }
           >
