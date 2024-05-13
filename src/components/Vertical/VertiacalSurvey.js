@@ -17,9 +17,13 @@ const VertiacalSurvey = ({ item }) => {
     <View style={styles.container}>
       <View style={{ padding: 8 }}>
         <Image
-          source={require('../../../assets/bg-mon.jpg')}
-          
-          style={{ width: "100%", height: 150, borderRadius: SIZES.radius, resizeMode:'center' }}
+          source={require("../../../assets/bg-mon.jpg")}
+          style={{
+            width: "100%",
+            height: 150,
+            borderRadius: SIZES.radius,
+            resizeMode: "center",
+          }}
         />
         <View style={styles.content}>
           <Text style={styles.name}>Học sinh: {item?.student_name}</Text>
@@ -49,9 +53,9 @@ const VertiacalSurvey = ({ item }) => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("Kết quả khảo sát", {
-                  result_id: item.ss_id,
-                  ss_name: item.ss_name,
-                  grade: item.grade
+                result_id: item?.ss_id,
+                ss_name: item?.ss_name,
+                grade: item?.grade,
               })
             }
           >

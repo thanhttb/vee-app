@@ -19,13 +19,13 @@ import Spacer from "../../components/Spacer";
 import axios from "axios";
 import { useEffect } from "react";
 
+import { BASE_URL } from "../../../config";
+
 const SurveyResult = ({ route, navigation }) => {
-  const [dataChart, setDataChart] = useState([]);
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingBarChart, setIsLoadingBarChart] = useState(false);
-  const [dataSurvey, setDataSurvey] = useState();
-  const [data, setData] = useState();
+  const [dataSurvey, setDataSurvey] = useState([]);
+  const [data, setData] = useState([]);
 
   const { result_id, ss_name, grade } = route.params;
 
@@ -34,15 +34,12 @@ const SurveyResult = ({ route, navigation }) => {
     async function fetchData() {
       let token = await AsyncStorage.getItem("tokenUser");
       axios
-        .get(
-          `https://api.vietelite.edu.vn/api/portal/event/result?ss_id=${result_id}`,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        )
+        .get(BASE_URL + `portal/event/result?ss_id=${result_id}`, {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
         .then((res) => {
           setData(res.data);
           setIsLoading(false);
@@ -57,14 +54,17 @@ const SurveyResult = ({ route, navigation }) => {
 
   useEffect(() => {
     const newData = Array(
-      data?.chart?.length == 3 ? 30 : data?.chart?.length == 2 ? 20 : 10
+      data?.chart && data.chart.length === 3
+        ? 30
+        : data?.chart && data.chart.length === 2
+        ? 20
+        : 10
     ).fill(0);
-    setIsLoadingBarChart(true);
     if (data !== undefined) {
       for (let i = 0; i < data?.chart?.length; i++) {
         const dataNew = data?.chart[i].data;
-        for (let j = 0; j < dataNew.length; j++) {
-          newData[j * data.chart.length + i] = dataNew[j];
+        for (let j = 0; j < dataNew?.length; j++) {
+          newData[j * data.chart?.length + i] = dataNew[j];
         }
       }
 
@@ -94,8 +94,6 @@ const SurveyResult = ({ route, navigation }) => {
             };
           }
         });
-        setDataChart(result);
-        setIsLoadingBarChart(false);
       } else {
         const result = newData?.map((value, index) => {
           return {
@@ -107,10 +105,12 @@ const SurveyResult = ({ route, navigation }) => {
             frontColor: COLORS.green,
           };
         });
-        setDataChart(result);
-        setIsLoadingBarChart(false);
       }
+    } else {
+      console.log("no data");
     }
+
+    console.log("newData", newData);
   }, [data]);
 
   const showReview = (data) => {
@@ -223,7 +223,7 @@ const SurveyResult = ({ route, navigation }) => {
       </View>
     );
   };
-
+  const examLength = data?.__danhgia?.length;
   return (
     <SafeAreaView
       edges={["right", "left", "top"]}
@@ -274,7 +274,8 @@ const SurveyResult = ({ route, navigation }) => {
                       </Text>
                       <Text style={styles.text}>
                         <Text style={styles.note}>Tổng điểm thi: </Text>
-                        {data?.total_score}/
+                        {data?.total_score}
+                        {examLength == 3 ? `/30` : `/10`}
                       </Text>
                       <Text style={styles.text}>
                         <Text style={styles.note}>Mục tiêu: </Text>
@@ -321,17 +322,18 @@ const SurveyResult = ({ route, navigation }) => {
                   </View>
                 </View> */}
 
-                {data?.__danhgia.map((danhgia, index) => {
+                {data?.__danhgia?.map((danhgia, index) => {
+                  const isCheck = danhgia?.diem.includes("/10");
                   return (
                     <View style={styles.container} key={index}>
                       <View style={styles.card}>
-                        <Text style={styles.title}>
+                        <Text style={[styles.title]}>
                           Đánh giá chi tiết môn thi: {danhgia.subject}
                         </Text>
                         <View style={styles.content}>
                           <Text style={styles.text}>
                             <Text style={styles.note}>Điểm: </Text>
-                            {danhgia?.diem}
+                            {isCheck ? danhgia?.diem : `${danhgia.diem}10`}
                           </Text>
 
                           <View style={styles.row}>
@@ -341,7 +343,7 @@ const SurveyResult = ({ route, navigation }) => {
                                   key={index}
                                   onPress={() => showReview(dg)}
                                   label={dg.title}
-                                  color={COLORS.green}
+                                  color={"black"}
                                   background={COLORS.white}
                                 />
                               );
@@ -442,6 +444,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+    paddingTop: 4,
   },
   note: {
     color: "black",

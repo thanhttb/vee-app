@@ -14,7 +14,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Alert
+  Alert,
 } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -26,6 +26,8 @@ import { useSelector } from "react-redux";
 import ButtonComponent from "../../components/Button/Button";
 import Spacer from "../../components/Spacer";
 import axios from "axios";
+
+import { BASE_URL } from "../../../config";
 
 const types = ["pdf", "doc", "mp3", "jpg", "png"];
 const imagesPath = {
@@ -52,7 +54,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
   const [emailParent, setEmailParent] = useState(user.email);
   const [keyboardStatus, setKeyboardStatus] = useState("");
   const [loading, setLoading] = useState(false);
-  const [activeLoading, setActiveLoading] = useState(false)
+  const [activeLoading, setActiveLoading] = useState(false);
 
   useEffect(() => {
     if (status.isPlaying) triggerAudio(ref);
@@ -75,10 +77,10 @@ const HomeDetailSituation = ({ route, navigation }) => {
 
   const postEmailParent = async () => {
     setLoading(true);
-    setActiveLoading(true)
+    setActiveLoading(true);
     axios
       .post(
-        "https://api.vietelite.edu.vn/api/session/send-email",
+        BASE_URL + `session/send-email`,
         {
           session_id: data.session_id,
           email: emailParent,
@@ -94,7 +96,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
         console.log("res");
         setActive(false);
         setLoading(false);
-        setActiveLoading(false)
+        setActiveLoading(false);
         Alert.alert(
           "VietElite",
           "Gửi thành công, vui lòng kiểm tra hòm thư",
@@ -102,7 +104,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
             // { text: "Để sau", onPress: () => console.log("OK Pressed") },
             {
               text: "Xác nhận",
-              
             },
           ],
           {
@@ -113,7 +114,7 @@ const HomeDetailSituation = ({ route, navigation }) => {
       .catch((err) => {
         console.log("err", err);
         setLoading(false);
-        setActiveLoading(false)
+        setActiveLoading(false);
         Alert.alert(
           "VietElite",
           "Gửi thất bại, vui lòng kiểm tra lại",
@@ -121,7 +122,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
             // { text: "Để sau", onPress: () => console.log("OK Pressed") },
             {
               text: "Xác nhận",
-              
             },
           ],
           {
@@ -350,7 +350,6 @@ const HomeDetailSituation = ({ route, navigation }) => {
                   <Spacer height={10} />
                   <ButtonComponent
                     label={"Xác nhận gửi"}
-                    
                     color={COLORS.white}
                     loading={loading}
                     background={COLORS.green}
