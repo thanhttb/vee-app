@@ -13,6 +13,7 @@ import {
   RefreshControl,
   ActivityIndicator,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 //npm
 import _ from "lodash";
@@ -371,7 +372,7 @@ const Home = () => {
                   {dataPost?.length > 0 ? (
                     <View style={{ flex: 1 }}>
                       <View style={{ marginHorizontal: SIZES.padding }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           onPress={() => navigation.navigate("Khảo sát")}
                         >
                           <Image
@@ -379,6 +380,26 @@ const Home = () => {
                             style={{
                               width: "100%",
                               height: 180,
+                              borderRadius: 16,
+                              marginTop: SIZES.padding,
+                            }}
+                            resizeMode="cover"
+                          />
+                        </TouchableOpacity> */}
+                        <TouchableOpacity
+                          onPress={() => {
+                            Linking.openURL(
+                              "https://thithu.vietelite.edu.vn/#dang-ky"
+                            ).catch((err) =>
+                              console.error("Couldn't load page", err)
+                            );
+                          }}
+                        >
+                          <Image
+                            source={require("../../../assets/ls.jpg")}
+                            style={{
+                              width: "100%",
+                              height: 200,
                               borderRadius: 16,
                               marginTop: SIZES.padding,
                             }}
